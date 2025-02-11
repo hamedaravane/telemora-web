@@ -9,7 +9,7 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-const Layout: FC<LayoutProps> = ({ children }) => {
+const AppLayout: FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen relative">
       <CustomNavbar />
@@ -19,4 +19,4 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   );
 };
 
-export default Layout;
+export default AppLayout;

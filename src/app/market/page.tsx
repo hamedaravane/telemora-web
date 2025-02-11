@@ -1,7 +1,12 @@
+"use client"
+import AppLayout from "@/components/app-layout";
+
 export default function Market() {
   return (
-    <main>
-      <div>welcome to market</div>
-    </main>
+    <AppLayout>
+        <main>
+            <div>welcome to market</div>
+        </main>
+    </AppLayout>
   );
 }

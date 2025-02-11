@@ -26,7 +26,7 @@ export default function Profile() {
 }
 ```
 
-- File: ./app/profile/layout.tsx
+- File: ./app/profile/app-layout.tsx
 
 ```
 export default function ProfileLayout({
@@ -86,7 +86,7 @@ export default function Market() {
 }
 ```
 
-- File: ./app/market/layout.tsx
+- File: ./app/market/app-layout.tsx
 
 ```
 export default function MarketLayout({
@@ -98,7 +98,7 @@ export default function MarketLayout({
 }
 ```
 
-- File: ./app/layout.tsx
+- File: ./app/app-layout.tsx
 
 ```
 import "@/styles/globals.css";
@@ -160,7 +160,7 @@ export default function Orders() {
 }
 ```
 
-- File: ./app/orders/layout.tsx
+- File: ./app/orders/app-layout.tsx
 
 ```
 export default function OrdersLayout({
@@ -184,7 +184,7 @@ export default function Store() {
 }
 ```
 
-- File: ./app/store/layout.tsx
+- File: ./app/store/app-layout.tsx
 
 ```
 export default function StoreLayout({
