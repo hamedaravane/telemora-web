@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'Telemart',
@@ -13,6 +14,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <title>Telemart</title>
+        <Script
+          src="https://telegram.org/js/telegram-web-app.js?56"
+          strategy="beforeInteractive"
+        ></Script>
+      </head>
       <body className="antialiased">{children}</body>
     </html>
   );
