@@ -1,5 +1,5 @@
-import { FaHome, FaShoppingCart, FaStore, FaUser } from "react-icons/fa";
-import { Link } from "@heroui/link";
+import { FaHome, FaShoppingCart, FaStore, FaUser } from 'react-icons/fa';
+import { Link } from '@heroui/link';
 
 const BottomNavigation = () => {
   return (

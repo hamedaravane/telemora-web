@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { FC, ReactNode } from "react";
+import { FC, ReactNode } from 'react';
 
-import CustomNavbar from "./navbar";
-import BottomNavigation from "./bottom-navigation";
+import CustomNavbar from './navbar';
+import BottomNavigation from './bottom-navigation';
 
 interface LayoutProps {
   children: ReactNode;

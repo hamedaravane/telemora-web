@@ -1,8 +1,8 @@
-import axios from "axios";
-import {CreateStoreDto} from "@/libs/stores/types/create-store.dto";
-import {UpdateStoreDto} from "@/libs/stores/types/update-store.dto";
+import axios from 'axios';
+import { CreateStoreDto } from '@/libs/stores/types/create-store.dto';
+import { UpdateStoreDto } from '@/libs/stores/types/update-store.dto';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 export const createStores = async (data: CreateStoreDto) => {
   const response = await axios.post(`${API_BASE_URL}/stores`, data);

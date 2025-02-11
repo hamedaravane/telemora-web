@@ -1,23 +1,19 @@
-import type {Metadata} from "next";
-import "./globals.css";
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-    title: "Telemart",
-    description: "Telegram mini app",
+  title: 'Telemart',
+  description: 'Telegram mini app',
 };
 
 export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
-    children: React.ReactNode;
+  children,
+}: Readonly<{
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-        <body
-            className="antialiased"
-        >
-        {children}
-        </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body className="antialiased">{children}</body>
+    </html>
+  );
 }

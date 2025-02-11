@@ -1,10 +1,4 @@
-import {
-  Avatar,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-} from "@heroui/react";
+import { Avatar, Navbar, NavbarBrand, NavbarContent, NavbarItem } from '@heroui/react';
 
 const CustomNavbar = () => {
   return (
@@ -14,10 +8,7 @@ const CustomNavbar = () => {
       </NavbarBrand>
       <NavbarContent justify="end">
         <NavbarItem>
-          <Avatar
-            size="sm"
-            src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-          />
+          <Avatar size="sm" src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
         </NavbarItem>
       </NavbarContent>
     </Navbar>
