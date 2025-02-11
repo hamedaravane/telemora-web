@@ -1,7 +1,7 @@
 import { CreateProductAttributeDto } from "./create-product-attribute.dto";
 import { CreateProductVariantDto } from "./create-product-variant.dto";
 
-import { ProductType } from "@/src/types/common";
+import { ProductType } from "@/types/common";
 
 export interface CreateProductDto {
   name: string;

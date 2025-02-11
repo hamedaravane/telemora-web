@@ -1,4 +1,4 @@
-import { PaymentStatus } from "@/src/types/common";
+import { PaymentStatus } from "@/types/common";
 
 export interface UpdatePaymentDto {
   status?: PaymentStatus;

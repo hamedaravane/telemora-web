@@ -1,4 +1,4 @@
-import { StoreCategory } from "@/src/types/common";
+import { StoreCategory } from "@/types/common";
 
 export interface CreateStoreDto {
   name: string;

@@ -1,14 +1,16 @@
 import axios from "axios";
+import {CreateStoreDto} from "@/libs/stores/types/create-store.dto";
+import {UpdateStoreDto} from "@/libs/stores/types/update-store.dto";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-export const createStores = async (data: any) => {
+export const createStores = async (data: CreateStoreDto) => {
   const response = await axios.post(`${API_BASE_URL}/stores`, data);
 
   return response.data;
 };
 
-export const getAllStores = async () => {
+export const getAllStores: () => Promise<CreateStoreDto[]> = async () => {
   const response = await axios.get(`${API_BASE_URL}/stores`);
 
   return response.data;
@@ -20,7 +22,7 @@ export const getStoresById = async (id: string | number) => {
   return response.data;
 };
 
-export const updateStores = async (id: string | number, data: any) => {
+export const updateStores = async (id: string | number, data: UpdateStoreDto) => {
   const response = await axios.patch(`${API_BASE_URL}/stores/${id}`, data);
 
   return response.data;

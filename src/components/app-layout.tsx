@@ -11,9 +11,9 @@ interface LayoutProps {
 
 const AppLayout: FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen relative">
+    <div className="h-screen relative">
       <CustomNavbar />
-      <div className="pt-16 pb-20">{children}</div>
+      <div className="overflow-y-scroll">{children}</div>
       <BottomNavigation />
     </div>
   );

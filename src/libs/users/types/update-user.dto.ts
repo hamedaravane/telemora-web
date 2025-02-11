@@ -1,4 +1,4 @@
-import { UserRole } from "@/src/types/common";
+import { UserRole } from "@/types/common";
 
 export interface UpdateUserDto {
   name?: string;

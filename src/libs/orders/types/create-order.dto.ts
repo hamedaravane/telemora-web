@@ -1,6 +1,6 @@
 import { CreateOrderItemDto } from "./create-order-item.dto";
 
-import { OrderStatus } from "@/src/types/common";
+import { OrderStatus } from "@/types/common";
 
 export interface CreateOrderDto {
   buyerId: number;
