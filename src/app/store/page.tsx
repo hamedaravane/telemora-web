@@ -2,10 +2,9 @@
 import AppLayout from '@/components/app-layout';
 import { useEffect, useState } from 'react';
 import { getAllStores } from '@/libs/stores/stores-api';
-import { CreateStoreDto } from '@/libs/stores/types/create-store.dto';
-import { Button } from '@heroui/react';
-import { Link } from '@heroui/link';
+import { Button, Link } from '@heroui/react';
 import { FaPlus } from 'react-icons/fa6';
+import { CreateStoreDto } from '@/libs/stores/types';
 
 export default function Store() {
   const [stores, setStores] = useState<CreateStoreDto[]>();
@@ -31,12 +30,12 @@ export default function Store() {
             return <div key={store.name}>{store.name}</div>;
           })
         ) : (
-          <div>Loading...</div>
+          <pre>{JSON.stringify(stores)}</pre>
         )}
-        <Link as={Button} fullWidth size="lg" href="./create">
+        <Button as={Link} fullWidth size="lg" href="./create">
           <FaPlus />
           <span>Create a new Store</span>
-        </Link>
+        </Button>
       </main>
     </AppLayout>
   );
