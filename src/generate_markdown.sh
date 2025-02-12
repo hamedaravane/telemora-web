@@ -7,7 +7,7 @@ output_file="output.md"
     echo ""
 } > "$output_file"
 
-find . -type f -name "*.tsx" -print0 | while IFS= read -r -d '' file; do
+find . -type f -name "*.ts" -print0 | while IFS= read -r -d '' file; do
     {
         echo "- File: ${file}"
         echo ""

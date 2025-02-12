@@ -12,7 +12,7 @@ export default function Profile() {
         <div className="p-4">
           <Card>
             <CardHeader>
-              <Avatar src={user?.profilePictureUrl || '/default-profile.png'} size="lg" />
+              <Avatar src={'/default-profile.png'} size="lg" />
               <div className="ml-4">
                 <h4>{user?.name}</h4>
                 <span>@{user?.telegramId}</span>
@@ -21,8 +21,8 @@ export default function Profile() {
             <CardBody>
               <div>Phone: {user?.phoneNumber || 'N/A'}</div>
               <div>Email: {user?.email || 'N/A'}</div>
-              <div>Address: {user?.address || 'N/A'}</div>
-              <div>Wallet Balance: {user?.walletBalance} TON</div>
+              <div>Address: {'N/A'}</div>
+              <div>Wallet Balance: 1 TON</div>
               <div>Role: {user?.role}</div>
             </CardBody>
             <CardFooter>
