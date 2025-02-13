@@ -77,4 +77,3 @@ export interface UpdateUserDto {
   role?: UserRole;
 }
 ```
-

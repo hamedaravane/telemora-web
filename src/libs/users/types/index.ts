@@ -5,9 +5,13 @@ import { Store } from '@/libs/stores/types';
 import { Review } from '@/libs/reviews/types';
 
 export interface User {
-  id: number;
   telegramId: string;
-  name: string;
+  firstName: string;
+  lastName?: string;
+  telegramUsername?: string;
+  telegramLanguageCode?: string;
+  isTelegramPremium?: boolean;
+  telegramPhotoUrl?: string;
   phoneNumber?: string;
   email?: string;
   role: UserRole;

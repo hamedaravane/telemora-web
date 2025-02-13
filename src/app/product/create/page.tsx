@@ -84,7 +84,6 @@ export default function CreateProductPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    // combine form data with dynamic attributes/variants
     const productData: CreateProductDto = {
       ...formData,
       attributes: attributes,
@@ -92,7 +91,6 @@ export default function CreateProductPage() {
     };
     try {
       const createdProduct = await createProducts(productData);
-      // redirect to the newly created product's details page
       router.push(`/product/${createdProduct.id}`);
     } catch (err) {
       console.error(err);

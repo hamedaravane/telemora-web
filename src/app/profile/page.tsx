@@ -6,7 +6,6 @@ import { Avatar, Card, CardHeader, CardBody, CardFooter, Button } from '@heroui/
 import { UserContext } from '@/context/user-context';
 import TonConnect from '@tonconnect/sdk';
 
-// Create a TonConnect instance with your manifest URL (update with your actual manifest URL)
 const tonConnect = new TonConnect({
   manifestUrl: 'https://your-app.com/manifest.json',
 });
@@ -20,21 +19,11 @@ export default function Profile() {
     setWalletConnecting(true);
     setError(null);
     try {
-      // For an injected wallet (e.g., Tonkeeper), pass the jsBridgeKey.
       tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
 
-      // After connecting, get the account from tonConnect
-      if (tonConnect.account) {
+      if (tonConnect.account && user) {
         const walletAddress = tonConnect.account.address;
-        // Simulate fetching wallet balance (replace this with your actual balance retrieval)
-        const walletBalance = '1.23 TON';
-        // Update the user context with wallet details.
-        setUser({
-          ...user,
-          walletAddress,
-          // Extend your User type to optionally include walletBalance if needed.
-          walletBalance,
-        });
+        setUser({ ...user, walletAddress });
       }
     } catch (err) {
       console.error('Wallet connection failed', err);
@@ -49,9 +38,9 @@ export default function Profile() {
       <div className="p-4">
         <Card>
           <CardHeader>
-            <Avatar src={user?.profilePictureUrl || '/default-profile.png'} size="lg" />
+            <Avatar src={user?.telegramPhotoUrl || '/default-profile.png'} size="lg" />
             <div className="ml-4">
-              <h4>{user?.name}</h4>
+              <h4>{user?.firstName}</h4>
               <span>@{user?.telegramId}</span>
             </div>
           </CardHeader>
@@ -67,7 +56,7 @@ export default function Profile() {
                 'Not connected'
               )}
             </div>
-            {user?.walletAddress && <div>Wallet Balance: {user?.walletBalance || 'N/A'}</div>}
+            {user?.walletAddress && <div>Wallet Balance: {'N/A'}</div>}
             {error && <div className="text-red-500 mt-2">{error}</div>}
           </CardBody>
           <CardFooter>

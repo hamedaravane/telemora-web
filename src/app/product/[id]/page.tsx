@@ -14,6 +14,7 @@ import {
   Button,
   Input,
   Textarea,
+  Image,
 } from '@heroui/react';
 import { createReviews } from '@/libs/reviews/reviews-api';
 import { UserContext } from '@/context/user-context';
@@ -24,7 +25,6 @@ export default function ProductDetailsPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Review form state
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>('');
   const [reviewLoading, setReviewLoading] = useState<boolean>(false);
@@ -53,9 +53,7 @@ export default function ProductDetailsPage() {
     setReviewLoading(true);
     setReviewError(null);
     try {
-      // Submit review (adjust the payload as per your API)
       await createReviews({ rating, comment });
-      // Refresh product details to include the new review
       if (id) {
         const updatedProduct = await getProductsById(id);
         setProduct(updatedProduct);
@@ -86,7 +84,7 @@ export default function ProductDetailsPage() {
                 <h2 className="text-2xl font-bold">{product.name}</h2>
               </CardHeader>
               <CardBody>
-                <img
+                <Image
                   src={product.imageUrl}
                   alt={product.name}
                   className="w-full max-h-64 object-cover mb-4"
@@ -150,7 +148,7 @@ export default function ProductDetailsPage() {
                 product.reviews.map((review) => (
                   <Card key={review.id} className="mb-4">
                     <CardHeader>
-                      <div className="font-bold">{review.buyer.name}</div>
+                      <div className="font-bold">{`${review.buyer.firstName} ${review.buyer.lastName}`}</div>
                       <div>Rating: {review.rating}/5</div>
                     </CardHeader>
                     <CardBody>

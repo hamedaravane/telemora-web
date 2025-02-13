@@ -1,6 +1,4 @@
 'use client';
-// import { useEffect, useState } from 'react';
-// import WebApp from '@twa-dev/sdk';
 
 import { Spinner } from '@heroui/react';
 import { useEffect } from 'react';

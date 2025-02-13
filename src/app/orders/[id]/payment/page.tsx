@@ -11,7 +11,6 @@ import { Spinner, Button } from '@heroui/react';
 import { UserContext } from '@/context/user-context';
 import TonConnect from '@tonconnect/sdk';
 
-// Initialize TonConnect instance with your manifest URL (update it as needed)
 const tonConnect = new TonConnect({
   manifestUrl: 'https://your-app.com/manifest.json',
 });
@@ -27,7 +26,6 @@ export default function PaymentPage() {
   const [error, setError] = useState<string | null>(null);
   const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false);
 
-  // Fetch order details when the page loads
   useEffect(() => {
     if (id) {
       getOrdersById(id)
@@ -44,12 +42,9 @@ export default function PaymentPage() {
     }
   }, [id]);
 
-  // Calculate the total price from order items
   const totalPrice = order ? order.items.reduce((sum, item) => sum + item.totalPrice, 0) : 0;
 
-  // Handle the payment process using TonConnect
   const handlePayment = async () => {
-    // If user is not connected to a wallet, redirect to Profile for wallet connection.
     if (!user || !user.walletAddress) {
       router.push('/profile');
       return;
@@ -59,65 +54,49 @@ export default function PaymentPage() {
     setError(null);
 
     try {
-      // Ensure wallet is connected. For an injected wallet (e.g. Tonkeeper),
-      // pass the jsBridge key. (Adjust the key if needed.)
       if (!tonConnect.wallet) {
-        // For injected wallet, call connect with an object containing jsBridgeKey.
-        // This call returns void.
         tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
       }
 
-      // Build the transaction request.
-      // Set a validUntil time (for example, current time + 60 seconds)
       const validUntil = Math.floor(Date.now() / 1000) + 60;
-      // Determine the recipient wallet address.
-      // We assume order.store.walletAddress exists; otherwise, use a default.
       const recipient =
         order?.store?.owner.walletAddress || 'EQXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
 
       const transactionRequest = {
         validUntil,
-        // Optionally, you can set network property here (e.g., TonConnect.CHAIN.TESTNET)
-        from: user.walletAddress, // sender's address from user context
+        from: user.walletAddress,
         messages: [
           {
-            address: recipient, // recipient's wallet address
-            amount: totalPrice.toString(), // amount as a string (in nanoTON)
+            address: recipient,
+            amount: totalPrice.toString(),
           },
         ],
       };
 
-      // Send the transaction.
-      // The sendTransaction call returns a response containing the signed BOC.
       const txResponse = await tonConnect.sendTransaction(transactionRequest, {
         onRequestSent: () => {
           console.log('Transaction request sent to wallet');
         },
       });
-      // txResponse contains: { boc: string }
       console.log('Transaction signed, boc:', txResponse.boc);
 
-      // Create a Payment record in your backend.
-      // We use the returned BOC as the transaction identifier.
       const paymentData = {
         orderId: order?.id.toString(),
         amount: totalPrice.toString(),
         fromWalletAddress: user.walletAddress,
         toWalletAddress: recipient,
-        transactionHash: txResponse.boc, // using boc as transaction identifier
-        gasFee: '0', // adjust if you can derive gas fee
-        commission: '0', // adjust if you can derive commission
+        transactionHash: txResponse.boc,
+        gasFee: '0',
+        commission: '0',
       };
 
       const paymentRecord = await createPayments(paymentData);
 
-      // If payment status is completed, update the order status.
       if (paymentRecord.status === PaymentStatus.COMPLETED) {
-        await updateOrders(order.id, { status: OrderStatus.CONFIRMED });
+        await updateOrders(order!.id, { status: OrderStatus.CONFIRMED });
       }
 
       setPaymentSuccess(true);
-      // Optionally, redirect to order details or show a success message.
     } catch (err) {
       console.error(err);
       setError('Payment failed. Please try again.');
