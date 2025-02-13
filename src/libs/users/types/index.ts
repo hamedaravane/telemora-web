@@ -24,15 +24,27 @@ export interface User {
 
 export interface CreateUserDto {
   telegramId: string;
-  name: string;
+  firstName: string;
+  lastName?: string;
+  telegramUsername?: string;
+  telegramLanguageCode?: string;
+  isTelegramPremium?: boolean;
+  telegramPhotoUrl?: string;
   phoneNumber?: string;
   email?: string;
   role: UserRole;
+  walletAddress?: string;
 }
 
 export interface UpdateUserDto {
-  name?: string;
+  firstName?: string;
+  lastName?: string;
+  telegramUsername?: string;
+  telegramLanguageCode?: string;
+  isTelegramPremium?: boolean;
+  telegramPhotoUrl?: string;
   phoneNumber?: string;
   email?: string;
   role?: UserRole;
+  walletAddress?: string;
 }

@@ -118,7 +118,7 @@ export default function PaymentPage() {
   if (!order) {
     return (
       <AppLayout>
-        <div className="text-red-500">Order not found.</div>
+        <div className="text-danger">Order not found.</div>
       </AppLayout>
     );
   }
@@ -138,11 +138,9 @@ export default function PaymentPage() {
             <strong>Status:</strong> {order.status}
           </p>
         </div>
-        {error && <div className="text-red-500 mb-4">{error}</div>}
+        {error && <div className="text-danger mb-4">{error}</div>}
         {paymentSuccess ? (
-          <div className="text-green-500 mb-4">
-            Payment successful! Your order is now confirmed.
-          </div>
+          <div className="text-success mb-4">Payment successful! Your order is now confirmed.</div>
         ) : (
           <Button onPress={handlePayment} disabled={paying}>
             {paying ? 'Processing Payment...' : 'Pay with TON'}

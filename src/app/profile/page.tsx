@@ -57,7 +57,7 @@ export default function Profile() {
               )}
             </div>
             {user?.walletAddress && <div>Wallet Balance: {'N/A'}</div>}
-            {error && <div className="text-red-500 mt-2">{error}</div>}
+            {error && <div className="text-danger mt-2">{error}</div>}
           </CardBody>
           <CardFooter>
             {!user?.walletAddress ? (
@@ -65,7 +65,7 @@ export default function Profile() {
                 {walletConnecting ? 'Connecting...' : 'Connect Wallet'}
               </Button>
             ) : (
-              <div className="text-green-500">Wallet Connected</div>
+              <div className="text-success">Wallet Connected</div>
             )}
           </CardFooter>
         </Card>
