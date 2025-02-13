@@ -16,10 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title>Telemart</title>
-        <Script
-          src="https://telegram.org/js/telegram-web-app.js?56"
-          strategy="beforeInteractive"
-        ></Script>
+        <Script src="https://telegram.org/js/telegram-web-app.js?56" strategy="beforeInteractive" />
       </head>
       <body className="antialiased">{children}</body>
     </html>
