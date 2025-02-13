@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@heroui/react": "^2.6.14",
+    "@tonconnect/sdk": "^3.0.6",
     "@twa-dev/sdk": "^8.0.2",
     "axios": "^1.7.9",
     "framer-motion": "^12.4.2",

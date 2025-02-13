@@ -35,7 +35,7 @@ export default function Orders() {
             <Spinner label="Loading orders..." />
           </div>
         )}
-        {error && <div className="text-red-500 mb-4">{error}</div>}
+        {error && <div className="text-danger mb-4">{error}</div>}
         {!loading && orders.length === 0 && <div>No orders found.</div>}
         {!loading && orders.length > 0 && (
           <div className="space-y-4">

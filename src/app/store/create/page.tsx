@@ -14,7 +14,7 @@ export default function CreateStore() {
     name: '',
     logoUrl: '',
     description: '',
-    category: StoreCategory.OTHER, // default category
+    category: StoreCategory.OTHER,
     contactNumber: '',
     email: '',
     address: '',
@@ -39,7 +39,6 @@ export default function CreateStore() {
     setError(null);
     try {
       const createdStore = await createStores(formData);
-      // Redirect to the newly created store's detail page
       router.push(`/store/${createdStore.id}`);
     } catch (err) {
       console.error(err);
@@ -53,7 +52,7 @@ export default function CreateStore() {
     <InnerLayout>
       <main className="p-4">
         <h2 className="text-xl font-bold mb-4">Create a New Store</h2>
-        {error && <div className="text-red-500 mb-4">{error}</div>}
+        {error && <div className="text-danger mb-4">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Store Name"

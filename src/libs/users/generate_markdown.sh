@@ -3,7 +3,7 @@
 output_file="output.md"
 
 {
-    echo "# TSX Files"
+    echo "# Files"
     echo ""
 } > "$output_file"
 
