@@ -9,14 +9,14 @@ import { getStoresById } from '@/libs/stores/stores-api';
 import { Store } from '@/libs/stores/types';
 
 export default function StorePage() {
-  const { slug } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [store, setStore] = useState<Store | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (slug) {
-      getStoresById(slug)
+    if (id) {
+      getStoresById(id)
         .then((data) => {
           setStore(data);
         })
@@ -28,7 +28,7 @@ export default function StorePage() {
           setLoading(false);
         });
     }
-  }, [slug]);
+  }, [id]);
 
   return (
     <AppLayout>
@@ -38,7 +38,7 @@ export default function StorePage() {
             <Spinner label="Loading store..." />
           </div>
         )}
-        {error && <div className="text-red-500">{error}</div>}
+        {error && <div className="text-danger">{error}</div>}
         {!loading && store && (
           <Card>
             <CardHeader>
@@ -60,7 +60,7 @@ export default function StorePage() {
               <p className="mt-2 text-sm">Address: {store.address || 'N/A'}</p>
             </CardBody>
             <CardFooter>
-              <Button as={Link} href={`/store/${slug}/edit`} size="sm">
+              <Button as={Link} href={`/store/${id}/edit`} size="sm">
                 Edit Store
               </Button>
             </CardFooter>

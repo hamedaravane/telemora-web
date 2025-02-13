@@ -15,7 +15,7 @@ export const getAllStores: () => Promise<CreateStoreDto[]> = async (): Promise<S
   return response.data;
 };
 
-export const getStoresById = async (id: string | number): Promise<Store> => {
+export const getStoresById = async (id: string): Promise<Store> => {
   const response = await axios.get(`${API_BASE_URL}/stores/${id}`);
 
   return response.data;
