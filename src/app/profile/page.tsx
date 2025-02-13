@@ -19,7 +19,7 @@ export default function Profile() {
     setWalletConnecting(true);
     setError(null);
     try {
-      tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
+      await tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
 
       if (tonConnect.account && user) {
         const walletAddress = tonConnect.account.address;
