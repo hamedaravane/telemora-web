@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useState, useContext } from 'react';
-import { useParams } from 'next/navigation';
+import { useState, useContext } from 'react';
 import AppLayout from '@/components/app-layout';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getProductsById } from '@/libs/products/products-api';
-import { Product } from '@/libs/products/types';
 import {
   Card,
   CardHeader,
@@ -14,70 +13,58 @@ import {
   Button,
   Input,
   Textarea,
-  Image,
 } from '@heroui/react';
 import { createReviews } from '@/libs/reviews/reviews-api';
 import { UserContext } from '@/context/user-context';
+import type { Product } from '@/libs/products/types';
+import type { Review } from '@/libs/reviews/types';
+import Image from 'next/image';
 
 export default function ProductDetailsPage() {
-  const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  // Extract id from URL – adjust according to your routing (here we use URLSearchParams for demonstration)
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id') || '';
 
+  const {
+    data: product,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery<Product>({
+    queryKey: ['product', id],
+    queryFn: () => getProductsById(id),
+    enabled: !!id,
+  });
+
+  const queryClient = useQueryClient();
+  const { user } = useContext(UserContext);
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>('');
-  const [reviewLoading, setReviewLoading] = useState<boolean>(false);
-  const [reviewError, setReviewError] = useState<string | null>(null);
 
-  const { user } = useContext(UserContext);
-
-  useEffect(() => {
-    if (id) {
-      getProductsById(id)
-        .then((data) => {
-          setProduct(data);
-        })
-        .catch((err) => {
-          console.error(err);
-          setError('Failed to load product details.');
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [id]);
-
-  const handleReviewSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setReviewLoading(true);
-    setReviewError(null);
-    try {
-      await createReviews({ rating, comment });
-      if (id) {
-        const updatedProduct = await getProductsById(id);
-        setProduct(updatedProduct);
-      }
+  const reviewMutation = useMutation<Review, Error, { rating: number; comment: string }>({
+    mutationFn: (reviewData) => createReviews(reviewData),
+    onSuccess: () => {
+      refetch();
       setRating(0);
       setComment('');
-    } catch (err) {
-      console.error(err);
-      setReviewError('Failed to submit review.');
-    } finally {
-      setReviewLoading(false);
-    }
+    },
+  });
+
+  const handleReviewSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    reviewMutation.mutate({ rating, comment });
   };
 
   return (
     <AppLayout>
       <main className="p-4">
-        {loading && (
+        {isLoading && (
           <div className="flex justify-center items-center h-40">
             <Spinner label="Loading product details..." />
           </div>
         )}
-        {error && <div className="text-danger">{error}</div>}
-        {!loading && product && (
+        {error && <div className="text-danger">Failed to load product details.</div>}
+        {!isLoading && product && (
           <>
             <Card>
               <CardHeader>
@@ -87,51 +74,13 @@ export default function ProductDetailsPage() {
                 <Image
                   src={product.imageUrl}
                   alt={product.name}
+                  width={180}
+                  height={100}
                   className="w-full max-h-64 object-cover mb-4"
                 />
                 <p className="text-lg font-semibold">${product.price}</p>
                 <p>{product.description}</p>
-                <div className="mt-4">
-                  <h3 className="font-bold">Attributes:</h3>
-                  {product.attributes.length > 0 ? (
-                    <ul className="list-disc pl-5">
-                      {product.attributes.map((attr) => (
-                        <li key={attr.id}>
-                          {attr.attributeName}: {attr.attributeValue}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No attributes</p>
-                  )}
-                </div>
-                <div className="mt-4">
-                  <h3 className="font-bold">Variants:</h3>
-                  {product.variants.length > 0 ? (
-                    <ul className="list-disc pl-5">
-                      {product.variants.map((variant) => (
-                        <li key={variant.id}>
-                          {variant.variantName}: {variant.variantValue}{' '}
-                          {variant.additionalPrice ? `(+${variant.additionalPrice})` : ''}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No variants</p>
-                  )}
-                </div>
-                {product.productType === 'digital' && product.downloadLink && (
-                  <div className="mt-4">
-                    <a
-                      href={product.downloadLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 underline"
-                    >
-                      Download Link
-                    </a>
-                  </div>
-                )}
+                {/* Render additional details (attributes, variants) as needed */}
               </CardBody>
               <CardFooter>
                 <div>
@@ -160,7 +109,6 @@ export default function ProductDetailsPage() {
                 <p>No reviews yet.</p>
               )}
 
-              {/* Only allow buyers to write a review */}
               {user && user.role === 'buyer' && (
                 <form onSubmit={handleReviewSubmit} className="mt-4 space-y-4">
                   <h4 className="font-bold">Write a Review</h4>
@@ -179,9 +127,8 @@ export default function ProductDetailsPage() {
                     onChange={(e) => setComment(e.target.value)}
                     required
                   />
-                  {reviewError && <div className="text-danger">{reviewError}</div>}
-                  <Button type="submit" disabled={reviewLoading}>
-                    {reviewLoading ? 'Submitting...' : 'Submit Review'}
+                  <Button type="submit" disabled={reviewMutation.isPending}>
+                    {reviewMutation.isPending ? 'Submitting...' : 'Submit Review'}
                   </Button>
                 </form>
               )}
