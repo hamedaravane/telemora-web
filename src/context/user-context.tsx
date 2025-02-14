@@ -4,6 +4,7 @@ import { createContext, useState, useEffect } from 'react';
 import WebApp from '@twa-dev/sdk';
 import { UserRole } from '@/types/common';
 import type { User } from '@/libs/users/types';
+import { useQuery } from '@tanstack/react-query';
 
 interface IUserContext {
   user: User | null;
@@ -18,31 +19,39 @@ export const UserContext = createContext<IUserContext>({
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
+  // Fetch telegram user data using React Query.
+  const { data } = useQuery<User | null>({
+    queryKey: ['telegramUser'],
+    queryFn: async () => {
+      if (WebApp && WebApp.initDataUnsafe && WebApp.initDataUnsafe.user) {
+        const tgUser = WebApp.initDataUnsafe.user;
+        return {
+          telegramId: tgUser.id.toString(),
+          firstName: tgUser.first_name,
+          lastName: tgUser.last_name,
+          telegramUsername: tgUser.username,
+          telegramLanguageCode: tgUser.language_code,
+          isTelegramPremium: tgUser.is_premium,
+          telegramPhotoUrl: tgUser.photo_url,
+          phoneNumber: undefined,
+          email: undefined,
+          role: UserRole.BUYER,
+          walletAddress: undefined,
+          orders: [],
+          reviews: [],
+          stores: [],
+          payments: [],
+        } as User;
+      }
+      return null;
+    },
+  });
+
   useEffect(() => {
-    if (WebApp && WebApp.initDataUnsafe && WebApp.initDataUnsafe.user) {
-      const tgUser = WebApp.initDataUnsafe.user;
-
-      const mappedUser: User = {
-        telegramId: tgUser.id.toString(),
-        firstName: tgUser.first_name,
-        lastName: tgUser.last_name,
-        telegramUsername: tgUser.username,
-        telegramLanguageCode: tgUser.language_code,
-        isTelegramPremium: tgUser.is_premium,
-        telegramPhotoUrl: tgUser.photo_url,
-        phoneNumber: undefined,
-        email: undefined,
-        role: UserRole.BUYER,
-        walletAddress: undefined,
-        orders: [],
-        reviews: [],
-        stores: [],
-        payments: [],
-      };
-
-      setUser(mappedUser);
+    if (data) {
+      setUser(data);
     }
-  }, []);
+  }, [data]);
 
   return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 };
