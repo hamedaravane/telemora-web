@@ -3,7 +3,7 @@
 import { useContext, useState } from 'react';
 import AppLayout from '@/components/app-layout';
 import Image from 'next/image';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getProductsById } from '@/libs/products/products-api';
 import { createReviews } from '@/libs/reviews/reviews-api';
 import {
@@ -35,7 +35,6 @@ export default function ProductDetailsPage() {
     enabled: !!id,
   });
 
-  const queryClient = useQueryClient();
   const { user } = useContext(UserContext);
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>('');

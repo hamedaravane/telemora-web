@@ -1,7 +1,6 @@
 'use client';
 
 import { createContext, useEffect, useState } from 'react';
-import WebApp from '@twa-dev/sdk';
 import { UserRole } from '@/types/common';
 import type { User } from '@/libs/users/types';
 import { useQuery } from '@tanstack/react-query';
@@ -22,25 +21,28 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { data } = useQuery<User | null>({
     queryKey: ['telegramUser'],
     queryFn: async () => {
-      if (WebApp && WebApp.initDataUnsafe && WebApp.initDataUnsafe.user) {
-        const tgUser = WebApp.initDataUnsafe.user;
-        return {
-          telegramId: tgUser.id.toString(),
-          firstName: tgUser.first_name,
-          lastName: tgUser.last_name,
-          telegramUsername: tgUser.username,
-          telegramLanguageCode: tgUser.language_code,
-          isTelegramPremium: tgUser.is_premium,
-          telegramPhotoUrl: tgUser.photo_url,
-          phoneNumber: undefined,
-          email: undefined,
-          role: UserRole.BUYER,
-          walletAddress: undefined,
-          orders: [],
-          reviews: [],
-          stores: [],
-          payments: [],
-        } as User;
+      if (typeof window !== 'undefined') {
+        const { default: WebApp } = await import('@twa-dev/sdk');
+        if (WebApp?.initDataUnsafe?.user) {
+          const tgUser = WebApp.initDataUnsafe.user;
+          return {
+            telegramId: tgUser.id.toString(),
+            firstName: tgUser.first_name,
+            lastName: tgUser.last_name,
+            telegramUsername: tgUser.username,
+            telegramLanguageCode: tgUser.language_code,
+            isTelegramPremium: tgUser.is_premium,
+            telegramPhotoUrl: tgUser.photo_url,
+            phoneNumber: undefined,
+            email: undefined,
+            role: UserRole.BUYER,
+            walletAddress: undefined,
+            orders: [],
+            reviews: [],
+            stores: [],
+            payments: [],
+          } as User;
+        }
       }
       return null;
     },
@@ -54,3 +56,5 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 };
+
+export default UserProvider;

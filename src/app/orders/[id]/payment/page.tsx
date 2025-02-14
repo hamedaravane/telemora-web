@@ -9,13 +9,9 @@ import { createPayments } from '@/libs/payments/payments-api';
 import { Button, Spinner } from '@heroui/react';
 import { OrderStatus, PaymentStatus } from '@/types/common';
 import { UserContext } from '@/context/user-context';
-import TonConnect from '@tonconnect/sdk';
+import { useTonConnectUI } from '@tonconnect/ui-react';
 import type { CreatePaymentDto } from '@/libs/payments/types';
 import type { UpdateOrderDto } from '@/libs/orders/types';
-
-const tonConnect = new TonConnect({
-  manifestUrl: 'https://your-app.com/manifest.json',
-});
 
 export default function PaymentPage() {
   const { id } = useParams<{ id: string }>();
@@ -47,15 +43,14 @@ export default function PaymentPage() {
     },
   });
 
+  const [tonConnectUI] = useTonConnectUI();
+
   const handlePayment = async () => {
     if (!user || !user.walletAddress) {
       router.push('/profile');
       return;
     }
     try {
-      if (!tonConnect.wallet) {
-        await tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
-      }
       const validUntil = Math.floor(Date.now() / 1000) + 60;
       const recipient =
         order?.store?.owner.walletAddress || 'EQXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
@@ -71,12 +66,9 @@ export default function PaymentPage() {
         ],
       };
 
-      const txResponse = await tonConnect.sendTransaction(transactionRequest, {
-        onRequestSent: () => {
-          console.log('Transaction request sent to wallet');
-        },
-      });
-      const paymentData = {
+      const txResponse = await tonConnectUI.sendTransaction(transactionRequest);
+
+      const paymentData: CreatePaymentDto = {
         orderId: order?.id.toString(),
         amount: totalPrice.toString(),
         fromWalletAddress: user.walletAddress,

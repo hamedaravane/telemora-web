@@ -1,35 +1,20 @@
 'use client';
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import AppLayout from '@/components/app-layout';
-import { Avatar, Button, Card, CardBody, CardFooter, CardHeader } from '@heroui/react';
+import { Avatar, Card, CardBody, CardFooter, CardHeader } from '@heroui/react';
 import { UserContext } from '@/context/user-context';
-import TonConnect from '@tonconnect/sdk';
-
-const tonConnect = new TonConnect({
-  manifestUrl: 'https://your-app.com/manifest.json',
-});
+import { TonConnectButton, useTonWallet } from '@tonconnect/ui-react';
 
 export default function Profile() {
   const { user, setUser } = useContext(UserContext);
-  const [walletConnecting, setWalletConnecting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const wallet = useTonWallet();
 
-  const handleConnectWallet = async () => {
-    setWalletConnecting(true);
-    setError(null);
-    try {
-      await tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
-      if (tonConnect.account && user) {
-        setUser({ ...user, walletAddress: tonConnect.account.address });
-      }
-    } catch (err) {
-      console.error('Wallet connection failed', err);
-      setError('Wallet connection failed. Please try again.');
-    } finally {
-      setWalletConnecting(false);
+  useEffect(() => {
+    if (wallet && wallet.account?.address && user) {
+      setUser({ ...user, walletAddress: wallet.account.address });
     }
-  };
+  }, [wallet, user, setUser]);
 
   return (
     <AppLayout>
@@ -54,13 +39,11 @@ export default function Profile() {
                 'Not connected'
               )}
             </div>
-            {error && <div className="text-danger mt-2">{error}</div>}
           </CardBody>
           <CardFooter>
+            {/* Use the TonConnectButton provided by @tonconnect/ui-react */}
             {!user?.walletAddress ? (
-              <Button onPress={handleConnectWallet} disabled={walletConnecting}>
-                {walletConnecting ? 'Connecting...' : 'Connect Wallet'}
-              </Button>
+              <TonConnectButton />
             ) : (
               <div className="text-success">Wallet Connected</div>
             )}
