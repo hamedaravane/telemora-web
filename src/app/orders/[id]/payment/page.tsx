@@ -1,15 +1,17 @@
 'use client';
 
-import { useEffect, useState, useContext } from 'react';
+import { useContext } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import AppLayout from '@/components/app-layout';
 import { getOrdersById, updateOrders } from '@/libs/orders/orders-api';
 import { createPayments } from '@/libs/payments/payments-api';
-import { Order } from '@/libs/orders/types';
+import { Button, Spinner } from '@heroui/react';
 import { OrderStatus, PaymentStatus } from '@/types/common';
-import { Spinner, Button } from '@heroui/react';
 import { UserContext } from '@/context/user-context';
 import TonConnect from '@tonconnect/sdk';
+import { CreatePaymentDto } from '@/libs/payments/types';
+import { UpdateOrderDto } from '@/libs/orders/types';
 
 const tonConnect = new TonConnect({
   manifestUrl: 'https://your-app.com/manifest.json',
@@ -18,46 +20,42 @@ const tonConnect = new TonConnect({
 export default function PaymentPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { user } = useContext(UserContext);
 
-  const [order, setOrder] = useState<Order | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [paying, setPaying] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (id) {
-      getOrdersById(id)
-        .then((data) => {
-          setOrder(data);
-        })
-        .catch((err) => {
-          console.error(err);
-          setError('Failed to load order details.');
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [id]);
+  const {
+    data: order,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['order', id],
+    queryFn: () => getOrdersById(id as string),
+    enabled: !!id,
+  });
 
   const totalPrice = order ? order.items.reduce((sum, item) => sum + item.totalPrice, 0) : 0;
+
+  const paymentMutation = useMutation({
+    mutationFn: (paymentData: CreatePaymentDto) => createPayments(paymentData),
+  });
+
+  const orderUpdateMutation = useMutation({
+    mutationFn: (data: { id: number; update: UpdateOrderDto }) =>
+      updateOrders(data.id, data.update),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['order', id] });
+    },
+  });
 
   const handlePayment = async () => {
     if (!user || !user.walletAddress) {
       router.push('/profile');
       return;
     }
-
-    setPaying(true);
-    setError(null);
-
     try {
       if (!tonConnect.wallet) {
         tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
       }
-
       const validUntil = Math.floor(Date.now() / 1000) + 60;
       const recipient =
         order?.store?.owner.walletAddress || 'EQXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
@@ -78,8 +76,6 @@ export default function PaymentPage() {
           console.log('Transaction request sent to wallet');
         },
       });
-      console.log('Transaction signed, boc:', txResponse.boc);
-
       const paymentData = {
         orderId: order?.id.toString(),
         amount: totalPrice.toString(),
@@ -90,22 +86,20 @@ export default function PaymentPage() {
         commission: '0',
       };
 
-      const paymentRecord = await createPayments(paymentData);
-
+      const paymentRecord = await paymentMutation.mutateAsync(paymentData);
       if (paymentRecord.status === PaymentStatus.COMPLETED) {
-        await updateOrders(order!.id, { status: OrderStatus.CONFIRMED });
+        await orderUpdateMutation.mutateAsync({
+          id: order!.id,
+          update: { status: OrderStatus.CONFIRMED },
+        });
       }
-
-      setPaymentSuccess(true);
+      router.push('/orders');
     } catch (err) {
       console.error(err);
-      setError('Payment failed. Please try again.');
-    } finally {
-      setPaying(false);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <AppLayout>
         <div className="flex justify-center items-center h-40">
@@ -115,7 +109,7 @@ export default function PaymentPage() {
     );
   }
 
-  if (!order) {
+  if (error || !order) {
     return (
       <AppLayout>
         <div className="text-danger">Order not found.</div>
@@ -138,14 +132,7 @@ export default function PaymentPage() {
             <strong>Status:</strong> {order.status}
           </p>
         </div>
-        {error && <div className="text-danger mb-4">{error}</div>}
-        {paymentSuccess ? (
-          <div className="text-success mb-4">Payment successful! Your order is now confirmed.</div>
-        ) : (
-          <Button onPress={handlePayment} disabled={paying}>
-            {paying ? 'Processing Payment...' : 'Pay with TON'}
-          </Button>
-        )}
+        <Button onPress={handlePayment}>Pay with TON</Button>
       </main>
     </AppLayout>
   );
