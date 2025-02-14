@@ -19,11 +19,9 @@ export default function Profile() {
     setWalletConnecting(true);
     setError(null);
     try {
-      await tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
-
+      tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
       if (tonConnect.account && user) {
-        const walletAddress = tonConnect.account.address;
-        setUser({ ...user, walletAddress });
+        setUser({ ...user, walletAddress: tonConnect.account.address });
       }
     } catch (err) {
       console.error('Wallet connection failed', err);
@@ -56,7 +54,6 @@ export default function Profile() {
                 'Not connected'
               )}
             </div>
-            {user?.walletAddress && <div>Wallet Balance: {'N/A'}</div>}
             {error && <div className="text-danger mt-2">{error}</div>}
           </CardBody>
           <CardFooter>

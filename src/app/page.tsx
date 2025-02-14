@@ -6,18 +6,11 @@ import { useRouter } from 'next/navigation';
 
 export default function SplashScreen() {
   const router = useRouter();
-  /*const [userData, setUserData] = useState<unknown | null>(null);
 
-  useEffect(() => {
-    if (WebApp.initDataUnsafe.user) {
-      setUserData(WebApp.initDataUnsafe.user);
-    }
-  }, []);*/
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/market');
     }, 3000);
-
     return () => clearTimeout(timer);
   }, [router]);
 

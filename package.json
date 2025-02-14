@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@heroui/react": "^2.6.14",
+    "@tanstack/react-query": "^5.66.0",
     "@tonconnect/sdk": "^3.0.6",
     "@twa-dev/sdk": "^8.0.2",
     "axios": "^1.7.9",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@tanstack/eslint-plugin-query": "^5.66.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
