@@ -1,24 +1,34 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import InnerLayout from '@/components/inner-layout';
-import { Button, Input, Textarea, Select, Spinner } from '@heroui/react';
+import { Button, Input, Select, Spinner, Textarea } from '@heroui/react';
 import { getProductsById, updateProducts } from '@/libs/products/products-api';
 import {
-  UpdateProductDto,
   CreateProductAttributeDto,
   CreateProductVariantDto,
   Product,
+  UpdateProductDto,
 } from '@/libs/products/types';
 import { ProductType } from '@/types/common';
 
 export default function EditProductPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [product, setProduct] = useState<Product | null>(null);
+  const queryClient = useQueryClient();
+
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = useQuery<Product>({
+    queryKey: ['product', id],
+    queryFn: () => getProductsById(id as string),
+    enabled: !!id,
+  });
+
   const [formData, setFormData] = useState<UpdateProductDto>({
     name: '',
     price: 0,
@@ -32,48 +42,44 @@ export default function EditProductPage() {
   });
   const [attributes, setAttributes] = useState<CreateProductAttributeDto[]>([]);
   const [variants, setVariants] = useState<CreateProductVariantDto[]>([]);
-  const [submitLoading, setSubmitLoading] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
 
+  // When product loads, initialize form state using useEffect.
   useEffect(() => {
-    if (id) {
-      getProductsById(id)
-        .then((data) => {
-          setProduct(data);
-          setFormData({
-            name: data.name,
-            price: data.price,
-            description: data.description || '',
-            imageUrl: data.imageUrl,
-            productType: data.productType,
-            downloadLink: data.downloadLink || '',
-            stock: data.stock || 0,
-            attributes: [],
-            variants: [],
-          });
-          setAttributes(
-            data.attributes.map((attr) => ({
-              attributeName: attr.attributeName,
-              attributeValue: attr.attributeValue,
-            })),
-          );
-          setVariants(
-            data.variants.map((variant) => ({
-              variantName: variant.variantName,
-              variantValue: variant.variantValue,
-              additionalPrice: variant.additionalPrice || 0,
-            })),
-          );
-        })
-        .catch((err) => {
-          console.error(err);
-          setError('Failed to load product details.');
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+    if (product) {
+      setFormData({
+        name: product.name,
+        price: product.price,
+        description: product.description || '',
+        imageUrl: product.imageUrl,
+        productType: product.productType,
+        downloadLink: product.downloadLink || '',
+        stock: product.stock || 0,
+        attributes: [],
+        variants: [],
+      });
+      setAttributes(
+        product.attributes.map((attr) => ({
+          attributeName: attr.attributeName,
+          attributeValue: attr.attributeValue,
+        })),
+      );
+      setVariants(
+        product.variants.map((variant) => ({
+          variantName: variant.variantName,
+          variantValue: variant.variantValue,
+          additionalPrice: variant.additionalPrice || 0,
+        })),
+      );
     }
-  }, [id]);
+  }, [product]);
+
+  const mutation = useMutation({
+    mutationFn: (data: UpdateProductDto) => updateProducts(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['product', id] });
+      router.push(`/product/${id}`);
+    },
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -121,27 +127,17 @@ export default function EditProductPage() {
     setVariants((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitLoading(true);
-    setSubmitError(null);
     const updatedData: UpdateProductDto = {
       ...formData,
-      attributes: attributes,
-      variants: variants,
+      attributes,
+      variants,
     };
-    try {
-      await updateProducts(id, updatedData);
-      router.push(`/product/${id}`);
-    } catch (err) {
-      console.error(err);
-      setSubmitError('Failed to update product.');
-    } finally {
-      setSubmitLoading(false);
-    }
+    mutation.mutate(updatedData);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <InnerLayout>
         <div className="flex justify-center items-center h-40">
@@ -154,7 +150,7 @@ export default function EditProductPage() {
   if (error) {
     return (
       <InnerLayout>
-        <div className="text-danger">{error}</div>
+        <div className="text-danger">Failed to load product details.</div>
       </InnerLayout>
     );
   }
@@ -163,7 +159,7 @@ export default function EditProductPage() {
     <InnerLayout>
       <main className="p-4">
         <h2 className="text-xl font-bold mb-4">Edit Product</h2>
-        {submitError && <div className="text-danger mb-4">{submitError}</div>}
+        {mutation.isError && <div className="text-danger mb-4">Failed to update product.</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Product Name"
@@ -268,7 +264,7 @@ export default function EditProductPage() {
                 <Input
                   placeholder="Additional Price"
                   type="number"
-                  value={String(variant.additionalPrice) || '0'}
+                  value={String(variant.additionalPrice)}
                   onChange={(e) =>
                     handleVariantChange(index, 'additionalPrice', Number(e.target.value))
                   }
@@ -283,8 +279,8 @@ export default function EditProductPage() {
             </Button>
           </div>
 
-          <Button type="submit" fullWidth disabled={submitLoading}>
-            {submitLoading ? 'Updating Product...' : 'Update Product'}
+          <Button type="submit" fullWidth disabled={mutation.isPending}>
+            {mutation.isPending ? 'Updating Product...' : 'Update Product'}
           </Button>
         </form>
       </main>
