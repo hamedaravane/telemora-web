@@ -11,6 +11,7 @@ import {
   CreateProductVariantDto,
 } from '@/libs/products/types';
 import { ProductType } from '@/types/common';
+import { useMutation } from '@tanstack/react-query';
 
 const initialAttribute = { attributeName: '', attributeValue: '' };
 const initialVariant = { variantName: '', variantValue: '', additionalPrice: 0 };
@@ -28,11 +29,15 @@ export default function CreateProductPage() {
     attributes: [],
     variants: [],
   });
-
   const [attributes, setAttributes] = useState<CreateProductAttributeDto[]>([]);
   const [variants, setVariants] = useState<CreateProductVariantDto[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const mutation = useMutation({
+    mutationFn: createProducts,
+    onSuccess: (data) => {
+      router.push(`/product/${data.id}`);
+    },
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -80,31 +85,21 @@ export default function CreateProductPage() {
     setVariants((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
     const productData: CreateProductDto = {
       ...formData,
-      attributes: attributes,
-      variants: variants,
+      attributes,
+      variants,
     };
-    try {
-      const createdProduct = await createProducts(productData);
-      router.push(`/product/${createdProduct.id}`);
-    } catch (err) {
-      console.error(err);
-      setError('Failed to create product.');
-    } finally {
-      setLoading(false);
-    }
+    mutation.mutate(productData);
   };
 
   return (
     <InnerLayout>
       <main className="p-4">
         <h2 className="text-xl font-bold mb-4">Create a New Product</h2>
-        {error && <div className="text-danger mb-4">{error}</div>}
+        {mutation.isError && <div className="text-danger mb-4">Failed to create product.</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Product Name"
@@ -209,7 +204,7 @@ export default function CreateProductPage() {
                 <Input
                   placeholder="Additional Price"
                   type="number"
-                  value={String(variant.additionalPrice) || '0'}
+                  value={String(variant.additionalPrice)}
                   onChange={(e) =>
                     handleVariantChange(index, 'additionalPrice', Number(e.target.value))
                   }
@@ -224,8 +219,8 @@ export default function CreateProductPage() {
             </Button>
           </div>
 
-          <Button type="submit" fullWidth disabled={loading}>
-            {loading ? 'Creating Product...' : 'Create Product'}
+          <Button type="submit" fullWidth disabled={mutation.isPending}>
+            {mutation.isPending ? 'Creating Product...' : 'Create Product'}
           </Button>
         </form>
       </main>
