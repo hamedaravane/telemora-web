@@ -2,14 +2,12 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Script from 'next/script';
 import { UserProvider } from '@/context/user-context';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryContext } from '@/context/query-context';
 
 export const metadata: Metadata = {
   title: 'Telemart',
   description: 'Telegram mini app',
 };
-
-const queryClient = new QueryClient();
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,9 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script src="https://telegram.org/js/telegram-web-app.js?56" strategy="beforeInteractive" />
       </head>
       <body className="antialiased">
-        <QueryClientProvider client={queryClient}>
+        <QueryContext>
           <UserProvider>{children}</UserProvider>
-        </QueryClientProvider>
+        </QueryContext>
       </body>
     </html>
   );

@@ -1,4 +1,5 @@
 'use client';
+
 import AppLayout from '@/components/app-layout';
 import { useQuery } from '@tanstack/react-query';
 import { getAllStores } from '@/libs/stores/stores-api';

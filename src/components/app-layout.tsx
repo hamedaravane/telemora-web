@@ -1,15 +1,9 @@
 'use client';
 
-import { FC, ReactNode } from 'react';
-
 import CustomNavbar from './navbar';
 import BottomNavigation from './bottom-navigation';
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
-const AppLayout: FC<LayoutProps> = ({ children }) => {
+const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="h-screen relative">
       <CustomNavbar />
