@@ -43,7 +43,6 @@ export default function EditProductPage() {
   const [attributes, setAttributes] = useState<CreateProductAttributeDto[]>([]);
   const [variants, setVariants] = useState<CreateProductVariantDto[]>([]);
 
-  // When product loads, initialize form state using useEffect.
   useEffect(() => {
     if (product) {
       setFormData({

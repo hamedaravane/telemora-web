@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import AppLayout from '@/components/app-layout';
-import { Spinner, Card, Button, CardFooter, CardBody, CardHeader, Image } from '@heroui/react';
+import { Button, Card, CardBody, CardFooter, CardHeader, Image, Spinner } from '@heroui/react';
 import Link from 'next/link';
 import { getStoresById } from '@/libs/stores/stores-api';
 import { Store } from '@/libs/stores/types';

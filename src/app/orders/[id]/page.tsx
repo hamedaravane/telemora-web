@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import AppLayout from '@/components/app-layout';
 import { getOrdersById } from '@/libs/orders/orders-api';
 import type { Order } from '@/libs/orders/types';
-import { Card, CardHeader, CardBody, CardFooter, Spinner, Button } from '@heroui/react';
+import { Button, Card, CardBody, CardFooter, CardHeader, Spinner } from '@heroui/react';
 import Link from 'next/link';
 
 export default function OrderDetailsPage() {

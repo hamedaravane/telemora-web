@@ -9,6 +9,7 @@ import { createContext, useState, useEffect } from 'react';
 import WebApp from '@twa-dev/sdk';
 import { UserRole } from '@/types/common';
 import type { User } from '@/libs/users/types';
+import { useQuery } from '@tanstack/react-query';
 
 interface IUserContext {
   user: User | null;
@@ -23,31 +24,38 @@ export const UserContext = createContext<IUserContext>({
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
+  const { data } = useQuery<User | null>({
+    queryKey: ['telegramUser'],
+    queryFn: async () => {
+      if (WebApp && WebApp.initDataUnsafe && WebApp.initDataUnsafe.user) {
+        const tgUser = WebApp.initDataUnsafe.user;
+        return {
+          telegramId: tgUser.id.toString(),
+          firstName: tgUser.first_name,
+          lastName: tgUser.last_name,
+          telegramUsername: tgUser.username,
+          telegramLanguageCode: tgUser.language_code,
+          isTelegramPremium: tgUser.is_premium,
+          telegramPhotoUrl: tgUser.photo_url,
+          phoneNumber: undefined,
+          email: undefined,
+          role: UserRole.BUYER,
+          walletAddress: undefined,
+          orders: [],
+          reviews: [],
+          stores: [],
+          payments: [],
+        } as User;
+      }
+      return null;
+    },
+  });
+
   useEffect(() => {
-    if (WebApp && WebApp.initDataUnsafe && WebApp.initDataUnsafe.user) {
-      const tgUser = WebApp.initDataUnsafe.user;
-
-      const mappedUser: User = {
-        telegramId: tgUser.id.toString(),
-        firstName: tgUser.first_name,
-        lastName: tgUser.last_name,
-        telegramUsername: tgUser.username,
-        telegramLanguageCode: tgUser.language_code,
-        isTelegramPremium: tgUser.is_premium,
-        telegramPhotoUrl: tgUser.photo_url,
-        phoneNumber: undefined,
-        email: undefined,
-        role: UserRole.BUYER,
-        walletAddress: undefined,
-        orders: [],
-        reviews: [],
-        stores: [],
-        payments: [],
-      };
-
-      setUser(mappedUser);
+    if (data) {
+      setUser(data);
     }
-  }, []);
+  }, [data]);
 
   return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 };
@@ -64,18 +72,11 @@ import { useRouter } from 'next/navigation';
 
 export default function SplashScreen() {
   const router = useRouter();
-  /*const [userData, setUserData] = useState<unknown | null>(null);
 
-  useEffect(() => {
-    if (WebApp.initDataUnsafe.user) {
-      setUserData(WebApp.initDataUnsafe.user);
-    }
-  }, []);*/
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/market');
     }, 3000);
-
     return () => clearTimeout(timer);
   }, [router]);
 
@@ -114,10 +115,8 @@ export default function Profile() {
     setError(null);
     try {
       tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
-
       if (tonConnect.account && user) {
-        const walletAddress = tonConnect.account.address;
-        setUser({ ...user, walletAddress });
+        setUser({ ...user, walletAddress: tonConnect.account.address });
       }
     } catch (err) {
       console.error('Wallet connection failed', err);
@@ -150,7 +149,6 @@ export default function Profile() {
                 'Not connected'
               )}
             </div>
-            {user?.walletAddress && <div>Wallet Balance: {'N/A'}</div>}
             {error && <div className="text-danger mt-2">{error}</div>}
           </CardBody>
           <CardFooter>
@@ -185,6 +183,7 @@ import {
   CreateProductVariantDto,
 } from '@/libs/products/types';
 import { ProductType } from '@/types/common';
+import { useMutation } from '@tanstack/react-query';
 
 const initialAttribute = { attributeName: '', attributeValue: '' };
 const initialVariant = { variantName: '', variantValue: '', additionalPrice: 0 };
@@ -202,11 +201,15 @@ export default function CreateProductPage() {
     attributes: [],
     variants: [],
   });
-
   const [attributes, setAttributes] = useState<CreateProductAttributeDto[]>([]);
   const [variants, setVariants] = useState<CreateProductVariantDto[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const mutation = useMutation({
+    mutationFn: createProducts,
+    onSuccess: (data) => {
+      router.push(`/product/${data.id}`);
+    },
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -254,31 +257,21 @@ export default function CreateProductPage() {
     setVariants((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
     const productData: CreateProductDto = {
       ...formData,
-      attributes: attributes,
-      variants: variants,
+      attributes,
+      variants,
     };
-    try {
-      const createdProduct = await createProducts(productData);
-      router.push(`/product/${createdProduct.id}`);
-    } catch (err) {
-      console.error(err);
-      setError('Failed to create product.');
-    } finally {
-      setLoading(false);
-    }
+    mutation.mutate(productData);
   };
 
   return (
     <InnerLayout>
       <main className="p-4">
         <h2 className="text-xl font-bold mb-4">Create a New Product</h2>
-        {error && <div className="text-danger mb-4">{error}</div>}
+        {mutation.isError && <div className="text-danger mb-4">Failed to create product.</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Product Name"
@@ -383,7 +376,7 @@ export default function CreateProductPage() {
                 <Input
                   placeholder="Additional Price"
                   type="number"
-                  value={String(variant.additionalPrice) || '0'}
+                  value={String(variant.additionalPrice)}
                   onChange={(e) =>
                     handleVariantChange(index, 'additionalPrice', Number(e.target.value))
                   }
@@ -398,8 +391,8 @@ export default function CreateProductPage() {
             </Button>
           </div>
 
-          <Button type="submit" fullWidth disabled={loading}>
-            {loading ? 'Creating Product...' : 'Create Product'}
+          <Button type="submit" fullWidth disabled={mutation.isPending}>
+            {mutation.isPending ? 'Creating Product...' : 'Create Product'}
           </Button>
         </form>
       </main>
@@ -413,11 +406,10 @@ export default function CreateProductPage() {
 ```
 'use client';
 
-import { useEffect, useState, useContext } from 'react';
-import { useParams } from 'next/navigation';
+import { useState, useContext } from 'react';
 import AppLayout from '@/components/app-layout';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getProductsById } from '@/libs/products/products-api';
-import { Product } from '@/libs/products/types';
 import {
   Card,
   CardHeader,
@@ -427,70 +419,57 @@ import {
   Button,
   Input,
   Textarea,
-  Image,
 } from '@heroui/react';
 import { createReviews } from '@/libs/reviews/reviews-api';
 import { UserContext } from '@/context/user-context';
+import type { Product } from '@/libs/products/types';
+import type { Review } from '@/libs/reviews/types';
+import Image from 'next/image';
 
 export default function ProductDetailsPage() {
-  const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id') || '';
 
+  const {
+    data: product,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery<Product>({
+    queryKey: ['product', id],
+    queryFn: () => getProductsById(id),
+    enabled: !!id,
+  });
+
+  const queryClient = useQueryClient();
+  const { user } = useContext(UserContext);
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>('');
-  const [reviewLoading, setReviewLoading] = useState<boolean>(false);
-  const [reviewError, setReviewError] = useState<string | null>(null);
 
-  const { user } = useContext(UserContext);
-
-  useEffect(() => {
-    if (id) {
-      getProductsById(id)
-        .then((data) => {
-          setProduct(data);
-        })
-        .catch((err) => {
-          console.error(err);
-          setError('Failed to load product details.');
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [id]);
-
-  const handleReviewSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setReviewLoading(true);
-    setReviewError(null);
-    try {
-      await createReviews({ rating, comment });
-      if (id) {
-        const updatedProduct = await getProductsById(id);
-        setProduct(updatedProduct);
-      }
+  const reviewMutation = useMutation<Review, Error, { rating: number; comment: string }>({
+    mutationFn: (reviewData) => createReviews(reviewData),
+    onSuccess: () => {
+      refetch();
       setRating(0);
       setComment('');
-    } catch (err) {
-      console.error(err);
-      setReviewError('Failed to submit review.');
-    } finally {
-      setReviewLoading(false);
-    }
+    },
+  });
+
+  const handleReviewSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    reviewMutation.mutate({ rating, comment });
   };
 
   return (
     <AppLayout>
       <main className="p-4">
-        {loading && (
+        {isLoading && (
           <div className="flex justify-center items-center h-40">
             <Spinner label="Loading product details..." />
           </div>
         )}
-        {error && <div className="text-danger">{error}</div>}
-        {!loading && product && (
+        {error && <div className="text-danger">Failed to load product details.</div>}
+        {!isLoading && product && (
           <>
             <Card>
               <CardHeader>
@@ -500,51 +479,12 @@ export default function ProductDetailsPage() {
                 <Image
                   src={product.imageUrl}
                   alt={product.name}
+                  width={180}
+                  height={100}
                   className="w-full max-h-64 object-cover mb-4"
                 />
                 <p className="text-lg font-semibold">${product.price}</p>
                 <p>{product.description}</p>
-                <div className="mt-4">
-                  <h3 className="font-bold">Attributes:</h3>
-                  {product.attributes.length > 0 ? (
-                    <ul className="list-disc pl-5">
-                      {product.attributes.map((attr) => (
-                        <li key={attr.id}>
-                          {attr.attributeName}: {attr.attributeValue}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No attributes</p>
-                  )}
-                </div>
-                <div className="mt-4">
-                  <h3 className="font-bold">Variants:</h3>
-                  {product.variants.length > 0 ? (
-                    <ul className="list-disc pl-5">
-                      {product.variants.map((variant) => (
-                        <li key={variant.id}>
-                          {variant.variantName}: {variant.variantValue}{' '}
-                          {variant.additionalPrice ? `(+${variant.additionalPrice})` : ''}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No variants</p>
-                  )}
-                </div>
-                {product.productType === 'digital' && product.downloadLink && (
-                  <div className="mt-4">
-                    <a
-                      href={product.downloadLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 underline"
-                    >
-                      Download Link
-                    </a>
-                  </div>
-                )}
               </CardBody>
               <CardFooter>
                 <div>
@@ -573,7 +513,6 @@ export default function ProductDetailsPage() {
                 <p>No reviews yet.</p>
               )}
 
-              {/* Only allow buyers to write a review */}
               {user && user.role === 'buyer' && (
                 <form onSubmit={handleReviewSubmit} className="mt-4 space-y-4">
                   <h4 className="font-bold">Write a Review</h4>
@@ -592,9 +531,8 @@ export default function ProductDetailsPage() {
                     onChange={(e) => setComment(e.target.value)}
                     required
                   />
-                  {reviewError && <div className="text-danger">{reviewError}</div>}
-                  <Button type="submit" disabled={reviewLoading}>
-                    {reviewLoading ? 'Submitting...' : 'Submit Review'}
+                  <Button type="submit" disabled={reviewMutation.isPending}>
+                    {reviewMutation.isPending ? 'Submitting...' : 'Submit Review'}
                   </Button>
                 </form>
               )}
@@ -612,25 +550,35 @@ export default function ProductDetailsPage() {
 ```
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import InnerLayout from '@/components/inner-layout';
-import { Button, Input, Textarea, Select, Spinner } from '@heroui/react';
+import { Button, Input, Select, Spinner, Textarea } from '@heroui/react';
 import { getProductsById, updateProducts } from '@/libs/products/products-api';
 import {
-  UpdateProductDto,
   CreateProductAttributeDto,
   CreateProductVariantDto,
   Product,
+  UpdateProductDto,
 } from '@/libs/products/types';
 import { ProductType } from '@/types/common';
 
 export default function EditProductPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [product, setProduct] = useState<Product | null>(null);
+  const queryClient = useQueryClient();
+
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = useQuery<Product>({
+    queryKey: ['product', id],
+    queryFn: () => getProductsById(id as string),
+    enabled: !!id,
+  });
+
   const [formData, setFormData] = useState<UpdateProductDto>({
     name: '',
     price: 0,
@@ -644,48 +592,43 @@ export default function EditProductPage() {
   });
   const [attributes, setAttributes] = useState<CreateProductAttributeDto[]>([]);
   const [variants, setVariants] = useState<CreateProductVariantDto[]>([]);
-  const [submitLoading, setSubmitLoading] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (id) {
-      getProductsById(id)
-        .then((data) => {
-          setProduct(data);
-          setFormData({
-            name: data.name,
-            price: data.price,
-            description: data.description || '',
-            imageUrl: data.imageUrl,
-            productType: data.productType,
-            downloadLink: data.downloadLink || '',
-            stock: data.stock || 0,
-            attributes: [],
-            variants: [],
-          });
-          setAttributes(
-            data.attributes.map((attr) => ({
-              attributeName: attr.attributeName,
-              attributeValue: attr.attributeValue,
-            })),
-          );
-          setVariants(
-            data.variants.map((variant) => ({
-              variantName: variant.variantName,
-              variantValue: variant.variantValue,
-              additionalPrice: variant.additionalPrice || 0,
-            })),
-          );
-        })
-        .catch((err) => {
-          console.error(err);
-          setError('Failed to load product details.');
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+    if (product) {
+      setFormData({
+        name: product.name,
+        price: product.price,
+        description: product.description || '',
+        imageUrl: product.imageUrl,
+        productType: product.productType,
+        downloadLink: product.downloadLink || '',
+        stock: product.stock || 0,
+        attributes: [],
+        variants: [],
+      });
+      setAttributes(
+        product.attributes.map((attr) => ({
+          attributeName: attr.attributeName,
+          attributeValue: attr.attributeValue,
+        })),
+      );
+      setVariants(
+        product.variants.map((variant) => ({
+          variantName: variant.variantName,
+          variantValue: variant.variantValue,
+          additionalPrice: variant.additionalPrice || 0,
+        })),
+      );
     }
-  }, [id]);
+  }, [product]);
+
+  const mutation = useMutation({
+    mutationFn: (data: UpdateProductDto) => updateProducts(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['product', id] });
+      router.push(`/product/${id}`);
+    },
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -733,27 +676,17 @@ export default function EditProductPage() {
     setVariants((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitLoading(true);
-    setSubmitError(null);
     const updatedData: UpdateProductDto = {
       ...formData,
-      attributes: attributes,
-      variants: variants,
+      attributes,
+      variants,
     };
-    try {
-      await updateProducts(id, updatedData);
-      router.push(`/product/${id}`);
-    } catch (err) {
-      console.error(err);
-      setSubmitError('Failed to update product.');
-    } finally {
-      setSubmitLoading(false);
-    }
+    mutation.mutate(updatedData);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <InnerLayout>
         <div className="flex justify-center items-center h-40">
@@ -766,7 +699,7 @@ export default function EditProductPage() {
   if (error) {
     return (
       <InnerLayout>
-        <div className="text-danger">{error}</div>
+        <div className="text-danger">Failed to load product details.</div>
       </InnerLayout>
     );
   }
@@ -775,7 +708,7 @@ export default function EditProductPage() {
     <InnerLayout>
       <main className="p-4">
         <h2 className="text-xl font-bold mb-4">Edit Product</h2>
-        {submitError && <div className="text-danger mb-4">{submitError}</div>}
+        {mutation.isError && <div className="text-danger mb-4">Failed to update product.</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Product Name"
@@ -880,7 +813,7 @@ export default function EditProductPage() {
                 <Input
                   placeholder="Additional Price"
                   type="number"
-                  value={String(variant.additionalPrice) || '0'}
+                  value={String(variant.additionalPrice)}
                   onChange={(e) =>
                     handleVariantChange(index, 'additionalPrice', Number(e.target.value))
                   }
@@ -895,8 +828,8 @@ export default function EditProductPage() {
             </Button>
           </div>
 
-          <Button type="submit" fullWidth disabled={submitLoading}>
-            {submitLoading ? 'Updating Product...' : 'Update Product'}
+          <Button type="submit" fullWidth disabled={mutation.isPending}>
+            {mutation.isPending ? 'Updating Product...' : 'Update Product'}
           </Button>
         </form>
       </main>
@@ -910,76 +843,52 @@ export default function EditProductPage() {
 ```
 'use client';
 import AppLayout from '@/components/app-layout';
-import { Card, CardBody, CardHeader, Chip, Input, Image } from '@heroui/react';
+import { Card, CardBody, CardHeader, Chip, Input } from '@heroui/react';
 import { SearchIcon } from '@heroui/shared-icons';
 import { StoreCategory } from '@/types/common';
+import { useQuery } from '@tanstack/react-query';
+import { getAllProducts } from '@/libs/products/products-api';
 
 export default function Market() {
+  const {
+    data: products,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['products'],
+    queryFn: getAllProducts,
+  });
+
   const categories = Object.values(StoreCategory).sort((a, b) => a.localeCompare(b));
-  const sampleArray = [1, 2, 3];
+
   return (
     <AppLayout>
       <main className="p-4">
-        <Input placeholder="Search..." startContent={<SearchIcon color="gray" />}></Input>
-        <div className="py-2 h-9 overflow-y-hidden overflow-x-scroll flex gap-x-1">
-          {categories.map((category) => {
-            return <Chip key={category}>{category}</Chip>;
-          })}
+        <Input placeholder="Search..." startContent={<SearchIcon color="gray" />} />
+        <div className="py-2 h-9 overflow-x-scroll flex gap-x-1">
+          {categories.map((category) => (
+            <Chip key={category}>{category}</Chip>
+          ))}
         </div>
-        <h3 className="my-2 font-bold text-large">Top Sellers</h3>
-        <div className="flex gap-x-2">
-          {sampleArray.map((_, index) => {
-            return (
-              <Card key={index} className="max-w-max">
-                <CardHeader className="text-sm">Sample Name</CardHeader>
+        <h3 className="my-2 font-bold text-large">Products</h3>
+        {isLoading && <p>Loading products...</p>}
+        {error && <p className="text-danger">Failed to load products.</p>}
+        {!isLoading && products && (
+          <div className="grid grid-cols-2 gap-4">
+            {products.map((product) => (
+              <Card key={product.id} className="max-w-max">
+                <CardHeader className="text-sm">{product.name}</CardHeader>
                 <CardBody>
-                  <Image
-                    src="https://images.unsplash.com/photo-1603400521630-9f2de124b33b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="store"
-                    width={180}
-                    height={100}
-                  ></Image>
+                  <img
+                    src={product.imageUrl}
+                    alt={product.name}
+                    className="w-full h-32 object-cover"
+                  />
                 </CardBody>
               </Card>
-            );
-          })}
-        </div>
-        <h3 className="my-2 font-bold text-large">For You</h3>
-        <div className="flex gap-x-2">
-          {sampleArray.map((_, index) => {
-            return (
-              <Card key={index} className="max-w-max">
-                <CardHeader className="text-sm">Sample Name</CardHeader>
-                <CardBody>
-                  <Image
-                    src="https://images.unsplash.com/photo-1603400521630-9f2de124b33b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="store"
-                    width={180}
-                    height={100}
-                  ></Image>
-                </CardBody>
-              </Card>
-            );
-          })}
-        </div>
-        <h3 className="my-2 font-bold text-large">Popular Stores</h3>
-        <div className="flex gap-x-2">
-          {sampleArray.map((_, index) => {
-            return (
-              <Card key={index} className="max-w-max">
-                <CardHeader className="text-sm">Sample Name</CardHeader>
-                <CardBody>
-                  <Image
-                    src="https://images.unsplash.com/photo-1603400521630-9f2de124b33b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="store"
-                    width={180}
-                    height={100}
-                  ></Image>
-                </CardBody>
-              </Card>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+        )}
       </main>
     </AppLayout>
   );
@@ -993,17 +902,16 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Script from 'next/script';
 import { UserProvider } from '@/context/user-context';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export const metadata: Metadata = {
   title: 'Telemart',
   description: 'Telegram mini app',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const queryClient = new QueryClient();
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -1011,7 +919,9 @@ export default function RootLayout({
         <Script src="https://telegram.org/js/telegram-web-app.js?56" strategy="beforeInteractive" />
       </head>
       <body className="antialiased">
-        <UserProvider>{children}</UserProvider>
+        <QueryClientProvider client={queryClient}>
+          <UserProvider>{children}</UserProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
@@ -1023,44 +933,34 @@ export default function RootLayout({
 ```
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import AppLayout from '@/components/app-layout';
 import { getAllOrders } from '@/libs/orders/orders-api';
-import { Order } from '@/libs/orders/types';
 import { Card, CardHeader, CardBody, CardFooter, Button, Spinner } from '@heroui/react';
 import Link from 'next/link';
 
 export default function Orders() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    getAllOrders()
-      .then((data) => {
-        setOrders(data);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError('Failed to load orders.');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  const {
+    data: orders,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['orders'],
+    queryFn: getAllOrders,
+  });
 
   return (
     <AppLayout>
       <main className="p-4">
         <h2 className="text-xl font-bold mb-4">Your Orders</h2>
-        {loading && (
+        {isLoading && (
           <div className="flex justify-center items-center h-40">
             <Spinner label="Loading orders..." />
           </div>
         )}
-        {error && <div className="text-danger mb-4">{error}</div>}
-        {!loading && orders.length === 0 && <div>No orders found.</div>}
-        {!loading && orders.length > 0 && (
+        {error && <div className="text-danger mb-4">Failed to load orders.</div>}
+        {!isLoading && orders && orders.length === 0 && <div>No orders found.</div>}
+        {!isLoading && orders && orders.length > 0 && (
           <div className="space-y-4">
             {orders.map((order) => (
               <Card key={order.id}>
@@ -1073,7 +973,6 @@ export default function Orders() {
                     Items: {order.items?.length || 0}{' '}
                     {order.items && order.items.length !== 1 ? 'items' : 'item'}
                   </div>
-                  {/* Optionally, list order items or additional details here */}
                 </CardBody>
                 <CardFooter>
                   <Button as={Link} href={`/orders/${order.id}`} size="sm">
@@ -1095,46 +994,36 @@ export default function Orders() {
 ```
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import AppLayout from '@/components/app-layout';
 import { getOrdersById } from '@/libs/orders/orders-api';
-import { Order } from '@/libs/orders/types';
+import type { Order } from '@/libs/orders/types';
 import { Card, CardHeader, CardBody, CardFooter, Spinner, Button } from '@heroui/react';
 import Link from 'next/link';
 
 export default function OrderDetailsPage() {
   const { id } = useParams<{ id: string }>();
-  const [order, setOrder] = useState<Order | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (id) {
-      getOrdersById(id)
-        .then((data: Order) => {
-          setOrder(data);
-        })
-        .catch((err) => {
-          console.error(err);
-          setError('Failed to load order details.');
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [id]);
+  const {
+    data: order,
+    isLoading,
+    error,
+  } = useQuery<Order>({
+    queryKey: ['order', id],
+    queryFn: () => getOrdersById(id as string),
+    enabled: !!id,
+  });
 
   return (
     <AppLayout>
       <main className="p-4">
-        {loading && (
+        {isLoading && (
           <div className="flex justify-center items-center h-40">
             <Spinner label="Loading order details..." />
           </div>
         )}
-        {error && <div className="text-danger">{error}</div>}
-        {!loading && order && (
+        {error && <div className="text-danger">Failed to load order details.</div>}
+        {!isLoading && order && (
           <Card>
             <CardHeader>
               <h2 className="text-xl font-bold">Order #{order.id}</h2>
@@ -1180,16 +1069,18 @@ export default function OrderDetailsPage() {
 ```
 'use client';
 
-import { useEffect, useState, useContext } from 'react';
+import { useContext } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import AppLayout from '@/components/app-layout';
 import { getOrdersById, updateOrders } from '@/libs/orders/orders-api';
 import { createPayments } from '@/libs/payments/payments-api';
-import { Order } from '@/libs/orders/types';
+import { Button, Spinner } from '@heroui/react';
 import { OrderStatus, PaymentStatus } from '@/types/common';
-import { Spinner, Button } from '@heroui/react';
 import { UserContext } from '@/context/user-context';
 import TonConnect from '@tonconnect/sdk';
+import { CreatePaymentDto } from '@/libs/payments/types';
+import { UpdateOrderDto } from '@/libs/orders/types';
 
 const tonConnect = new TonConnect({
   manifestUrl: 'https://your-app.com/manifest.json',
@@ -1198,46 +1089,42 @@ const tonConnect = new TonConnect({
 export default function PaymentPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { user } = useContext(UserContext);
 
-  const [order, setOrder] = useState<Order | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [paying, setPaying] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (id) {
-      getOrdersById(id)
-        .then((data) => {
-          setOrder(data);
-        })
-        .catch((err) => {
-          console.error(err);
-          setError('Failed to load order details.');
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [id]);
+  const {
+    data: order,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['order', id],
+    queryFn: () => getOrdersById(id as string),
+    enabled: !!id,
+  });
 
   const totalPrice = order ? order.items.reduce((sum, item) => sum + item.totalPrice, 0) : 0;
+
+  const paymentMutation = useMutation({
+    mutationFn: (paymentData: CreatePaymentDto) => createPayments(paymentData),
+  });
+
+  const orderUpdateMutation = useMutation({
+    mutationFn: (data: { id: number; update: UpdateOrderDto }) =>
+      updateOrders(data.id, data.update),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['order', id] });
+    },
+  });
 
   const handlePayment = async () => {
     if (!user || !user.walletAddress) {
       router.push('/profile');
       return;
     }
-
-    setPaying(true);
-    setError(null);
-
     try {
       if (!tonConnect.wallet) {
         tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
       }
-
       const validUntil = Math.floor(Date.now() / 1000) + 60;
       const recipient =
         order?.store?.owner.walletAddress || 'EQXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
@@ -1258,8 +1145,6 @@ export default function PaymentPage() {
           console.log('Transaction request sent to wallet');
         },
       });
-      console.log('Transaction signed, boc:', txResponse.boc);
-
       const paymentData = {
         orderId: order?.id.toString(),
         amount: totalPrice.toString(),
@@ -1270,22 +1155,20 @@ export default function PaymentPage() {
         commission: '0',
       };
 
-      const paymentRecord = await createPayments(paymentData);
-
+      const paymentRecord = await paymentMutation.mutateAsync(paymentData);
       if (paymentRecord.status === PaymentStatus.COMPLETED) {
-        await updateOrders(order!.id, { status: OrderStatus.CONFIRMED });
+        await orderUpdateMutation.mutateAsync({
+          id: order!.id,
+          update: { status: OrderStatus.CONFIRMED },
+        });
       }
-
-      setPaymentSuccess(true);
+      router.push('/orders');
     } catch (err) {
       console.error(err);
-      setError('Payment failed. Please try again.');
-    } finally {
-      setPaying(false);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <AppLayout>
         <div className="flex justify-center items-center h-40">
@@ -1295,7 +1178,7 @@ export default function PaymentPage() {
     );
   }
 
-  if (!order) {
+  if (error || !order) {
     return (
       <AppLayout>
         <div className="text-danger">Order not found.</div>
@@ -1318,14 +1201,7 @@ export default function PaymentPage() {
             <strong>Status:</strong> {order.status}
           </p>
         </div>
-        {error && <div className="text-danger mb-4">{error}</div>}
-        {paymentSuccess ? (
-          <div className="text-success mb-4">Payment successful! Your order is now confirmed.</div>
-        ) : (
-          <Button onPress={handlePayment} disabled={paying}>
-            {paying ? 'Processing Payment...' : 'Pay with TON'}
-          </Button>
-        )}
+        <Button onPress={handlePayment}>Pay with TON</Button>
       </main>
     </AppLayout>
   );
@@ -1337,39 +1213,39 @@ export default function PaymentPage() {
 ```
 'use client';
 import AppLayout from '@/components/app-layout';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { getAllStores } from '@/libs/stores/stores-api';
-import { Button, Link } from '@heroui/react';
+import { Button } from '@heroui/react';
+import { Link } from '@heroui/link';
 import { FaPlus } from 'react-icons/fa6';
 import { CreateStoreDto } from '@/libs/stores/types';
 
 export default function Store() {
-  const [stores, setStores] = useState<CreateStoreDto[]>();
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    getAllStores()
-      .then((data) => {
-        setStores(data);
-      })
-      .catch(() => {
-        console.log('nothing');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  const {
+    data: stores,
+    isLoading,
+    error,
+  } = useQuery<CreateStoreDto[]>({
+    queryKey: ['stores'],
+    queryFn: getAllStores,
   });
+
   return (
     <AppLayout>
       <main className="px-4">
-        {stores ? (
-          stores.map((store) => {
-            return <div key={store.name}>{store.name}</div>;
-          })
-        ) : (
-          <pre>{JSON.stringify(stores)}</pre>
+        {isLoading && <p>Loading stores...</p>}
+        {error && <p className="text-danger">Failed to load stores.</p>}
+        {!isLoading && stores && stores.length === 0 && (
+          <div className="py-4">No stores available. Create one now!</div>
         )}
-        <Button as={Link} fullWidth size="lg" href="./create">
+        {!isLoading && stores && stores.length > 0 && (
+          <div className="space-y-4">
+            {stores.map((store) => (
+              <div key={store.name}>{store.name}</div>
+            ))}
+          </div>
+        )}
+        <Button as={Link} fullWidth size="lg" href="/store/create">
           <FaPlus />
           <span>Create a new Store</span>
         </Button>

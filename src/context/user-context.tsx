@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import WebApp from '@twa-dev/sdk';
 import { UserRole } from '@/types/common';
 import type { User } from '@/libs/users/types';
@@ -19,7 +19,6 @@ export const UserContext = createContext<IUserContext>({
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  // Fetch telegram user data using React Query.
   const { data } = useQuery<User | null>({
     queryKey: ['telegramUser'],
     queryFn: async () => {

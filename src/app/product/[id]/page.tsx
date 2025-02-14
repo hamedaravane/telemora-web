@@ -1,27 +1,26 @@
 'use client';
 
-import { useState, useContext } from 'react';
+import { useContext, useState } from 'react';
 import AppLayout from '@/components/app-layout';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getProductsById } from '@/libs/products/products-api';
+import { createReviews } from '@/libs/reviews/reviews-api';
 import {
+  Button,
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
-  Spinner,
-  Button,
+  CardHeader,
   Input,
+  Spinner,
   Textarea,
 } from '@heroui/react';
-import { createReviews } from '@/libs/reviews/reviews-api';
 import { UserContext } from '@/context/user-context';
 import type { Product } from '@/libs/products/types';
 import type { Review } from '@/libs/reviews/types';
-import Image from 'next/image';
 
 export default function ProductDetailsPage() {
-  // Extract id from URL (this is a placeholder; adapt to your routing)
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id') || '';
 

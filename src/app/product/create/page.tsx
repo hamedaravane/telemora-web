@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import InnerLayout from '@/components/inner-layout';
-import { Button, Input, Textarea, Select } from '@heroui/react';
+import { Button, Input, Select, Textarea } from '@heroui/react';
 import { createProducts } from '@/libs/products/products-api';
 import {
-  CreateProductDto,
   CreateProductAttributeDto,
+  CreateProductDto,
   CreateProductVariantDto,
 } from '@/libs/products/types';
 import { ProductType } from '@/types/common';

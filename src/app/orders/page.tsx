@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import AppLayout from '@/components/app-layout';
 import { getAllOrders } from '@/libs/orders/orders-api';
-import { Card, CardHeader, CardBody, CardFooter, Button, Spinner } from '@heroui/react';
+import { Button, Card, CardBody, CardFooter, CardHeader, Spinner } from '@heroui/react';
 import Link from 'next/link';
 
 export default function Orders() {

@@ -10,8 +10,8 @@ import { Button, Spinner } from '@heroui/react';
 import { OrderStatus, PaymentStatus } from '@/types/common';
 import { UserContext } from '@/context/user-context';
 import TonConnect from '@tonconnect/sdk';
-import { CreatePaymentDto } from '@/libs/payments/types';
-import { UpdateOrderDto } from '@/libs/orders/types';
+import type { CreatePaymentDto } from '@/libs/payments/types';
+import type { UpdateOrderDto } from '@/libs/orders/types';
 
 const tonConnect = new TonConnect({
   manifestUrl: 'https://your-app.com/manifest.json',
@@ -54,7 +54,7 @@ export default function PaymentPage() {
     }
     try {
       if (!tonConnect.wallet) {
-        tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
+        await tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
       }
       const validUntil = Math.floor(Date.now() / 1000) + 60;
       const recipient =

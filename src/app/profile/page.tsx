@@ -2,7 +2,7 @@
 
 import { useContext, useState } from 'react';
 import AppLayout from '@/components/app-layout';
-import { Avatar, Card, CardHeader, CardBody, CardFooter, Button } from '@heroui/react';
+import { Avatar, Button, Card, CardBody, CardFooter, CardHeader } from '@heroui/react';
 import { UserContext } from '@/context/user-context';
 import TonConnect from '@tonconnect/sdk';
 
@@ -19,7 +19,7 @@ export default function Profile() {
     setWalletConnecting(true);
     setError(null);
     try {
-      tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
+      await tonConnect.connect({ jsBridgeKey: 'tonkeeper' });
       if (tonConnect.account && user) {
         setUser({ ...user, walletAddress: tonConnect.account.address });
       }

@@ -1,10 +1,11 @@
 'use client';
 import AppLayout from '@/components/app-layout';
+import { useQuery } from '@tanstack/react-query';
+import { getAllProducts } from '@/libs/products/products-api';
 import { Card, CardBody, CardHeader, Chip, Input } from '@heroui/react';
 import { SearchIcon } from '@heroui/shared-icons';
 import { StoreCategory } from '@/types/common';
-import { useQuery } from '@tanstack/react-query';
-import { getAllProducts } from '@/libs/products/products-api';
+import Image from 'next/image';
 
 export default function Market() {
   const {
@@ -16,7 +17,6 @@ export default function Market() {
     queryFn: getAllProducts,
   });
 
-  // Static categories for demonstration
   const categories = Object.values(StoreCategory).sort((a, b) => a.localeCompare(b));
 
   return (
@@ -37,7 +37,7 @@ export default function Market() {
               <Card key={product.id} className="max-w-max">
                 <CardHeader className="text-sm">{product.name}</CardHeader>
                 <CardBody>
-                  <img
+                  <Image
                     src={product.imageUrl}
                     alt={product.name}
                     className="w-full h-32 object-cover"
