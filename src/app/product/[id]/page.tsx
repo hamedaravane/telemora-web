@@ -21,7 +21,7 @@ import type { Review } from '@/libs/reviews/types';
 import Image from 'next/image';
 
 export default function ProductDetailsPage() {
-  // Extract id from URL – adjust according to your routing (here we use URLSearchParams for demonstration)
+  // Extract id from URL (this is a placeholder; adapt to your routing)
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id') || '';
 
@@ -80,7 +80,6 @@ export default function ProductDetailsPage() {
                 />
                 <p className="text-lg font-semibold">${product.price}</p>
                 <p>{product.description}</p>
-                {/* Render additional details (attributes, variants) as needed */}
               </CardBody>
               <CardFooter>
                 <div>
