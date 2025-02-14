@@ -1,45 +1,35 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import AppLayout from '@/components/app-layout';
 import { getOrdersById } from '@/libs/orders/orders-api';
-import { Order } from '@/libs/orders/types';
+import type { Order } from '@/libs/orders/types';
 import { Card, CardHeader, CardBody, CardFooter, Spinner, Button } from '@heroui/react';
 import Link from 'next/link';
 
 export default function OrderDetailsPage() {
   const { id } = useParams<{ id: string }>();
-  const [order, setOrder] = useState<Order | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (id) {
-      getOrdersById(id)
-        .then((data: Order) => {
-          setOrder(data);
-        })
-        .catch((err) => {
-          console.error(err);
-          setError('Failed to load order details.');
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [id]);
+  const {
+    data: order,
+    isLoading,
+    error,
+  } = useQuery<Order>({
+    queryKey: ['order', id],
+    queryFn: () => getOrdersById(id as string),
+    enabled: !!id,
+  });
 
   return (
     <AppLayout>
       <main className="p-4">
-        {loading && (
+        {isLoading && (
           <div className="flex justify-center items-center h-40">
             <Spinner label="Loading order details..." />
           </div>
         )}
-        {error && <div className="text-danger">{error}</div>}
-        {!loading && order && (
+        {error && <div className="text-danger">Failed to load order details.</div>}
+        {!isLoading && order && (
           <Card>
             <CardHeader>
               <h2 className="text-xl font-bold">Order #{order.id}</h2>
