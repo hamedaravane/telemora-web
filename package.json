@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -18,7 +18,7 @@
     "@twa-dev/sdk": "^8.0.2",
     "axios": "^1.7.9",
     "framer-motion": "^12.4.2",
-    "next": "15.1.7",
+    "next": "^14.2.24",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.4.0"
