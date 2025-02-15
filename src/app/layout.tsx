@@ -1,6 +1,6 @@
+import type { PropsWithChildren } from 'react';
 import type { Metadata } from 'next';
 import './globals.css';
-import Script from 'next/script';
 import { UserProvider } from '@/context/user-context';
 import { QueryContext } from '@/context/query-context';
 
@@ -9,13 +9,9 @@ export const metadata: Metadata = {
   description: 'Telegram mini app',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <head>
-        <title>Telemart</title>
-        <Script src="https://telegram.org/js/telegram-web-app.js?56" strategy="beforeInteractive" />
-      </head>
       <body className="antialiased">
         <QueryContext>
           <UserProvider>{children}</UserProvider>
