@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import InnerLayout from '@/components/inner-layout';
-import { Button, Input, Select, Textarea } from '@heroui/react';
+import { Button, Input, Select, SelectItem, Textarea } from '@heroui/react';
 import { createProducts } from '@/libs/products/products-api';
 import {
   CreateProductAttributeDto,
@@ -136,9 +136,9 @@ export default function CreateProductPage() {
             onChange={handleChange}
           >
             {Object.values(ProductType).map((type) => (
-              <option key={type} value={type}>
+              <SelectItem key={type} value={type}>
                 {type}
-              </option>
+              </SelectItem>
             ))}
           </Select>
           {formData.productType === ProductType.DIGITAL && (
