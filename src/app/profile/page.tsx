@@ -46,7 +46,6 @@ export default function Profile() {
             ></Input>
           </CardBody>
           <CardFooter>
-            {/* Use the TonConnectButton provided by @tonconnect/ui-react */}
             {!user?.walletAddress ? (
               <TonConnectButton />
             ) : (
