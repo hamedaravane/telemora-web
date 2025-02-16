@@ -10,6 +10,12 @@ export default {
   ],
   theme: {
     extend: {
+      fontSize: {
+        tiny: '0.65rem',
+        small: '0.75rem',
+        medium: '1rem',
+        large: '1.125rem',
+      },
       colors: {
         background: 'var(--tg-theme-bg-color)',
         foreground: 'var(--tg-theme-text-color)',

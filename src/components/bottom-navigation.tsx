@@ -4,19 +4,19 @@ import { Link } from '@heroui/link';
 const BottomNavigation = () => {
   return (
     <div className="w-full flex justify-evenly text-secondary fixed bottom-0 left-0 right-0 z-50 py-4">
-      <Link className="flex flex-col items-center" href="/market">
+      <Link className="flex flex-col items-center gap-y-1" href="/market">
         <FaHome size={18} />
         <span className="text-xs">Market</span>
       </Link>
-      <Link className="flex flex-col items-center" href="/store">
+      <Link className="flex flex-col items-center gap-y-1" href="/store">
         <FaStore size={18} />
         <span className="text-xs">Store</span>
       </Link>
-      <Link className="flex flex-col items-center" href="/orders">
+      <Link className="flex flex-col items-center gap-y-1" href="/orders">
         <FaShoppingCart size={18} />
         <span className="text-xs">Orders</span>
       </Link>
-      <Link className="flex flex-col items-center" href="/profile">
+      <Link className="flex flex-col items-center gap-y-1" href="/profile">
         <FaUser size={18} />
         <span className="text-xs">Profile</span>
       </Link>

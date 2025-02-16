@@ -2,7 +2,7 @@
 
 import { useContext, useEffect } from 'react';
 import AppLayout from '@/components/app-layout';
-import { Avatar, Card, CardBody, CardFooter, CardHeader } from '@heroui/react';
+import { Avatar, Card, CardBody, CardFooter, CardHeader, Input } from '@heroui/react';
 import { UserContext } from '@/context/user-context';
 import { TonConnectButton, useTonWallet } from '@tonconnect/ui-react';
 
@@ -20,25 +20,30 @@ export default function Profile() {
     <AppLayout>
       <div className="p-4">
         <Card>
-          <CardHeader>
+          <CardHeader className="flex-col gap-y-2 items-center justify-center w-full">
             <Avatar src={user?.telegramPhotoUrl || '/default-profile.png'} size="lg" />
-            <div className="ml-4">
-              <h4>{user?.firstName}</h4>
-              <span>@{user?.telegramId}</span>
+            <div className="text-center">
+              <h1>{user?.firstName || 'Not Available'}</h1>
+              <div className="text-xs font-mono">@{user?.telegramId || 'error'}</div>
             </div>
           </CardHeader>
-          <CardBody>
-            <div>Phone: {user?.phoneNumber || 'N/A'}</div>
-            <div>Email: {user?.email || 'N/A'}</div>
-            <div>Role: {user?.role}</div>
-            <div>
-              Wallet Address:{' '}
-              {user?.walletAddress ? (
-                <span className="font-mono">{user.walletAddress}</span>
-              ) : (
-                'Not connected'
-              )}
-            </div>
+          <CardBody className="gap-y-2">
+            <Input
+              isClearable
+              label="Username"
+              defaultValue={user?.telegramUsername || 'Not Available'}
+            ></Input>
+            <Input
+              isClearable
+              label="Phone"
+              defaultValue={user?.phoneNumber || 'Not Available'}
+            ></Input>
+            <Input isClearable label="Mail" defaultValue={user?.email || 'Not Available'}></Input>
+            <Input
+              isClearable
+              label="Wallet Address"
+              defaultValue={user?.walletAddress || 'Not connected'}
+            ></Input>
           </CardBody>
           <CardFooter>
             {/* Use the TonConnectButton provided by @tonconnect/ui-react */}
