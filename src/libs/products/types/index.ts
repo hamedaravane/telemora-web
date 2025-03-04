@@ -1,6 +1,17 @@
-import { ProductType } from '@/types/common';
 import { Store } from '@/libs/stores/types';
 import { Review } from '@/libs/reviews/types';
+
+/**
+ * Models in this file are implemented according to the backend project specifications.
+ * It is strongly recommended **not** to modify them under any circumstances.
+ * Any changes to these models may destabilize or even break the entire system.
+ */
+
+export enum ProductType {
+  PHYSICAL = 'physical',
+  DIGITAL = 'digital',
+  SERVICE = 'service',
+}
 
 export interface Product {
   id: number;
@@ -15,16 +26,44 @@ export interface Product {
   reviews: Review[];
   downloadLink?: string;
   stock?: number;
+  isApproved: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ProductAttribute {
   id: number;
+  product: Product;
   attributeName: string;
   attributeValue: string;
 }
 
 export interface ProductVariant {
   id: number;
+  product: Product;
+  variantName: string;
+  variantValue: string;
+  additionalPrice?: number;
+}
+
+export interface CreateProductDto {
+  name: string;
+  price: number;
+  description?: string;
+  imageUrl: string;
+  productType: ProductType;
+  downloadLink?: string;
+  stock?: number;
+  attributes?: CreateProductAttributeDto[];
+  variants?: CreateProductVariantDto[];
+}
+
+export interface CreateProductAttributeDto {
+  attributeName: string;
+  attributeValue: string;
+}
+
+export interface CreateProductVariantDto {
   variantName: string;
   variantValue: string;
   additionalPrice?: number;
@@ -35,30 +74,6 @@ export interface UpdateProductDto {
   price?: number;
   description?: string;
   imageUrl?: string;
-  productType?: ProductType;
-  downloadLink?: string;
-  stock?: number;
-  attributes?: CreateProductAttributeDto[];
-  variants?: CreateProductVariantDto[];
-}
-
-export interface CreateProductVariantDto {
-  variantName: string;
-  variantValue: string;
-  additionalPrice?: number;
-}
-
-export interface CreateProductAttributeDto {
-  attributeName: string;
-  attributeValue: string;
-}
-
-export interface CreateProductDto {
-  name: string;
-  price: number;
-  description?: string;
-  imageUrl: string;
-  productType: ProductType;
   downloadLink?: string;
   stock?: number;
   attributes?: CreateProductAttributeDto[];

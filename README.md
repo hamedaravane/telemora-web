@@ -2,9 +2,12 @@
 
 ## Overview
 
-Telemart is a Telegram Mini App providing a seamless marketplace experience. Built with **Next.js**, **React Query**, and **TailwindCSS**, it allows users to browse products, manage orders, create stores, and process payments using **TON Connect**.
+Telemart is a Telegram Mini App providing a seamless marketplace experience. Built with **Next.js**,
+**React Query**, and **TailwindCSS**, it allows users to browse products, manage orders, create
+stores, and process payments using **TON Connect**.
 
-This project is designed as the frontend for the **Telemart API**, integrating authentication, product management, order processing, and payment handling.
+This project is designed as the frontend for the **Telemart API**, integrating authentication,
+product management, order processing, and payment handling.
 
 ---
 
@@ -76,13 +79,13 @@ This project is designed as the frontend for the **Telemart API**, integrating a
 
 This frontend interacts with the **Telemart API** for data fetching and operations.
 
-| Feature         | Endpoint Example |
-|----------------|-----------------|
-| User Auth      | `/users/login` |
-| Fetch Products | `/products` |
-| Order Creation | `/orders` |
-| Payments       | `/payments` |
-| Reviews        | `/reviews` |
+| Feature        | Endpoint Example |
+|----------------|------------------|
+| User Auth      | `/users/login`   |
+| Fetch Products | `/products`      |
+| Order Creation | `/orders`        |
+| Payments       | `/payments`      |
+| Reviews        | `/reviews`       |
 
 The API base URL is set via the `NEXT_PUBLIC_API_URL` environment variable.
 
