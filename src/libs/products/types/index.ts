@@ -33,14 +33,12 @@ export interface Product {
 
 export interface ProductAttribute {
   id: number;
-  product: Product;
   attributeName: string;
   attributeValue: string;
 }
 
 export interface ProductVariant {
   id: number;
-  product: Product;
   variantName: string;
   variantValue: string;
   additionalPrice?: number;
