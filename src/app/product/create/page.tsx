@@ -136,9 +136,7 @@ export default function CreateProductPage() {
             onChange={handleChange}
           >
             {Object.values(ProductType).map((type) => (
-              <SelectItem key={type} value={type}>
-                {type}
-              </SelectItem>
+              <SelectItem key={type}>{type}</SelectItem>
             ))}
           </Select>
           {formData.productType === ProductType.DIGITAL && (

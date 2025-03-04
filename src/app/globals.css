@@ -14,8 +14,31 @@
   }
 }
 
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+* {
+  scrollbar-width: none;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  max-width: 400px;
+  margin: 0 auto;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
 }
