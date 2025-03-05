@@ -1,72 +1,46 @@
-'use client';
+/**
+ * Store Details Page (Mobile-Only)
+ *
+ * This page displays detailed information about a store when a user selects it from the store list.
+ * Users can view store information, interact with its content, and (if authorized) manage the store.
+ *
+ * **Sections & Features:**
+ *
+ * 1. **Header:**
+ *    - Displays the **store name** and **logo**.
+ *    - Includes a **share button** to copy/store the store’s link.
+ *    - If the user is the **owner or an admin**, a **store edit button** is available.
+ *
+ * 2. **General Store Information:**
+ *    - Short **description** of the store.
+ *    - **Category** (from `StoreCategories`).
+ *    - **Working hours** (if provided).
+ *    - **Contact details** (phone number, email, social media links).
+ *    - **Store reputation** (rating or score if applicable).
+ *
+ * 3. **Store Products:**
+ *    - Displays a **scrollable product list**.
+ *    - The first few products are shown with a **“View All”** button for full access.
+ *    - If the user is an **admin or owner**, a **"Add New Product"** button is available.
+ *
+ * 4. **Recent Orders (Restricted to Admins & Owner):**
+ *    - Displays **recent orders** in a compact format.
+ *    - Provides access to order details.
+ *
+ * 5. **Bottom Actions:**
+ *    - If the user is the **store owner**, they see a **"Delete Store"** button.
+ *    - A possible **“Visit Store”** link (if applicable).
+ *
+ * **Implementation Considerations:**
+ * - **Mobile-optimized UI**: This app is mobile-only, so all layouts and interactions should be designed for small screens.
+ * - **Role-based visibility**: Features like **editing, order management, and store deletion** should only be visible to authorized users.
+ * - **Performance optimization**: Use **lazy loading** or **pagination** for products/orders if the dataset is large.
+ * - **HeroUI-first design**: Use HeroUI components whenever possible.
+ * - **Fallback to TailwindCSS** if necessary, but avoid raw CSS.
+ * - **State management**: Ensure store data persists during navigation.
+ *
+ * **API Endpoint:**
+ * Fetch store details from: `${API_BASE_URL}/stores/{storeId}`
+ */
 
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import AppLayout from '@/components/app-layout';
-import { Button, Card, CardBody, CardFooter, CardHeader, Image, Spinner } from '@heroui/react';
-import Link from 'next/link';
-import { getStoresById } from '@/libs/stores/stores-api';
-import { Store } from '@/libs/stores/types';
-
-export default function StorePage() {
-  const { id } = useParams<{ id: string }>();
-  const [store, setStore] = useState<Store | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (id) {
-      getStoresById(id)
-        .then((data) => {
-          setStore(data);
-        })
-        .catch((err) => {
-          console.error(err);
-          setError('Failed to load store details.');
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [id]);
-
-  return (
-    <AppLayout>
-      <main className="p-4">
-        {loading && (
-          <div className="flex justify-center items-center h-40">
-            <Spinner label="Loading store..." />
-          </div>
-        )}
-        {error && <div className="text-danger">{error}</div>}
-        {!loading && store && (
-          <Card>
-            <CardHeader>
-              {store.logoUrl ? (
-                <Image src={store.logoUrl} alt={store.name} className="w-12 h-12 rounded-full" />
-              ) : (
-                <div className="w-12 h-12 rounded-full bg-gray-300" />
-              )}
-              <div className="ml-4">
-                <h3 className="text-xl font-bold">{store.name}</h3>
-                <p className="text-sm">{store.category}</p>
-              </div>
-            </CardHeader>
-            <CardBody>
-              <p>{store.description || 'No description provided.'}</p>
-              <p className="mt-2 text-sm">
-                Contact: {store.contactNumber || 'N/A'} | Email: {store.email || 'N/A'}
-              </p>
-              <p className="mt-2 text-sm">Address: {store.address || 'N/A'}</p>
-            </CardBody>
-            <CardFooter>
-              <Button as={Link} href={`/store/${id}/edit`} size="sm">
-                Edit Store
-              </Button>
-            </CardFooter>
-          </Card>
-        )}
-      </main>
-    </AppLayout>
-  );
-}
+// TODO: Implement the **Store Details Page** based on the outlined sections and design guidelines.
