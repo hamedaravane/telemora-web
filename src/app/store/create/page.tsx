@@ -1,108 +1,79 @@
-'use client';
+/**
+ * Store Creation Flow
+ *
+ * This page handles the step-by-step process for users to create a new store.
+ * Since store creation requires multiple inputs, the process is broken into
+ * several steps to enhance user experience.
+ *
+ * **Flow Overview:**
+ * 1. **Basic Information:**
+ *    - User fills in the initial store details:
+ *      ```ts
+ *      {
+ *        name: string;
+ *        description: string;
+ *        contactNumber?: string;
+ *        email?: string;
+ *      }
+ *      ```
+ *    - Each field must be clearly labeled, explaining its necessity and expected format.
+ *    - A **Next Step** button advances the user to the next stage.
+ *
+ * 2. **Store Location:**
+ *    - User selects their store's physical location (optional but highly recommended).
+ *      ```ts
+ *      {
+ *        country?: number;
+ *        state?: number;
+ *        city?: number;
+ *      }
+ *      ```
+ *    - Location selection follows a dependent dropdown flow:
+ *      - **Country** selection enables **State** selection.
+ *      - **State** selection enables **City** selection.
+ *    - The UI should emphasize the benefits of providing this data.
+ *    - **Back** and **Next** buttons should be available.
+ *
+ * 3. **Store Category Selection:**
+ *    - User selects a category from `StoreCategories` (a predefined enum).
+ *    - The category list is extensive, so the selection must be intuitive.
+ *    - **Back** and **Next** buttons should be available.
+ *
+ * 4. **Store Working Hours (Optional):**
+ *    - User sets the store's opening and closing times.
+ *      ```ts
+ *      workingHours?: Record<string, { open: string; close: string }>;
+ *      ```
+ *    - Since not all stores require working hours, users should be informed
+ *      that this field is optional.
+ *    - **Back** and **Next** buttons should be available.
+ *
+ * 5. **Store Logo Upload (Final Step):**
+ *    - User uploads a store logo.
+ *    - The UI should display a **button or upload box** clearly instructing the user.
+ *    - After selecting an image:
+ *      - A **modal** should appear allowing the user to crop it **to a square**.
+ *      - The image should then be **compressed and optimized** for web use.
+ *    - **Back** and **Submit Store** buttons should be available.
+ *
+ * **Important Considerations:**
+ * - No data is sent to the server until the final **Submit Store** button is pressed.
+ * - Data is **persisted in state** throughout the flow to allow navigation between steps.
+ * - The UI must be **minimal, intuitive, and user-friendly**.
+ * - Users should **clearly understand each step's purpose** and the benefits of providing their data.
+ *
+ * **Implementation Guidelines:**
+ * - Use **HeroUI** components whenever possible.
+ * - If necessary, use **TailwindCSS**, but avoid raw CSS unless absolutely required.
+ * - Maintain **semantic HTML** for accessibility.
+ * - Ensure the code is **clean, modular, and maintainable**.
+ *
+ * **API Endpoints:**
+ * - Basic Info: `${API_BASE_URL}/stores/create/basic`
+ * - Location: `${API_BASE_URL}/stores/create/location`
+ * - Category: `${API_BASE_URL}/stores/create/category`
+ * - Working Hours: `${API_BASE_URL}/stores/create/working_hour`
+ * - Logo Upload: `${API_BASE_URL}/stores/create/logo`
+ */
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import InnerLayout from '@/components/inner-layout';
-import { Button, Input, Textarea } from '@heroui/react';
-import { createStores } from '@/libs/stores/stores-api';
-import { CreateStoreDto } from '@/libs/stores/types';
-import { StoreCategory } from '@/types/common';
-
-export default function CreateStore() {
-  const router = useRouter();
-  const [formData, setFormData] = useState<CreateStoreDto>({
-    name: '',
-    logoUrl: '',
-    description: '',
-    category: StoreCategory.OTHER,
-    contactNumber: '',
-    email: '',
-    address: '',
-    socialMediaLinks: {},
-    reputation: 0,
-    workingHours: '',
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, category: e.target.value as StoreCategory });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      const createdStore = await createStores(formData);
-      router.push(`/store/${createdStore.id}`);
-    } catch (err) {
-      console.error(err);
-      setError('Failed to create store.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <InnerLayout>
-      <main className="p-4">
-        <h2 className="text-xl font-bold mb-4">Create a New Store</h2>
-        {error && <div className="text-danger mb-4">{error}</div>}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Store Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <Input label="Logo URL" name="logoUrl" value={formData.logoUrl} onChange={handleChange} />
-          <div>
-            <label className="block mb-1 text-sm font-medium">Category</label>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleCategoryChange}
-              required
-              className="w-full p-2 border rounded"
-            >
-              {Object.values(StoreCategory).map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-          </div>
-          <Textarea
-            label="Description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-          />
-          <Input
-            label="Contact Number"
-            name="contactNumber"
-            value={formData.contactNumber}
-            onChange={handleChange}
-          />
-          <Input
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <Input label="Address" name="address" value={formData.address} onChange={handleChange} />
-          <Button type="submit" fullWidth disabled={loading}>
-            {loading ? 'Creating...' : 'Create Store'}
-          </Button>
-        </form>
-      </main>
-    </InnerLayout>
-  );
-}
+// TODO: Implement the **Store Creation Flow** as per the outlined steps and guidelines.

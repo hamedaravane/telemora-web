@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CreateStoreDto, Store, UpdateStoreDto } from '@/libs/stores/types';
+import { Store } from '@/libs/stores/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
