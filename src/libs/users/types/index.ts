@@ -37,8 +37,6 @@ export interface User {
   stores: Store[];
   payments: Payment[];
   createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date;
 }
 
 export interface UpdateContactLocationDto {
