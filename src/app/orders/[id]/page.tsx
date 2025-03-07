@@ -1,70 +1,80 @@
-'use client';
-
-import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
-import AppLayout from '@/components/app-layout';
-import { getOrdersById } from '@/libs/orders/orders-api';
-import type { Order } from '@/libs/orders/types';
-import { Button, Card, CardBody, CardFooter, CardHeader, Spinner } from '@heroui/react';
-import Link from 'next/link';
-
-export default function OrderDetailsPage() {
-  const { id } = useParams<{ id: string }>();
-  const {
-    data: order,
-    isLoading,
-    error,
-  } = useQuery<Order>({
-    queryKey: ['order', id],
-    queryFn: () => getOrdersById(id as string),
-    enabled: !!id,
-  });
-
-  return (
-    <AppLayout>
-      <main className="p-4">
-        {isLoading && (
-          <div className="flex justify-center items-center h-40">
-            <Spinner label="Loading order details..." />
-          </div>
-        )}
-        {error && <div className="text-danger">Failed to load order details.</div>}
-        {!isLoading && order && (
-          <Card>
-            <CardHeader>
-              <h2 className="text-xl font-bold">Order #{order.id}</h2>
-              <p className="text-sm">Status: {order.status}</p>
-            </CardHeader>
-            <CardBody>
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2">Order Items</h3>
-                {order.items && order.items.length > 0 ? (
-                  order.items.map((item) => (
-                    <div key={item.id} className="border p-2 rounded mb-2">
-                      <p>
-                        <strong>Product:</strong> {item.product.name}
-                      </p>
-                      <p>
-                        <strong>Quantity:</strong> {item.quantity}
-                      </p>
-                      <p>
-                        <strong>Total Price:</strong> ${item.totalPrice}
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <p>No items in this order.</p>
-                )}
-              </div>
-            </CardBody>
-            <CardFooter>
-              <Button as={Link} href="/orders" size="sm">
-                Back to Orders
-              </Button>
-            </CardFooter>
-          </Card>
-        )}
-      </main>
-    </AppLayout>
-  );
-}
+/**
+ * Order Details Page Component
+ *
+ * This file is responsible for implementing the **Order Details Page**, where users
+ * review their orders and proceed with the **payment process**. This is a **business-critical page**,
+ * as this is where we **generate revenue** through **sales commissions**.
+ *
+ * ## Purpose
+ * The primary goal of this page is to **encourage users to complete their payment**
+ * while providing clear information about the order's status.
+ *
+ * ## Order Data Structure
+ * ```ts
+ * export interface Order {
+ *   id: number;
+ *   buyer: User;
+ *   store: Store;
+ *   status: OrderStatus;
+ *   items: OrderItem[];
+ *   shipment: OrderShipment;
+ *   payment: Payment;
+ *   totalAmount: number;
+ *   deliveryDate: Date;
+ *   createdAt: Date;
+ *   updatedAt: Date;
+ * }
+ *
+ * export interface Payment {
+ *   id: string;
+ *   paymentId: string;
+ *   order: Order;
+ *   user: User;
+ *   amount: string;
+ *   status: PaymentStatus;
+ *   transactionHash: string;
+ *   fromWalletAddress: string;
+ *   toWalletAddress: string;
+ *   gasFee: string;
+ *   commission: string;
+ * }
+ * ```
+ *
+ * ## Payment Flow
+ * - If an order **has not been paid**, display a **prominent "Pay Now" button**.
+ * - The user is redirected to **Ton Wallet** to approve the transaction.
+ * - The payment request is sent to the server:
+ *
+ * ```ts
+ * export interface CreatePaymentDto {
+ *   orderId?: string;
+ *   amount: string;
+ *   fromWalletAddress?: string;
+ *   toWalletAddress?: string;
+ *   transactionHash?: string;
+ *   gasFee?: string;
+ *   commission?: string;
+ * }
+ * ```
+ * - The server verifies the payment, updates the order, and confirms the transaction.
+ *
+ * ## Order Status Tracking
+ * - Display **color-coded status badges** for order processing.
+ * - If the order **is being shipped**, show:
+ *   - **Courier service name** & **tracking number**.
+ *   - **Estimated delivery date**.
+ *   - A clickable **tracking link**.
+ *
+ * ## UI/UX Guidelines
+ * - Use **HeroUI components** for status indicators, buttons, and modals.
+ * - Implement **TailwindCSS** for custom UI elements.
+ * - Ensure **mobile responsiveness** with a clean checkout experience.
+ * - Provide **real-time updates** on payment and order processing.
+ *
+ * ## Additional Enhancements
+ * - **Push Notifications:** Alert users if payment is pending for too long.
+ * - **Progress Tracker:** Display a visual timeline of order status.
+ * - **Auto-refreshing Status:** Fetch updated payment status dynamically.
+ *
+ * TODO: Implement a seamless checkout page that ensures users complete their payment efficiently.
+ */
