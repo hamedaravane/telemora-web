@@ -37,23 +37,23 @@ The backend is fully implemented, and API endpoints are available for retrieving
 
 The user data model contains the following attributes:
 
-```ts
+```
 {
     id: number;
     telegramId: string;
     firstName: string;
-    lastName ? : string;
-    username ? : string;
-    languageCode ? : string;
-    hasTelegramPremium ? : boolean;
-    photoUrl ? : string;
-    phoneNumber ? : string;
-    email ? : string;
+    lastName?: string;
+    username?: string;
+    languageCode?: string;
+    hasTelegramPremium?: boolean;
+    photoUrl?: string;
+    phoneNumber?: string;
+    email?: string;
     role: UserRole;
-    walletAddress ? : string;
-    country ? : Country;
-    state ? : State;
-    city ? : City;
+    walletAddress?: string;
+    country?: Country;
+    state?: State;
+    city?: City;
     orders: Order[];
     reviews: Review[];
     stores: Store[];
