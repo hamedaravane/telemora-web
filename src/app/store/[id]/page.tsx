@@ -43,4 +43,3 @@
  * Fetch store details from: `${API_BASE_URL}/stores/{storeId}`
  */
 
-// TODO: Implement the **Store Details Page** based on the outlined sections and design guidelines.

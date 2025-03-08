@@ -55,4 +55,3 @@
  * Store data should be fetched from: `${API_BASE_URL}/stores`
  */
 
-// TODO: Implement the **Store List Page** following the provided specifications.
