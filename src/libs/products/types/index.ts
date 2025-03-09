@@ -77,3 +77,12 @@ export interface UpdateProductDto {
   attributes?: CreateProductAttributeDto[];
   variants?: CreateProductVariantDto[];
 }
+
+export interface ProductPreview {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  productType: ProductType;
+  stock?: number;
+}

@@ -125,3 +125,10 @@ export interface CreateStoreWorkingHoursDto {
 export interface CreateStoreLogoDto {
   logoUrl: string;
 }
+
+export interface StorePreview {
+  id: number;
+  name: string;
+  logoUrl?: string;
+  reputation: number;
+}
