@@ -76,3 +76,4 @@
  * - Logo Upload: `${API_BASE_URL}/stores/create/logo`
  */
 
+export default function StoreCreationPage() {}

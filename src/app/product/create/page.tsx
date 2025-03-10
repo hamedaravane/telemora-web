@@ -76,3 +76,5 @@
  * TODO: Implement a form-based UI to allow store owners to create new products with dynamic fields
  *       based on product type while ensuring a seamless and user-friendly experience.
  */
+
+export default function CreateProductPage() {}

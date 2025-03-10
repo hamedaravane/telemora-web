@@ -43,3 +43,4 @@
  * Fetch store details from: `${API_BASE_URL}/stores/{storeId}`
  */
 
+export default function StoreDetailsPage() {}

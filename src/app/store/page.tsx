@@ -55,3 +55,4 @@
  * Store data should be fetched from: `${API_BASE_URL}/stores`
  */
 
+export default function StoreListPage() {}

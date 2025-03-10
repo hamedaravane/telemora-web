@@ -69,3 +69,5 @@
  *
  * TODO: Implement a high-converting product details page that effectively leads users to checkout.
  */
+
+export default function ProductDetailsPage() {}

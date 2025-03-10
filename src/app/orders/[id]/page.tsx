@@ -78,3 +78,5 @@
  *
  * TODO: Implement a seamless checkout page that ensures users complete their payment efficiently.
  */
+
+export default function OrderDetailsPage() {}

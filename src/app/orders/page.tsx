@@ -130,3 +130,5 @@
  * TODO: Implement a user-friendly orders page that allows buyers to track their purchases,
  *       monitor payments, and view order statuses in an intuitive and structured manner.
  */
+
+export default function OrdersPage() {}
