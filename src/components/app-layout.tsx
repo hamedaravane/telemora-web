@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import CustomNavbar from './navbar';
 import BottomNavigation from './bottom-navigation';
 
