@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['picsum.photos', 'img.freepik.com'],
+    remotePatterns: [
+      {
+        hostname: 'img.freepik.com',
+      },
+    ],
   },
 };
 export default nextConfig;

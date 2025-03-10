@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Input, Button, Card, Spinner } from '@heroui/react';
-import { ProductType } from '@/libs/products/types';
+import { ProductPreview, ProductType } from '@/libs/products/types';
 import { useMarketData } from '@/libs/market/market-api';
 import Price from '@/components/price';
 import AppLayout from '@/components/app-layout';
@@ -39,21 +39,7 @@ export default function MarketPage() {
           <h2 className="text-lg font-bold mb-4">Featured Products</h2>
           <div className="grid grid-cols-2 gap-4">
             {marketPageData?.featuredProducts.map((product) => (
-              <Link key={product.id} href={`/product/${product.id}`}>
-                <Card className="p-2">
-                  <Image
-                    src={product.imageUrl}
-                    alt={product.name}
-                    width={150}
-                    height={150}
-                    className="mx-auto rounded-md"
-                  />
-                  <div className="mt-2">
-                    <h3 className="text-sm font-semibold">{product.name}</h3>
-                    <Price amount={product.price}></Price>
-                  </div>
-                </Card>
-              </Link>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </section>
@@ -65,21 +51,7 @@ export default function MarketPage() {
             </h2>
             <div className="grid grid-cols-2 gap-4">
               {marketPageData?.categoryProducts[category]?.map((product) => (
-                <Link key={product.id} href={`/product/${product.id}`}>
-                  <Card className="p-2">
-                    <Image
-                      src={product.imageUrl}
-                      alt={product.name}
-                      width={150}
-                      height={150}
-                      className="mx-auto rounded-md"
-                    />
-                    <div className="mt-2">
-                      <h3 className="text-sm font-semibold">{product.name}</h3>
-                      <Price amount={product.price}></Price>
-                    </div>
-                  </Card>
-                </Link>
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
           </section>
@@ -110,24 +82,7 @@ export default function MarketPage() {
           <h2 className="text-lg font-bold mb-4">Recent Products</h2>
           <div className="grid grid-cols-2 gap-4">
             {marketPageData?.recentProducts.map((product) => (
-              <Link key={product.id} href={`/product/${product.id}`}>
-                <Card className="p-2 relative">
-                  <Image
-                    src={product.imageUrl}
-                    alt={product.name}
-                    width={150}
-                    height={150}
-                    className="mx-auto rounded-md"
-                  />
-                  {product.stock !== undefined && product.stock < 5 && (
-                    <div className="absolute top-0 left-0 text-xs p-1 rounded-br">Low Stock</div>
-                  )}
-                  <div className="mt-2">
-                    <h3 className="text-sm font-semibold">{product.name}</h3>
-                    <Price amount={product.price}></Price>
-                  </div>
-                </Card>
-              </Link>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         </section>
@@ -135,3 +90,27 @@ export default function MarketPage() {
     </AppLayout>
   );
 }
+
+const ProductCard: React.FC<{ product: ProductPreview }> = ({
+  product,
+}: {
+  product: ProductPreview;
+}) => {
+  return (
+    <Link href={`/product/${product.id}`}>
+      <Card className="p-2">
+        <Image
+          src={product.imageUrl}
+          alt={product.name}
+          width={150}
+          height={150}
+          className="mx-auto rounded-md"
+        />
+        <div className="mt-2">
+          <h3 className="text-sm font-semibold h-12">{product.name}</h3>
+          <Price amount={product.price}></Price>
+        </div>
+      </Card>
+    </Link>
+  );
+};
