@@ -1,60 +1,55 @@
 'use client';
 
-import { createContext, useEffect, useState } from 'react';
-import { UserRole } from '@/types/common';
-import type { User } from '@/libs/users/types';
-import { useQuery } from '@tanstack/react-query';
+import { WebApp } from '@/types/telegram';
 
-interface IUserContext {
-  user: User | null;
-  setUser: (user: User | null) => void;
+declare global {
+  interface Window {
+    Telegram?: {
+      WebApp?: WebApp;
+    };
+  }
 }
 
-export const UserContext = createContext<IUserContext>({
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { User } from '@/libs/users/types';
+import { sendTelegramInitData } from '@/libs/users/users-api';
+
+interface UserContextType {
+  user: User | null;
+  isLoading: boolean;
+}
+
+const UserContext = createContext<UserContextType>({
   user: null,
-  setUser: () => {},
+  isLoading: true,
 });
 
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-
-  const { data } = useQuery<User | null>({
-    queryKey: ['telegramUser'],
-    queryFn: async () => {
-      if (typeof window !== 'undefined') {
-        const { default: WebApp } = await import('@twa-dev/sdk');
-        if (WebApp?.initDataUnsafe?.user) {
-          const tgUser = WebApp.initDataUnsafe.user;
-          return {
-            telegramId: tgUser.id.toString(),
-            firstName: tgUser.first_name,
-            lastName: tgUser.last_name,
-            telegramUsername: tgUser.username,
-            telegramLanguageCode: tgUser.language_code,
-            isTelegramPremium: tgUser.is_premium,
-            telegramPhotoUrl: tgUser.photo_url,
-            phoneNumber: undefined,
-            email: undefined,
-            role: UserRole.BUYER,
-            walletAddress: undefined,
-            orders: [],
-            reviews: [],
-            stores: [],
-            payments: [],
-          } as User;
-        }
-      }
-      return null;
-    },
-  });
+export function UserProvider({ children }: { children: React.ReactNode }) {
+  const [initData, setInitData] = useState<string | null>(null);
 
   useEffect(() => {
-    if (data) {
-      setUser(data);
+    if (typeof window !== 'undefined' && window.Telegram?.WebApp?.initData) {
+      setInitData(window.Telegram.WebApp.initData);
     }
-  }, [data]);
+  }, []);
 
-  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
-};
+  const { data: user, isLoading } = useQuery({
+    queryKey: ['userUser', initData],
+    queryFn: async () => {
+      if (!initData) throw new Error('Missing initData');
+      return await sendTelegramInitData(initData);
+    },
+    enabled: !!initData,
+  });
 
-export default UserProvider;
+  return (
+    <UserContext.Provider value={{ user: user ?? null, isLoading }}>
+      {children}
+    </UserContext.Provider>
+  );
+}
+
+export function useUser() {
+  return useContext(UserContext);
+}
