@@ -29,8 +29,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [initData, setInitData] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.Telegram?.WebApp?.initData) {
+    if (window.Telegram?.WebApp?.initData) {
       setInitData(window.Telegram.WebApp.initData);
+    } else {
+      setInitData('development_environment');
     }
   }, []);
 
@@ -49,7 +51,6 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     </UserContext.Provider>
   );
 }
-
 export function useUser() {
   return useContext(UserContext);
 }

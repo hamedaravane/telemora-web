@@ -1,3 +1,5 @@
+'use client';
+
 import AppLayout from '@/components/app-layout';
 import Image from 'next/image';
 import { useUser } from '@/context/user-context';
