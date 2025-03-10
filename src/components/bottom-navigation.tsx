@@ -3,7 +3,7 @@ import { Link } from '@heroui/link';
 
 const BottomNavigation = () => {
   return (
-    <div className="w-full flex justify-between px-6 text-secondary fixed max-w-sm mx-auto bottom-0 left-0 right-0 z-50 py-4">
+    <div className="flex justify-between bg-zinc-900 px-6 text-secondary shadow-md fixed w-full max-w-sm rounded-md bottom-4 left-1/2 transform -translate-x-1/2 z-50 py-4">
       <Link className="flex flex-col items-center gap-y-1" href="/market">
         <FaHome size={18} />
         <span className="text-xs">Market</span>

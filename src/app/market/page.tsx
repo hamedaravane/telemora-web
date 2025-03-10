@@ -7,6 +7,7 @@ import { Input, Button, Card, Spinner } from '@heroui/react';
 import { ProductType } from '@/libs/products/types';
 import { useMarketData } from '@/libs/market/market-api';
 import Price from '@/components/price';
+import AppLayout from '@/components/app-layout';
 
 export default function MarketPage() {
   const { data: marketPageData, isLoading, error, refetch } = useMarketData();
@@ -29,10 +30,10 @@ export default function MarketPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <AppLayout>
       <main className="p-4 space-y-6">
         <section>
-          <Input placeholder="Search products..." className="flex-grow mx-4" />
+          <Input placeholder="Search products..." className="flex-grow" />
         </section>
         <section>
           <h2 className="text-lg font-bold mb-4">Featured Products</h2>
@@ -131,6 +132,6 @@ export default function MarketPage() {
           </div>
         </section>
       </main>
-    </div>
+    </AppLayout>
   );
 }
