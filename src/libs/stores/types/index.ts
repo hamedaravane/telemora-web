@@ -123,7 +123,7 @@ export interface CreateStoreWorkingHoursDto {
 }
 
 export interface CreateStoreLogoDto {
-  logoUrl: string;
+  logoUrl?: File;
 }
 
 export interface StorePreview {

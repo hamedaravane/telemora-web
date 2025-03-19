@@ -3,18 +3,19 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Input } from '@heroui/react';
-import { useStore } from '@/context/store-context';
+import { useStoreCreation } from '@/context/store-creation-context';
+import AppLayout from '@/components/app-layout';
 
-export default function Step1() {
-  const { storeData, updateStoreData } = useStore();
+export default function CreateStoreBasicInformation() {
+  const { storeData, updateStoreData } = useStoreCreation();
   const router = useRouter();
 
   const handleNext = () => {
-    router.push('/stores/create/step-2');
+    router.push('/store/create/location');
   };
 
   return (
-    <div className="min-h-screen p-4">
+    <AppLayout>
       <h1 className="text-2xl font-bold">Step 1: Basic Information</h1>
       <Input
         label="Store Name"
@@ -27,6 +28,6 @@ export default function Step1() {
         onChange={(e) => updateStoreData({ description: e.target.value })}
       />
       <Button onPress={handleNext}>Next</Button>
-    </div>
+    </AppLayout>
   );
 }

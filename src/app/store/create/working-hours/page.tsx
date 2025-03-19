@@ -3,10 +3,11 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Input } from '@heroui/react';
-import { useStore } from '@/context/store-context';
+import { useStoreCreation } from '@/context/store-creation-context';
+import AppLayout from '@/components/app-layout';
 
-export default function Step4() {
-  const { storeData, updateStoreData } = useStore();
+export default function CreateStoreWorkingHours() {
+  const { storeData, updateStoreData } = useStoreCreation();
   const router = useRouter();
   const [workingHours, setWorkingHours] = useState(
     storeData.workingHours || {
@@ -22,13 +23,13 @@ export default function Step4() {
 
   const handleNext = () => {
     updateStoreData({ workingHours });
-    router.push('/stores/create/step-5');
+    router.push('/store/create/logo-upload');
   };
 
-  const handleBack = () => router.push('/stores/create/step-3');
+  const handleBack = () => router.push('/store/create/category-selection');
 
   return (
-    <div className="min-h-screen p-4">
+    <AppLayout>
       <h1 className="text-2xl font-bold mb-4">Step 4: Store Working Hours</h1>
       <p className="text-gray-600 mb-4">Set your store&#39;s working hours (optional).</p>
 
@@ -66,6 +67,6 @@ export default function Step4() {
         <Button onPress={handleBack}>Back</Button>
         <Button onPress={handleNext}>Next</Button>
       </div>
-    </div>
+    </AppLayout>
   );
 }

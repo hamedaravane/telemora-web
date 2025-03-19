@@ -2,29 +2,31 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Select } from '@heroui/react';
-import { useStore } from '@/context/store-context';
+import { Button, Select, SelectItem } from '@heroui/react';
+import { useStoreCreation } from '@/context/store-creation-context';
+import { StoreCategory } from '@/libs/stores/types';
+import AppLayout from '@/components/app-layout';
 
-export default function Step3() {
-  const { storeData, updateStoreData } = useStore();
+export default function CreateStoreCategorySelection() {
+  const { storeData, updateStoreData } = useStoreCreation();
   const router = useRouter();
 
-  const handleNext = () => router.push('/stores/create/step-4');
-  const handleBack = () => router.push('/stores/create/step-2');
+  const handleNext = () => router.push('/store/create/working-hours');
+  const handleBack = () => router.push('/store/create/location');
 
   return (
-    <div className="min-h-screen p-4">
+    <AppLayout>
       <h1 className="text-2xl font-bold mb-4">Step 3: Store Category</h1>
       <Select
         label="Select Category"
         value={storeData.category}
-        onChange={(e) => updateStoreData({ category: e.target.value })}
+        onChange={(e) => updateStoreData({ category: e.target.value as StoreCategory })}
       >
-        <option value="">Select a category</option>
-        <option value="electronics">Electronics</option>
-        <option value="fashion">Fashion</option>
-        <option value="home-goods">Home Goods</option>
-        <option value="automotive">Automotive</option>
+        {Object.entries(StoreCategory).map(([key, value]) => (
+          <SelectItem key={key}>
+            {value}
+          </SelectItem>
+        ))}
       </Select>
 
       <div className="mt-6 flex justify-between">
@@ -33,6 +35,6 @@ export default function Step3() {
           Next
         </Button>
       </div>
-    </div>
+    </AppLayout>
   );
 }

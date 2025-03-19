@@ -6,6 +6,7 @@ import { Button, Card, CardBody, CardHeader, Spinner } from '@heroui/react';
 import { useUser } from '@/context/user-context';
 import Image from 'next/image';
 import { useStoresData } from '@/libs/stores/stores-api';
+import AppLayout from '@/components/app-layout';
 
 export default function StoreListPage() {
   const { isLoading: isAuthLoading } = useUser();
@@ -30,12 +31,12 @@ export default function StoreListPage() {
   }
 
   return (
-    <div className="min-h-screen p-4 bg-white dark:bg-gray-900">
+    <AppLayout>
       <h1 className="text-2xl font-bold text-center mb-6">My Stores</h1>
       {stores && stores.length === 0 ? (
         <div className="text-center mt-10">
           <p className="text-gray-600">You don’t own any stores yet.</p>
-          <Button className="mt-4" onPress={() => router.push('/stores/create')}>
+          <Button className="mt-4" onPress={() => router.push('/store/create/basic-information')}>
             Create Store
           </Button>
         </div>
@@ -73,10 +74,10 @@ export default function StoreListPage() {
       )}
 
       <div className="text-center mt-6">
-        <Button variant="solid" onPress={() => router.push('/stores/create')}>
+        <Button variant="solid" onPress={() => router.push('/store/create/basic-information')}>
           New Store
         </Button>
       </div>
-    </div>
+    </AppLayout>
   );
 }

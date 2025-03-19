@@ -16,34 +16,38 @@ export const fetchStores = async (): Promise<Store[]> => {
   return response.data;
 };
 
+export const fetchMockStores = async (): Promise<Store[]> => {
+  return [];
+};
+
 export function useStoresData() {
   return useQuery({
     queryKey: ['stores'],
-    queryFn: fetchStores,
+    queryFn: fetchMockStores,
   });
 }
 
-const createBasicInfo = async (data: CreateStoreBasicDto) => {
+export const createBasicInfo = async (data: CreateStoreBasicDto) => {
   const response = await axios.post(`${API_BASE_URL}/stores/create/basic`, data);
   return response.data;
 };
 
-const updateStoreLocation = async (data: CreateStoreLocationDto) => {
+export const updateStoreLocation = async (data: CreateStoreLocationDto) => {
   const response = await axios.post(`${API_BASE_URL}/stores/create/location`, data);
   return response.data;
 };
 
-const selectStoreCategory = async (data: CreateStoreCategoryDto) => {
+export const selectStoreCategory = async (data: CreateStoreCategoryDto) => {
   const response = await axios.post(`${API_BASE_URL}/stores/create/category`, data);
   return response.data;
 };
 
-const setStoreWorkingHours = async (data: CreateStoreWorkingHoursDto) => {
+export const setStoreWorkingHours = async (data: CreateStoreWorkingHoursDto) => {
   const response = await axios.post(`${API_BASE_URL}/stores/create/working_hour`, data);
   return response.data;
 };
 
-const uploadStoreLogo = async (data: CreateStoreLogoDto) => {
+export const uploadStoreLogo = async (data: CreateStoreLogoDto) => {
   const formData = new FormData();
   formData.append('logo', data.logoUrl);
   const response = await axios.post(`${API_BASE_URL}/stores/create/logo`, formData, {
@@ -51,44 +55,3 @@ const uploadStoreLogo = async (data: CreateStoreLogoDto) => {
   });
   return response.data;
 };
-
-interface CreateStoreState {
-  storeData: CreateStoreBasicDto &
-    CreateStoreLocationDto &
-    CreateStoreCategoryDto &
-    CreateStoreWorkingHoursDto &
-    CreateStoreLogoDto;
-  updateStoreData: (newData: Partial<CreateStoreState['storeData']>) => void;
-  resetStoreData: () => void;
-}
-
-export const useCreateStore = create<CreateStoreState>((set) => ({
-  storeData: {
-    name: '',
-    description: '',
-    contactNumber: '',
-    email: '',
-    country: undefined,
-    state: undefined,
-    city: undefined,
-    category: undefined,
-    workingHours: {},
-    logoUrl: '',
-  },
-  updateStoreData: (newData) => set((state) => ({ storeData: { ...state.storeData, ...newData } })),
-  resetStoreData: () =>
-    set(() => ({
-      storeData: {
-        name: '',
-        description: '',
-        contactNumber: '',
-        email: '',
-        country: undefined,
-        state: undefined,
-        city: undefined,
-        category: undefined,
-        workingHours: {},
-        logoUrl: '',
-      },
-    })),
-}));

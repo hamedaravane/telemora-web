@@ -2,28 +2,29 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Select } from '@heroui/react';
-import { useStore } from '@/context/store-context';
+import { Button, Select, SelectItem } from '@heroui/react';
+import { useStoreCreation } from '@/context/store-creation-context';
+import AppLayout from '@/components/app-layout';
 
-export default function Step2() {
-  const { storeData, updateStoreData } = useStore();
+export default function CreateStoreLocation() {
+  const { storeData, updateStoreData } = useStoreCreation();
   const router = useRouter();
 
-  const handleNext = () => router.push('/stores/create/step-3');
-  const handleBack = () => router.push('/stores/create/step-1');
+  const handleNext = () => router.push('/store/create/category-selection');
+  const handleBack = () => router.push('/store/create/basic-information');
 
   return (
-    <div className="min-h-screen p-4">
+    <AppLayout>
       <h1 className="text-2xl font-bold">Step 2: Store Location</h1>
       <Select
         label="Country"
         onChange={(e) => updateStoreData({ country: Number(e.target.value) })}
       >
-        <option value="1">USA</option>
-        <option value="2">Canada</option>
+        <SelectItem key="1">USA</SelectItem>
+        <SelectItem key="2">Canada</SelectItem>
       </Select>
       <Button onPress={handleBack}>Back</Button>
       <Button onPress={handleNext}>Next</Button>
-    </div>
+    </AppLayout>
   );
 }
