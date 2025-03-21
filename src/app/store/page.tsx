@@ -11,73 +11,99 @@ import AppLayout from '@/components/app-layout';
 export default function StoreListPage() {
   const { isLoading: isAuthLoading } = useUser();
   const router = useRouter();
-
   const { data: stores, error, isLoading } = useStoresData();
+
+  const handleCreateStore = () => router.push('/store/create/basic-information');
+  const handleOpenStore = (id: number) => router.push(`/stores/${id}`);
 
   if (isAuthLoading || isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Spinner size="lg" />
-      </div>
+      <AppLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <Spinner size="lg" />
+        </div>
+      </AppLayout>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-red-500">Failed to load store data. Please try again later.</p>
-      </div>
+      <AppLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-red-500 text-sm text-center">
+            Failed to load store data. Please try again later.
+          </p>
+        </div>
+      </AppLayout>
     );
   }
 
   return (
     <AppLayout>
-      <h1 className="text-2xl font-bold text-center mb-6">My Stores</h1>
+      <h1 className="text-2xl font-bold text-center mb-4">My Stores</h1>
+      <p className="text-center text-gray-500 mb-6">Manage your business from here</p>
+
       {stores && stores.length === 0 ? (
-        <div className="text-center mt-10">
-          <p className="text-gray-600">You don’t own any stores yet.</p>
-          <Button className="mt-4" onPress={() => router.push('/store/create/basic-information')}>
-            Create Store
+        <div className="text-center mt-12">
+          <div className="text-gray-400 text-5xl mb-2">🏪</div>
+          <p className="text-gray-600 mb-4">You don’t own any stores yet.</p>
+          <Button size="lg" onPress={handleCreateStore}>
+            Create Your First Store
           </Button>
         </div>
       ) : (
         <div className="grid gap-4">
-          {stores?.map((store) => (
+          {stores!.map((store) => (
             <Card
               key={store.id}
-              className="cursor-pointer transition-transform hover:scale-105"
-              onPress={() => router.push(`/stores/${store.id}`)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleOpenStore(store.id)}
+              className="cursor-pointer transition-transform hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary"
+              onPress={() => handleOpenStore(store.id)}
+              aria-label={`Open store: ${store.name}`}
             >
-              <CardHeader>{store.name}</CardHeader>
-              <CardBody>
-                <div className="flex items-center space-x-4">
-                  {store.logoUrl ? (
-                    <Image
-                      src={store.logoUrl}
-                      alt={store.name}
-                      className="w-12 h-12 rounded-full"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-                      <span className="text-gray-700">📦</span>
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-gray-600">{store.category}</p>
-                    <p className="text-gray-500">{store.reputation} Reputation</p>
+              <CardHeader className="flex items-center gap-3">
+                {store.logoUrl ? (
+                  <Image
+                    src={store.logoUrl}
+                    alt={`${store.name} logo`}
+                    width={48}
+                    height={48}
+                    className="rounded-full object-cover"
+                    unoptimized={false}
+                    sizes="48px"
+                  />
+                ) : (
+                  <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
+                    <span className="text-gray-600 text-xl">🏪</span>
                   </div>
+                )}
+                <div className="flex flex-col">
+                  <h2 className="font-semibold text-base line-clamp-1">
+                    {store.name ?? 'Unnamed Store'}
+                  </h2>
+                  <p className="text-sm text-gray-500">
+                    {typeof store.category === 'string'
+                      ? store.category
+                      : (store.category ?? 'Uncategorized')}
+                  </p>
                 </div>
+              </CardHeader>
+
+              <CardBody className="pt-0 pl-[60px]">
+                <p className="text-sm text-gray-500">Reputation: {store.reputation ?? 0}</p>
               </CardBody>
             </Card>
           ))}
+
+          <div className="text-center mt-8">
+            <Button variant="bordered" size="lg" onPress={handleCreateStore}>
+              + New Store
+            </Button>
+          </div>
         </div>
       )}
-
-      <div className="text-center mt-6">
-        <Button variant="solid" onPress={() => router.push('/store/create/basic-information')}>
-          New Store
-        </Button>
-      </div>
     </AppLayout>
   );
 }
