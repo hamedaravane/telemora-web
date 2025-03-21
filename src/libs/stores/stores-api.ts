@@ -49,9 +49,12 @@ export const setStoreWorkingHours = async (data: CreateStoreWorkingHoursDto) => 
 
 export const uploadStoreLogo = async (data: CreateStoreLogoDto) => {
   const formData = new FormData();
-  formData.append('logo', data.logoUrl);
-  const response = await axios.post(`${API_BASE_URL}/stores/create/logo`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-  return response.data;
+  if (data.logoUrl) {
+    const fileBlob = new Blob([data.logoUrl], { type: 'image/*' });
+    formData.append('logo', fileBlob);
+    const response = await axios.post(`${API_BASE_URL}/stores/create/logo`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  } else throw new Error('No file provided');
 };

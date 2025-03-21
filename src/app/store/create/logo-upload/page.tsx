@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@heroui/react';
+import { Button, Spinner } from '@heroui/react';
 import Image from 'next/image';
 import { useStoreCreation } from '@/context/store-creation-context';
 import AppLayout from '@/components/app-layout';
@@ -10,6 +10,100 @@ import AppLayout from '@/components/app-layout';
 export default function CreateStoreLogoUpload() {
   const { storeData, updateStoreData, submitStore } = useStoreCreation();
   const router = useRouter();
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const MAX_FILE_SIZE = 5 * 1024 * 1024;
+  const MIN_IMAGE_RESOLUTION = 300;
+  const MAX_IMAGE_RESOLUTION = 1000;
+
+  const processImage = async (file: File) => {
+    return new Promise<File | null>((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = (event) => {
+        const img = document.createElement('img');
+        img.src = event.target?.result as string;
+
+        img.onload = () => {
+          if (img.width < MIN_IMAGE_RESOLUTION || img.height < MIN_IMAGE_RESOLUTION) {
+            alert('Image resolution is too low. Please upload a higher-quality image.');
+            resolve(null);
+            return;
+          }
+
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          if (!ctx) {
+            console.error('Canvas context not available');
+            resolve(null);
+            return;
+          }
+
+          let size = Math.min(img.width, img.height);
+          if (size > MAX_IMAGE_RESOLUTION) {
+            size = MAX_IMAGE_RESOLUTION;
+          }
+
+          canvas.width = size;
+          canvas.height = size;
+
+          const sx = (img.width - size) / 2;
+          const sy = (img.height - size) / 2;
+
+          ctx.drawImage(img, sx, sy, size, size, 0, 0, size, size);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const compressedFile = new File([blob], 'store-logo.png', { type: 'image/png' });
+                resolve(compressedFile);
+              } else {
+                resolve(null);
+              }
+            },
+            'image/png',
+            0.8,
+          );
+        };
+      };
+    });
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload a valid image file.');
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      alert('File size is too large. Please upload an image under 5MB.');
+      return;
+    }
+
+    setIsProcessing(true);
+
+    const processedFile = await processImage(file);
+
+    setIsProcessing(false);
+
+    if (processedFile) {
+      updateStoreData({ logoUrl: processedFile });
+      setPreviewUrl(URL.createObjectURL(processedFile));
+    } else {
+      alert('Failed to process the image. Try again.');
+    }
+  };
+
+  const handleRemoveImage = () => {
+    updateStoreData({ logoUrl: null });
+    setPreviewUrl(null);
+  };
 
   const handleSubmit = async () => {
     await submitStore();
@@ -19,20 +113,37 @@ export default function CreateStoreLogoUpload() {
   return (
     <AppLayout>
       <h1 className="text-2xl font-bold">Final Step: Store Logo</h1>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => updateStoreData({ logoUrl: e.target.files![0] })}
-      />
-      {storeData.logoUrl && (
-        <Image
-          src={URL.createObjectURL(storeData.logoUrl)}
-          alt="Preview"
-          width={100}
-          height={100}
-        />
+
+      <input type="file" accept="image/*" onChange={handleFileChange} />
+
+      {isProcessing && (
+        <div className="mt-4 flex justify-center">
+          <Spinner size="lg" />
+        </div>
       )}
-      <Button onPress={handleSubmit}>Submit Store</Button>
+
+      {previewUrl && (
+        <div className="mt-4">
+          <Image
+            src={previewUrl}
+            alt="Preview"
+            width={150}
+            height={150}
+            className="rounded-lg border"
+          />
+          <Button variant="bordered" className="mt-2" onPress={handleRemoveImage}>
+            Change Image
+          </Button>
+        </div>
+      )}
+
+      <Button
+        onPress={handleSubmit}
+        className="mt-6"
+        isDisabled={isProcessing || !storeData.logoUrl}
+      >
+        Submit Store
+      </Button>
     </AppLayout>
   );
 }
