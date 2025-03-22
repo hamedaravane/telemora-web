@@ -1,3 +1,4 @@
+'use client';
 /**
  * Product Details Page Component
  *
@@ -69,5 +70,39 @@
  *
  * TODO: Implement a high-converting product details page that effectively leads users to checkout.
  */
+import {useGetProductById} from "../../../libs/market/market-api";
+import { Button, Spinner } from '@heroui/react';
 
-export default function ProductDetailsPage() {}
+export default function ProductDetailsPage() {
+    const { data: product, isLoading, error, refetch } = useGetProductById(1);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex justify-center items-center">
+                <Spinner size="lg" />
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center text-red-500">
+                <p>Failed to load market data.</p>
+                <Button onPress={() => refetch()}>Retry</Button>
+            </div>
+        );
+    }
+
+    if (product) {
+        return (
+            <div>
+                <img src={product.imageUrl} alt=""/>
+            </div>
+        )
+    } else {
+        return (
+            <span>product not found</span>
+        )
+    }
+
+}

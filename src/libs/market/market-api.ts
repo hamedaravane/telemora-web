@@ -114,6 +114,10 @@ export async function getMockMarketPageData(): Promise<MarketPageResponse> {
   };
 }
 
+async function getProductById(id: number): Promise<ProductPreview | undefined>{
+  return generateMockProducts().find((product) => product.id === id);
+}
+
 /**
  * Custom hook to fetch market page data using React Query.
  */
@@ -121,6 +125,15 @@ export function useMarketData() {
   return useQuery<MarketPageResponse>({
     queryKey: ['marketPageData'],
     queryFn: getMockMarketPageData,
+    staleTime: 1000 * 60 * 5,
+    retry: 2,
+  });
+}
+
+export function useGetProductById(id: number){
+  return useQuery<ProductPreview | undefined>({
+    queryKey: ['getProductById', id],
+    queryFn: () => getProductById(id),
     staleTime: 1000 * 60 * 5,
     retry: 2,
   });
