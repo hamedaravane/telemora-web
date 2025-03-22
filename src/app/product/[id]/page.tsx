@@ -70,11 +70,15 @@
  *
  * TODO: Implement a high-converting product details page that effectively leads users to checkout.
  */
-import {useGetProductById} from "../../../libs/market/market-api";
+
 import { Button, Spinner } from '@heroui/react';
+import {useGetProductById} from "@/libs/products/products-api";
+import {useParams} from "next/navigation";
+import AppLayout from "@/components/app-layout";
 
 export default function ProductDetailsPage() {
-    const { data: product, isLoading, error, refetch } = useGetProductById(1);
+    const params = useParams();
+    const { data: product, isLoading, error, refetch } = useGetProductById(+params.id);
 
     if (isLoading) {
         return (
@@ -95,9 +99,16 @@ export default function ProductDetailsPage() {
 
     if (product) {
         return (
-            <div>
-                <img src={product.imageUrl} alt=""/>
-            </div>
+            <AppLayout>
+                <div className="flex flex-col gap-4 p-6">
+                    <img src={product.imageUrl} alt={product.name}/>
+                    <h3 className="text-3xl font-bold">{product.name}</h3>
+                    <p className="">{product.description}</p>
+                    <span>Price: {numberWithCommas2(product.price)}</span>
+                    <span>Quantity: {product.stock}</span>
+                    <Button>Add to Card</Button>
+                </div>
+            </AppLayout>
         )
     } else {
         return (
@@ -106,3 +117,14 @@ export default function ProductDetailsPage() {
     }
 
 }
+
+// both of them are correct. which one of them is better?
+function numberWithCommas(number:number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function numberWithCommas2(number:number) {
+    return new Intl.NumberFormat().format(number);
+}
+
+

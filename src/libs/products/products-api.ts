@@ -1,5 +1,6 @@
-import { Product, ProductType } from '@/libs/products/types';
+import {Product, ProductType} from '@/libs/products/types';
 import { Store } from '@/libs/stores/types';
+import {useQuery} from "@tanstack/react-query";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -7,7 +8,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
  * Generates a list of mock products with placeholder images.
  * @returns {Promise<Product[]>} A promise that resolves to an array of mock products.
  */
-export async function getProducts(): Promise<Product[]> {
+export function getProducts(): Product[] {
   return [
     {
       id: 1,
@@ -58,7 +59,7 @@ export async function getProducts(): Promise<Product[]> {
     {
       id: 4,
       name: 'Smartwatch',
-      price: 199.99,
+      price: 1599.99,
       description: 'Latest-gen smartwatch with health tracking features.',
       imageUrl: 'https://picsum.photos/seed/smartwatch/200/200',
       store: {} as Store,
@@ -72,4 +73,19 @@ export async function getProducts(): Promise<Product[]> {
       updatedAt: new Date(),
     },
   ];
+}
+
+async function getProductById(id: number): Promise<Product | undefined>{
+  return getProducts().find((product) => product.id === id);
+}
+
+export function useGetProductById(id: number | null){
+
+  return useQuery<Product | undefined>({
+    queryKey: ['getProductById', id],
+    queryFn: () => getProductById(id!),
+    staleTime: 1000 * 60 * 5,
+    retry: 2,
+    enabled: id !== null,
+  });
 }
