@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { CreateOrderDto, Order, UpdateOrderDto } from '@/libs/orders/types';
+import { useQuery } from '@tanstack/react-query';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -9,11 +10,18 @@ export const createOrders = async (data: CreateOrderDto): Promise<Order> => {
   return response.data;
 };
 
-export const getAllOrders = async (): Promise<Order[]> => {
-  const response = await axios.get(`${API_BASE_URL}/orders`);
-
+export const fetchOrders = async (): Promise<Order[]> => {
+  const response = await axios.get(`/api/orders`);
   return response.data;
 };
+
+export function useOrdersData() {
+  return useQuery<Order[]>({
+    queryKey: ['orders'],
+    queryFn: fetchOrders,
+    staleTime: 1000 * 60 * 5,
+  });
+}
 
 export const getOrdersById = async (id: string | number): Promise<Order> => {
   const response = await axios.get(`${API_BASE_URL}/orders/${id}`);

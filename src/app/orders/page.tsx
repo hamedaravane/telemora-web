@@ -130,5 +130,60 @@
  * TODO: Implement a user-friendly orders page that allows buyers to track their purchases,
  *       monitor payments, and view order statuses in an intuitive and structured manner.
  */
+import { useOrdersData } from '@/libs/orders/orders-api';
+import AppLayout from '@/components/app-layout';
+import { Button, Spinner } from '@heroui/react';
+import React from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function OrdersPage() {}
+export default function OrdersPage() {
+  const { data: orders, error, isLoading } = useOrdersData();
+  const router = useRouter();
+
+  const handleRouteToMarket = () => router.push('/market');
+
+  if (isLoading) {
+    return (
+      <AppLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <Spinner size="lg" />
+        </div>
+      </AppLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <AppLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-red-500 text-sm text-center">
+            Failed to load orders. Please try again later.
+          </p>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  return (
+    <AppLayout>
+      <h1 className="text-2xl font-bold text-center mb-4">Orders</h1>
+      <p className="text-center text-gray-500 mb-6">Track your orders here.</p>
+
+      {!orders || orders.length === 0 ? (
+        <div className="text-center mt-12">
+          <div className="text-gray-400 text-5xl mb-2"></div>
+          <p className="text-gray-600 mb-4">You don’t any order yet!</p>
+          <Button size="lg" onPress={handleRouteToMarket}>
+            Take a look to market
+          </Button>
+        </div>
+      ) : (
+        <div className="grid gap-4">
+          {orders!.map((order) => (
+            <p key={order.id}>{order.id}</p>
+          ))}
+        </div>
+      )}
+    </AppLayout>
+  );
+}
