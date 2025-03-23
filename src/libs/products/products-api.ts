@@ -1,6 +1,7 @@
 import {Product, ProductType} from '@/libs/products/types';
 import { Store } from '@/libs/stores/types';
 import {useQuery} from "@tanstack/react-query";
+import {undefined} from "valibot";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -75,13 +76,28 @@ export function getProducts(): Product[] {
   ];
 }
 
-async function getProductById(id: number): Promise<Product | undefined>{
-  return getProducts().find((product) => product.id === id);
+async function getProductById(id: number): Promise<Product>{
+  return {
+    id,
+    name: 'Smartwatch',
+    price: 1599.99,
+    description: 'Latest-gen smartwatch with health tracking features.',
+    imageUrl: 'https://picsum.photos/seed/smartwatch/200/200',
+    store: {} as Store,
+    productType: ProductType.PHYSICAL,
+    stock: 5,
+    isApproved: true,
+    reviews: [],
+    attributes: [],
+    variants: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
 }
 
 export function useGetProductById(id: number | null){
 
-  return useQuery<Product | undefined>({
+  return useQuery<Product>({
     queryKey: ['getProductById', id],
     queryFn: () => getProductById(id!),
     staleTime: 1000 * 60 * 5,

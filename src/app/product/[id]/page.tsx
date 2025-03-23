@@ -75,6 +75,8 @@ import { Button, Spinner } from '@heroui/react';
 import {useGetProductById} from "@/libs/products/products-api";
 import {useParams} from "next/navigation";
 import AppLayout from "@/components/app-layout";
+import Price from "@/components/price";
+import Image from "next/image";
 
 export default function ProductDetailsPage() {
     const params = useParams();
@@ -88,43 +90,31 @@ export default function ProductDetailsPage() {
         );
     }
 
-    if (error) {
+    if (error || !product) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center text-red-500">
                 <p>Failed to load market data.</p>
                 <Button onPress={() => refetch()}>Retry</Button>
             </div>
         );
-    }
-
-    if (product) {
+    } else {
         return (
             <AppLayout>
                 <div className="flex flex-col gap-4 p-6">
-                    <img src={product.imageUrl} alt={product.name}/>
+                    <Image src={product.imageUrl} height={200} width={200} alt={product.name}/>
                     <h3 className="text-3xl font-bold">{product.name}</h3>
                     <p className="">{product.description}</p>
-                    <span>Price: {numberWithCommas2(product.price)}</span>
+                    <Price amount={product.price}></Price>
                     <span>Quantity: {product.stock}</span>
                     <Button>Add to Card</Button>
                 </div>
             </AppLayout>
         )
-    } else {
-        return (
-            <span>product not found</span>
-        )
     }
 
+
+
 }
 
-// both of them are correct. which one of them is better?
-function numberWithCommas(number:number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-function numberWithCommas2(number:number) {
-    return new Intl.NumberFormat().format(number);
-}
 
 
