@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Select, SelectItem } from '@heroui/react';
 import { useStoreCreation } from '@/context/store-creation-context';
@@ -11,21 +11,32 @@ export default function CreateStoreCategorySelection() {
   const { storeData, updateStoreData } = useStoreCreation();
   const router = useRouter();
 
+  const categoryOptions = useMemo(
+    () => Object.entries(StoreCategory).map(([key, value]) => ({ key, label: value })),
+    [],
+  );
+
   const handleNext = () => router.push('/store/create/working-hours');
   const handleBack = () => router.push('/store/create/location');
 
   return (
     <AppLayout>
-      <h1 className="text-2xl font-bold mb-4">Step 3: Store Category</h1>
+      <div className="text-sm text-gray-500 mb-4">Step 2 of 5</div>
+      <h1 className="text-2xl font-bold mb-2">Step 3: Store Category</h1>
+      <p className="text-gray-600 text-sm mb-6">
+        Choose a category that best represents your store. This helps customers find your business
+        more easily.
+      </p>
+
       <Select
         label="Select Category"
-        value={storeData.category}
-        onChange={(e) => updateStoreData({ category: e.target.value as StoreCategory })}
+        selectedKeys={storeData.category ? new Set([storeData.category]) : undefined}
+        onSelectionChange={(keys) => {
+          updateStoreData({ category: Array.from(keys)[0] as StoreCategory });
+        }}
       >
-        {Object.entries(StoreCategory).map(([key, value]) => (
-          <SelectItem key={key}>
-            {value}
-          </SelectItem>
+        {categoryOptions.map(({ key, label }) => (
+          <SelectItem key={key}>{label}</SelectItem>
         ))}
       </Select>
 

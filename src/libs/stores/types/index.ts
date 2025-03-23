@@ -140,10 +140,3 @@ export interface CreateStoreWorkingHoursDto {
 export interface CreateStoreLogoDto {
   logoUrl?: File;
 }
-
-export interface StorePreview {
-  id: number;
-  name: string;
-  logoUrl?: string;
-  reputation: number;
-}
