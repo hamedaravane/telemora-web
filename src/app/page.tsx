@@ -10,7 +10,7 @@ export default function SplashScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.push('/market');
-    }, 3000);
+    }, 10);
     return () => clearTimeout(timer);
   }, [router]);
 

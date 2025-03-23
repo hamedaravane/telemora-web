@@ -112,7 +112,8 @@ export default function CreateStoreLogoUpload() {
 
   return (
     <AppLayout>
-      <h1 className="text-2xl font-bold">Final Step: Store Logo</h1>
+      <div className="text-sm text-gray-500 mb-4">Step 5 of 5</div>
+      <h1 className="text-2xl font-bold">Store Logo</h1>
 
       <input type="file" accept="image/*" onChange={handleFileChange} />
 

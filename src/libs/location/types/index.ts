@@ -7,7 +7,6 @@ export interface Country {
   currency: string;
   region: string;
   capital: string;
-  states: State[];
 }
 
 export interface State {
@@ -15,8 +14,6 @@ export interface State {
   name: string;
   code: string;
   nameLocal: Record<string, string>;
-  country: Country;
-  cities: City[];
 }
 
 export interface City {
@@ -26,5 +23,4 @@ export interface City {
   postalCode: string;
   latitude: number;
   longitude: number;
-  state: State;
 }

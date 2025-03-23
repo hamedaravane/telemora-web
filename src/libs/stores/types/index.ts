@@ -1,7 +1,7 @@
 import { City, Country, State } from '@/libs/location/types';
 import { User } from '@/libs/users/types';
 import { Order } from '@/libs/orders/types';
-import { Product } from '@/libs/products/types';
+import { ProductPreview } from '@/libs/products/types';
 
 /**
  * Models in this file are implemented according to the backend project specifications.
@@ -81,7 +81,7 @@ export interface Store {
   category: StoreCategory;
   owner: User;
   admins: User[];
-  products: Product[];
+  products: ProductPreview[];
   orders: Order[];
   contactNumber?: string;
   email?: string;
@@ -94,6 +94,21 @@ export interface Store {
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
+}
+
+export interface StorePreview {
+  id: number;
+  name: string;
+  logoUrl?: string;
+  description?: string;
+  category: StoreCategory;
+  contactNumber?: string;
+  email?: string;
+  country?: Country;
+  state?: State;
+  city?: City;
+  reputation: number;
+  workingHours?: Record<string, { open: string; close: string }>;
 }
 
 export interface CreateStoreBasicDto {
