@@ -125,3 +125,4 @@ export function useMarketData() {
     retry: 2,
   });
 }
+
