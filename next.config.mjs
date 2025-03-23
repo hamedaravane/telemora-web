@@ -6,6 +6,9 @@ const nextConfig = {
       {
         hostname: 'img.freepik.com',
       },
+      {
+        hostname: 'picsum.photos',
+      },
     ],
   },
 };

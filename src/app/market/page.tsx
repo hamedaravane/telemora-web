@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Input, Button, Card, Spinner } from '@heroui/react';
+import { Button, Card, Input, Spinner } from '@heroui/react';
 import { ProductPreview, ProductType } from '@/libs/products/types';
 import { useMarketData } from '@/libs/market/market-api';
 import Price from '@/components/price';
@@ -68,7 +68,7 @@ export default function MarketPage() {
                     alt={store.name}
                     width={50}
                     height={50}
-                    className="mx-auto rounded-full"
+                    className="mx-auto rounded-full h-12 aspect-square object-cover"
                   />
                   <p className="text-xs font-semibold mt-2">{store.name}</p>
                   <span className="text-[10px]">⭐ {store.reputation}</span>
@@ -104,10 +104,10 @@ const ProductCard: React.FC<{ product: ProductPreview }> = ({
           alt={product.name}
           width={150}
           height={150}
-          className="mx-auto rounded-md"
+          className="mx-auto rounded-md h-36 aspect-square object-cover"
         />
         <div className="mt-2">
-          <h3 className="text-sm font-semibold h-12">{product.name}</h3>
+          <h3 className="text-sm font-semibold h-12 overflow-ellipsis">{product.name}</h3>
           <Price amount={product.price}></Price>
         </div>
       </Card>
