@@ -2,70 +2,133 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Input } from '@heroui/react';
+import { Button, Input, Switch } from '@heroui/react';
 import { useStoreCreation } from '@/context/store-creation-context';
 import AppLayout from '@/components/app-layout';
+import { WorkingHourDto } from '@/libs/stores/types';
+
+const DAYS: string[] = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+];
 
 export default function CreateStoreWorkingHours() {
-  const { storeData, updateStoreData } = useStoreCreation();
   const router = useRouter();
-  const [workingHours, setWorkingHours] = useState(
-    storeData.workingHours || {
-      Monday: { open: '', close: '' },
-      Tuesday: { open: '', close: '' },
-      Wednesday: { open: '', close: '' },
-      Thursday: { open: '', close: '' },
-      Friday: { open: '', close: '' },
-      Saturday: { open: '', close: '' },
-      Sunday: { open: '', close: '' },
-    },
-  );
+  const { storeData, updateStoreData } = useStoreCreation();
+
+  const [workingHours, setWorkingHours] = useState<Record<string, WorkingHourDto>>(() => {
+    const initial = storeData.workingHours ?? {};
+    return DAYS.reduce((acc, day) => {
+      acc[day] = initial[day] || { open: '', close: '' };
+      return acc;
+    }, {} as Record<string, WorkingHourDto>);
+  });
+
+  const handleChange = (day: string, field: 'open' | 'close', value: string) => {
+    setWorkingHours((prev) => ({
+      ...prev,
+      [day]: {
+        ...prev[day],
+        [field]: value,
+      },
+    }));
+  };
+
+  const toggleDay = (day: string) => {
+    setWorkingHours((prev) => {
+      const isClosed = !prev[day].open && !prev[day].close;
+      return {
+        ...prev,
+        [day]: isClosed ? { open: '', close: '' } : { open: '', close: '' },
+      };
+    });
+  };
 
   const handleNext = () => {
-    updateStoreData({ workingHours });
+    const cleanWorkingHours = Object.fromEntries(
+      Object.entries(workingHours).filter(
+        ([_, { open, close }]) => open && close,
+      ),
+    );
+    updateStoreData({ workingHours: cleanWorkingHours });
     router.push('/store/create/logo-upload');
   };
 
-  const handleBack = () => router.push('/store/create/category-selection');
+  const handleBack = () => {
+    router.push('/store/create/category-selection');
+  };
 
   return (
     <AppLayout>
-      <h1 className="text-2xl font-bold mb-4">Step 4: Store Working Hours</h1>
-      <p className="text-gray-600 mb-4">Set your store&#39;s working hours (optional).</p>
+      <div className="text-sm text-gray-500 mb-4">Step 4 of 5</div>
+      <h1 className="text-2xl font-bold mb-2">Store Working Hours</h1>
+      <p className="text-gray-600 text-sm mb-6">
+        Optionally set when your store is open. Customers will see this info on your store page.
+      </p>
 
-      {Object.keys(workingHours).map((day) => (
-        <div key={day} className="mb-4">
-          <h3 className="font-semibold">{day}</h3>
-          <div className="flex gap-2">
-            <Input
-              label="Open Time"
-              type="time"
-              value={workingHours[day].open}
-              onChange={(e) =>
-                setWorkingHours({
-                  ...workingHours,
-                  [day]: { ...workingHours[day], open: e.target.value },
-                })
-              }
-            />
-            <Input
-              label="Close Time"
-              type="time"
-              value={workingHours[day].close}
-              onChange={(e) =>
-                setWorkingHours({
-                  ...workingHours,
-                  [day]: { ...workingHours[day], close: e.target.value },
-                })
-              }
-            />
-          </div>
-        </div>
-      ))}
+      <div className="space-y-5">
+        {DAYS.map((day) => {
+          const { open, close } = workingHours[day];
+          const isClosed = !open && !close;
+          const invalid = open && close && open >= close;
 
-      <div className="mt-6 flex justify-between">
-        <Button onPress={handleBack}>Back</Button>
+          return (
+            <div key={day}>
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-medium">{day}</span>
+                <Switch isSelected={!isClosed} onChange={() => toggleDay(day)} size="sm">
+                  Open
+                </Switch>
+              </div>
+
+              {!isClosed && (
+                <>
+                  <div className="flex gap-4">
+                    <Input
+                      type="time"
+                      label="Open"
+                      size="sm"
+                      value={open}
+                      onChange={(e) => handleChange(day, 'open', e.target.value)}
+                      isInvalid={invalid || undefined}
+                    />
+                    <Input
+                      type="time"
+                      label="Close"
+                      size="sm"
+                      value={close}
+                      onChange={(e) => handleChange(day, 'close', e.target.value)}
+                      isInvalid={invalid || undefined}
+                    />
+                  </div>
+                  {invalid && (
+                    <p className="text-red-500 text-xs mt-1">
+                      Opening time must be earlier than closing time.
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="mt-8 flex justify-between">
+        <Button variant="bordered" onPress={handleBack}>
+          Back
+        </Button>
         <Button onPress={handleNext}>Next</Button>
+      </div>
+
+      <div className="text-center mt-4">
+        <Button variant="ghost" size="sm" onPress={handleNext}>
+          Skip
+        </Button>
       </div>
     </AppLayout>
   );
