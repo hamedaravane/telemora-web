@@ -6,12 +6,9 @@ import {
   CreateStoreLogoDto,
   CreateStoreWorkingHoursDto,
   Store,
-  StoreCategory,
 } from '@/libs/stores/types';
 import { useQuery } from '@tanstack/react-query';
-import { faker, fakerFA } from '@faker-js/faker';
-import { UserRole } from '@/libs/users/types';
-import { ProductType } from '@/libs/products/types';
+import { generateMockStore } from '@/libs/stores/mocks';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -37,65 +34,7 @@ export const fetchStoreById = async (id: number): Promise<Store> => {
 };
 
 export const fetchMockStoreById = async (id: number): Promise<Store> => {
-  return {
-    id: id,
-    name: faker.company.buzzNoun(),
-    logoUrl: faker.image.urlPicsumPhotos(),
-    description: faker.lorem.paragraph(),
-    category: faker.helpers.enumValue(StoreCategory),
-    owner: {
-      id: faker.number.int(100),
-      telegramId: faker.number.int().toString(),
-      firstName: faker.person.firstName(),
-      role: UserRole.BOTH,
-      orders: [],
-      reviews: [],
-      stores: [],
-      payments: [],
-      createdAt: faker.date.past(),
-    },
-    admins: [],
-    products: [{
-      id: faker.number.int(100),
-      name: faker.commerce.productName(),
-      price: +faker.finance.amount(),
-      imageUrl: faker.image.urlPicsumPhotos(),
-      productType: faker.helpers.enumValue(ProductType),
-    }],
-    orders: [],
-    contactNumber: faker.phone.number(),
-    email: faker.internet.email(),
-    country: {
-      id: faker.number.int(100),
-      code: faker.location.zipCode(),
-      name: faker.location.country(),
-      nameLocal: { 'fa': fakerFA.location.country() },
-      phoneCode: faker.location.zipCode(),
-      currency: faker.finance.currencyName(),
-      region: faker.location.continent(),
-      capital: faker.location.city(),
-    },
-    state: {
-      id: faker.number.int(100),
-      name: faker.location.state(),
-      code: faker.location.zipCode(),
-      nameLocal: { 'fa': fakerFA.location.state() },
-    },
-    city: {
-      id: faker.number.int(100),
-      name: faker.location.city(),
-      nameLocal: { 'fa': fakerFA.location.city() },
-      postalCode: faker.location.zipCode(),
-      latitude: faker.location.latitude(),
-      longitude: faker.location.longitude(),
-    },
-    socialMediaLinks: { 'Instagram': faker.internet.username() },
-    reputation: faker.number.int(5),
-    workingHours: {},
-    createdAt: faker.date.past(),
-    updatedAt: faker.date.past(),
-    deletedAt: faker.date.past(),
-  };
+  return generateMockStore(id);
 };
 
 export function useSingleStoreDataById(id: number) {

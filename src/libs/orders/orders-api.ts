@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { CreateOrderDto, Order, UpdateOrderDto } from '@/libs/orders/types';
 import { useQuery } from '@tanstack/react-query';
+import { generateMockOrders } from '@/libs/orders/mocks';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -13,6 +14,10 @@ export const createOrders = async (data: CreateOrderDto): Promise<Order> => {
 export const fetchOrders = async (): Promise<Order[]> => {
   const response = await axios.get(`/api/orders`);
   return response.data;
+};
+
+export const fetchMockOrders = async (): Promise<Order[]> => {
+  return generateMockOrders(2);
 };
 
 export function useOrdersData() {
