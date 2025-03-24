@@ -5,7 +5,7 @@ import { generateMockStore } from '@/libs/stores/mocks';
 import { generateMockUser } from '@/libs/users/mocks';
 import { Payment } from '@/libs/payments/types';
 
-export function generateMockOrders(count: number): Order[] {
+export function generateMockOrders(count: number = faker.number.int(10)): Order[] {
   return Array.from({ length: count }, (_, index): Order => generateMockOrder(index));
 }
 

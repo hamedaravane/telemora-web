@@ -17,13 +17,13 @@ export const fetchOrders = async (): Promise<Order[]> => {
 };
 
 export const fetchMockOrders = async (): Promise<Order[]> => {
-  return generateMockOrders(2);
+  return generateMockOrders();
 };
 
 export function useOrdersData() {
   return useQuery<Order[]>({
     queryKey: ['orders'],
-    queryFn: fetchOrders,
+    queryFn: fetchMockOrders,
     staleTime: 1000 * 60 * 5,
   });
 }

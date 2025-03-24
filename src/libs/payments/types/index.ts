@@ -1,5 +1,5 @@
 import { Order } from '@/libs/orders/types';
-import { User } from '@/libs/users/types';
+import { User, UserPreview } from '@/libs/users/types';
 
 /**
  * Models in this file are implemented according to the backend project specifications.
@@ -20,6 +20,20 @@ export interface Payment {
   paymentId: string;
   order: Order;
   user: User;
+  amount: string;
+  status: PaymentStatus;
+  transactionHash: string;
+  fromWalletAddress: string;
+  toWalletAddress: string;
+  gasFee: string;
+  commission: string;
+}
+
+export interface PaymentPreview {
+  id: string;
+  paymentId: string;
+  order: Order;
+  user: UserPreview;
   amount: string;
   status: PaymentStatus;
   transactionHash: string;

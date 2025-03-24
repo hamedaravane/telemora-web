@@ -1,7 +1,7 @@
-import { User } from '@/libs/users/types';
-import { Store } from '@/libs/stores/types';
-import { Payment } from '@/libs/payments/types';
-import { Product } from '@/libs/products/types';
+import { UserPreview } from '@/libs/users/types';
+import { StorePreview } from '@/libs/stores/types';
+import { PaymentPreview } from '@/libs/payments/types';
+import { ProductPreview } from '@/libs/products/types';
 
 /**
  * Models in this file are implemented according to the backend project specifications.
@@ -22,12 +22,12 @@ export enum OrderStatus {
 
 export interface Order {
   id: number;
-  buyer: User;
-  store: Store;
+  buyer: UserPreview;
+  store: StorePreview;
   status: OrderStatus;
   items: OrderItem[];
   shipment: OrderShipment;
-  payment: Payment;
+  payment: PaymentPreview;
   totalAmount: number;
   deliveryDate: Date;
   createdAt: Date;
@@ -36,7 +36,7 @@ export interface Order {
 
 export interface OrderItem {
   id: number;
-  product: Product;
+  product: ProductPreview;
   quantity: number;
   totalPrice: number;
 }

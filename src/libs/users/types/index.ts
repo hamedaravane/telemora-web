@@ -39,6 +39,24 @@ export interface User {
   createdAt: Date;
 }
 
+export interface UserPreview {
+  id: number;
+  telegramId: string;
+  firstName: string;
+  lastName?: string;
+  username?: string;
+  languageCode?: string;
+  hasTelegramPremium?: boolean;
+  photoUrl?: string;
+  phoneNumber?: string;
+  email?: string;
+  role: UserRole;
+  walletAddress?: string;
+  country?: Country;
+  state?: State;
+  city?: City;
+}
+
 export interface UpdateContactLocationDto {
   phoneNumber: string;
   email: string;

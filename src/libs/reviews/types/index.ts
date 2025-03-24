@@ -1,5 +1,5 @@
-import { User } from '@/libs/users/types';
-import { Product } from '@/libs/products/types';
+import { UserPreview } from '@/libs/users/types';
+import { ProductPreview } from '@/libs/products/types';
 
 /**
  * Models in this file are implemented according to the backend project specifications.
@@ -28,8 +28,8 @@ export enum ReportReason {
 
 export interface Review {
   id: number;
-  buyer: User;
-  product: Product;
+  buyer: UserPreview;
+  product: ProductPreview;
   rating: number;
   comment?: string;
   images?: string[];
@@ -42,14 +42,14 @@ export interface Review {
 
 export interface ReviewReply {
   id: number;
-  seller: User;
+  seller: UserPreview;
   replyText: string;
   createdAt: Date;
 }
 
 export interface ReviewReport {
   id: number;
-  reportedBy: User;
+  reportedBy: UserPreview;
   reason: ReportReason;
   comment?: string;
   reportedAt: Date;

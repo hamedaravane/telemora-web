@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useOrdersData } from '@/libs/orders/orders-api';
 import AppLayout from '@/components/app-layout';
-import { Badge, Button, Card, CardBody, CardHeader, Divider, Spinner } from '@heroui/react';
+import { Button, Card, CardBody, CardHeader, Divider, Spinner } from '@heroui/react';
 import { Order, OrderItem } from '@/libs/orders/types';
 import { format } from 'date-fns';
 import { FaBoxOpen, FaChevronRight, FaTruck, FaWallet } from 'react-icons/fa6';
@@ -37,17 +37,17 @@ export default function OrdersPage() {
 
   return (
     <AppLayout>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-center">My Orders</h1>
-        <p className="text-gray-500 text-sm text-center mt-1">
+      <div className="mb-6 mx-4">
+        <h1 className="text-2xl font-bold">My Orders</h1>
+        <p className=" text-sm mt-1">
           Track your purchases and check order status.
         </p>
       </div>
 
       {orders?.length === 0 ? (
         <div className="flex flex-col items-center text-center mt-20">
-          <FaBoxOpen className="w-16 h-16 text-gray-300 mb-4" />
-          <p className="text-gray-500 mb-4">You haven’t placed any orders yet.</p>
+          <FaBoxOpen className="w-16 h-16  mb-4" />
+          <p className=" mb-4">You haven’t placed any orders yet.</p>
           <Button onPress={goToMarket}>Go to Marketplace</Button>
         </div>
       ) : (
@@ -69,21 +69,19 @@ function OrderCard({ order }: { order: Order }) {
     <Card className="shadow-md rounded-xl">
       <CardHeader className="flex items-center justify-between px-4 pt-4">
         <div>
-          <h2 className="text-sm font-semibold text-gray-800">Order #{order.id}</h2>
-          <p className="text-xs text-gray-500">{formattedDate}</p>
+          <h2 className="text-sm font-semibold">Order #{order.id}</h2>
+          <p className="text-xs">{formattedDate}</p>
         </div>
-        <Badge size="sm" color={getStatusColor(order.status)} className="capitalize">
-          {order.status}
-        </Badge>
+        <div className="text-xs rounded px-1 border">{order.status}</div>
       </CardHeader>
 
       <CardBody className="px-4 pb-4 space-y-3">
         {/* Store Info */}
         <div className="text-sm">
-          <p className="text-gray-700">
+          <p className="">
             <span className="font-medium">Store:</span> {order.store.name}
           </p>
-          <p className="text-gray-700">
+          <p className="">
             <span className="font-medium">Total:</span> ${order.totalAmount.toFixed(2)}
           </p>
         </div>
@@ -93,7 +91,7 @@ function OrderCard({ order }: { order: Order }) {
         {/* Items */}
         <div className="space-y-1">
           {order.items.map((item: OrderItem) => (
-            <div key={item.id} className="flex justify-between text-sm text-gray-600">
+            <div key={item.id} className="flex justify-between text-sm ">
               <span>
                 {item.product.name} x {item.quantity}
               </span>
@@ -105,8 +103,8 @@ function OrderCard({ order }: { order: Order }) {
         {/* Shipment */}
         {order.shipment && (
           <div className="mt-3">
-            <div className="flex items-center gap-2 text-gray-600 mb-1">
-              <FaTruck className="w-4 h-4" />
+            <div className="flex items-center gap-2  mb-1">
+              <FaTruck />
               <p className="text-sm font-medium">Shipment</p>
             </div>
             <p className="text-xs">Courier: {order.shipment.courierService}</p>
@@ -120,8 +118,8 @@ function OrderCard({ order }: { order: Order }) {
         {/* Payment */}
         {order.payment && (
           <div className="mt-3">
-            <div className="flex items-center gap-2 text-gray-600 mb-1">
-              <FaWallet className="w-4 h-4" />
+            <div className="flex items-center gap-2  mb-1">
+              <FaWallet />
               <p className="text-sm font-medium">Payment</p>
             </div>
             <p className="text-xs">Status: {order.payment.status}</p>
@@ -136,7 +134,7 @@ function OrderCard({ order }: { order: Order }) {
               Complete Payment
             </Button>
           )}
-          <Button variant="ghost" size="sm" endContent={<FaChevronRight className="w-4 h-4" />}>
+          <Button variant="flat" size="sm" endContent={<FaChevronRight />}>
             View Details
           </Button>
         </div>

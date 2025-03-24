@@ -1,4 +1,4 @@
-import { Store } from '@/libs/stores/types';
+import { Store, StorePreview } from '@/libs/stores/types';
 import { Review } from '@/libs/reviews/types';
 
 /**
@@ -20,6 +20,24 @@ export interface Product {
   description?: string;
   imageUrl: string;
   store: Store;
+  productType: ProductType;
+  attributes: ProductAttribute[];
+  variants: ProductVariant[];
+  reviews: Review[];
+  downloadLink?: string;
+  stock?: number;
+  isApproved: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ProductPreview {
+  id: number;
+  name: string;
+  price: number;
+  description?: string;
+  imageUrl: string;
+  store: StorePreview;
   productType: ProductType;
   attributes: ProductAttribute[];
   variants: ProductVariant[];
@@ -76,13 +94,4 @@ export interface UpdateProductDto {
   stock?: number;
   attributes?: CreateProductAttributeDto[];
   variants?: CreateProductVariantDto[];
-}
-
-export interface ProductPreview {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  productType: ProductType;
-  stock?: number;
 }
