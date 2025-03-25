@@ -61,10 +61,10 @@ export default function MarketPage() {
           <h2 className="text-lg font-bold mb-4">Top-Rated Stores</h2>
           <div className="flex space-x-4 overflow-x-auto pb-2">
             {marketPageData?.topRatedStores.map((store) => (
-              <Link key={store.id} href={`/store/${store.id}`} className="">
+              <Link key={store.id} href={`/stores/${store.id}`} className="">
                 <div className="w-24 p-2 rounded text-center">
                   <Image
-                    src={store.logoUrl ?? '/images/default-store-logo.png'}
+                    src={store.logoUrl ?? '/images/default-stores-logo.png'}
                     alt={store.name}
                     width={50}
                     height={50}
@@ -97,7 +97,7 @@ const ProductCard: React.FC<{ product: ProductPreview }> = ({
   product: ProductPreview;
 }) => {
   return (
-    <Link href={`/product/${product.id}`}>
+    <Link href={`/src/app/stores/%5Bid%5D/products/${product.id}`}>
       <Card className="p-2">
         <Image
           src={product.imageUrl}

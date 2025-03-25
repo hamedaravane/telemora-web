@@ -57,7 +57,7 @@ export default function CreateStoreLogoUpload() {
           canvas.toBlob(
             (blob) => {
               if (blob) {
-                const compressedFile = new File([blob], 'store-logo.png', { type: 'image/png' });
+                const compressedFile = new File([blob], 'stores-logo.png', { type: 'image/png' });
                 resolve(compressedFile);
               } else {
                 resolve(null);

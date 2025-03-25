@@ -37,7 +37,7 @@ export function generateMockOrder(id: number = 0): Order {
 export function generateMockOrderItem(id: number = 0): OrderItem {
   return {
     id,
-    product: {} as Product, // TODO: generate mock product
+    product: {} as Product, // TODO: generate mock products
     quantity: faker.number.int(3),
     totalPrice: +faker.finance.amount(),
   };

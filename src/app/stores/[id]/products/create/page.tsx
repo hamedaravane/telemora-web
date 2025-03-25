@@ -82,7 +82,7 @@ export default function CreateProductPage() {
       router.push(`/stores/${result.store.id}`);
     } catch (error) {
       console.error(error);
-      toast.error('Failed to create product');
+      toast.error('Failed to create products');
     }
   };
 

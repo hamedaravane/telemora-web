@@ -13,7 +13,7 @@ export default function CreateStoreBasicInformation() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    document.getElementById('store-name')?.focus();
+    document.getElementById('stores-name')?.focus();
   }, []);
 
   const validateForm = () => {

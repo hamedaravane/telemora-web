@@ -135,25 +135,3 @@ function OrderCard({ order }: { order: Order }) {
     </Card>
   );
 }
-
-function getStatusColor(
-  status: string,
-): 'warning' | 'primary' | 'success' | 'danger' | 'default' | 'secondary' {
-  switch (status) {
-    case 'pending':
-      return 'warning';
-    case 'confirmed':
-    case 'processing':
-      return 'secondary';
-    case 'shipped':
-      return 'primary';
-    case 'delivered':
-    case 'completed':
-      return 'success';
-    case 'canceled':
-    case 'refunded':
-      return 'danger';
-    default:
-      return 'default';
-  }
-}

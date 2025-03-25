@@ -48,7 +48,7 @@ export function StoreCreationProvider({ children }: { children: React.ReactNode 
 
   const submitStore = async () => {
     try {
-      console.log('Submitting store data:', storeData);
+      console.log('Submitting stores data:', storeData);
 
       await createBasicInfo(storeData);
 
@@ -68,7 +68,7 @@ export function StoreCreationProvider({ children }: { children: React.ReactNode 
 
       console.log('Store created successfully!');
     } catch (error) {
-      console.error('Error submitting store:', error);
+      console.error('Error submitting stores:', error);
     }
   };
 

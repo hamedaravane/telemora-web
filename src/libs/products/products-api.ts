@@ -116,7 +116,7 @@ export function useCreateProductMutation() {
   return useMutation({
     mutationFn: createProduct,
     onSuccess: (newProduct) => {
-      queryClient.invalidateQueries({ queryKey: ['store-products'] });
+      queryClient.invalidateQueries({ queryKey: ['stores-products'] });
     },
   });
 }

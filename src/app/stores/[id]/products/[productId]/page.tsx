@@ -8,9 +8,9 @@
  * and **UI/UX best practices**.
  *
  * ## Purpose
- * The goal of this page is to **persuade** users to purchase a product or service by:
- * - Providing **clear, compelling product information**.
- * - **Building trust** through store details, reviews, and transparency.
+ * The goal of this page is to **persuade** users to purchase a products or service by:
+ * - Providing **clear, compelling products information**.
+ * - **Building trust** through stores details, reviews, and transparency.
  * - Encouraging users to **add products to their order** and **proceed to checkout**.
  *
  * ## Product Data Structure
@@ -23,7 +23,7 @@
  *   price: number;
  *   description?: string;
  *   imageUrl: string;
- *   store: Store;
+ *   stores: Store;
  *   productType: ProductType;
  *   attributes: ProductAttribute[];
  *   variants: ProductVariant[];
@@ -38,24 +38,24 @@
  *
  * ## Key Design Considerations
  * - **Compelling Visuals**
- *   - Display the **product image** prominently with zoom capabilities.
+ *   - Display the **products image** prominently with zoom capabilities.
  *   - Ensure **price & key details** are instantly visible.
  *   - Provide a **clear CTA button ("Buy Now")** at the top and bottom of the page.
  *
  * - **Trust & Transparency**
- *   - Show **store information** to build credibility.
+ *   - Show **stores information** to build credibility.
  *   - Display **user reviews** with a clear breakdown of ratings.
- *   - Highlight if the product is **approved** by the platform.
+ *   - Highlight if the products is **approved** by the platform.
  *
  * - **Optimized Purchase Flow**
  *   - Users can **select variants** (if available).
- *   - If the **product is digital**, show the **download process** after purchase.
- *   - If the **product is physical**, show **shipping & stock information**.
+ *   - If the **products is digital**, show the **download process** after purchase.
+ *   - If the **products is physical**, show **shipping & stock information**.
  *   - Show an **"Add to Cart" button** that leads users to **checkout in the Orders Page**.
  *
  * - **Seamless Checkout Integration**
- *   - After adding a product to an order, **display a checkout button**.
- *   - Redirect users to the **Order Details Page** (`src/app/orders/[id]/page.tsx`) to finalize payment.
+ *   - After adding a products to an order, **display a checkout button**.
+ *   - Redirect users to the **Order Details Page** (`src/app/orders/[productId]/page.tsx`) to finalize payment.
  *
  * ## UI/UX Guidelines
  * - Use **HeroUI** pre-built components for styling.
@@ -68,7 +68,7 @@
  * - **Product Recommendations:** Show similar products to increase engagement.
  * - **Animated Transitions:** Use smooth interactions to enhance user experience.
  *
- * TODO: Implement a high-converting product details page that effectively leads users to checkout.
+ * TODO: Implement a high-converting products details page that effectively leads users to checkout.
  */
 
 import { Button, Spinner } from '@heroui/react';

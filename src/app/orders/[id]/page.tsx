@@ -14,7 +14,7 @@
  * export interface Order {
  *   id: number;
  *   buyer: User;
- *   store: Store;
+ *   stores: Store;
  *   status: OrderStatus;
  *   items: OrderItem[];
  *   shipment: OrderShipment;
