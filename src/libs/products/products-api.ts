@@ -1,7 +1,7 @@
-import {Product, ProductType} from '@/libs/products/types';
+import { CreateProductDto, Product, ProductType } from '@/libs/products/types';
 import { Store } from '@/libs/stores/types';
-import {useQuery} from "@tanstack/react-query";
-import {undefined} from "valibot";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -76,7 +76,7 @@ export function getProducts(): Product[] {
   ];
 }
 
-async function getProductById(id: number): Promise<Product>{
+async function getProductById(id: number): Promise<Product> {
   return {
     id,
     name: 'Smartwatch',
@@ -92,16 +92,31 @@ async function getProductById(id: number): Promise<Product>{
     variants: [],
     createdAt: new Date(),
     updatedAt: new Date(),
-  }
+  };
 }
 
-export function useGetProductById(id: number | null){
-
+export function useGetProductById(id: number | null) {
   return useQuery<Product>({
     queryKey: ['getProductById', id],
     queryFn: () => getProductById(id!),
     staleTime: 1000 * 60 * 5,
     retry: 2,
     enabled: id !== null,
+  });
+}
+
+export async function createProduct(form: CreateProductDto): Promise<Product> {
+  const response = await axios.post(`${API_BASE_URL}/products`, form);
+  return response.data;
+}
+
+export function useCreateProductMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createProduct,
+    onSuccess: (newProduct) => {
+      queryClient.invalidateQueries({ queryKey: ['store-products'] });
+    },
   });
 }

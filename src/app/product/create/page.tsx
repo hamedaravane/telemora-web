@@ -1,234 +1,221 @@
 'use client';
 
+import { Button, Input, Select, SelectItem, Textarea } from '@heroui/react';
 import React, { useState } from 'react';
-import { Button, Chip, Divider, Input, Select, SelectItem, Textarea, Tooltip } from '@heroui/react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { FaPlus, FaTrash } from 'react-icons/fa6';
-import { useRouter } from 'next/navigation';
-import { CreateProductDto, ProductType } from '@/libs/products/types';
 import AppLayout from '@/components/app-layout';
+import toast from 'react-hot-toast';
+import { useCreateProductMutation } from '@/libs/products/products-api';
+import { useRouter } from 'next/navigation';
+import { ProductType } from '@/libs/products/types';
+
+const schema = z.object({
+  name: z.string().min(2, 'Name is required'),
+  price: z.number({ invalid_type_error: 'Price must be a number' }).positive(),
+  description: z.string().optional(),
+  imageUrl: z.string().url('Must be a valid URL'),
+  productType: z.nativeEnum(ProductType),
+  stock: z.number().optional(),
+  downloadLink: z.string().url().optional(),
+  attributes: z
+    .array(
+      z.object({
+        attributeName: z.string().min(1),
+        attributeValue: z.string().min(1),
+      }),
+    )
+    .optional(),
+  variants: z
+    .array(
+      z.object({
+        variantName: z.string().min(1),
+        variantValue: z.string().min(1),
+        additionalPrice: z.number().optional(),
+      }),
+    )
+    .optional(),
+});
+
+type FormSchema = z.infer<typeof schema>;
 
 export default function CreateProductPage() {
-  const router = useRouter();
-
-  const [form, setForm] = useState<CreateProductDto>({
-    name: '',
-    price: 0,
-    description: '',
-    imageUrl: '',
-    productType: ProductType.PHYSICAL,
-    stock: undefined,
-    downloadLink: '',
-    attributes: [],
-    variants: [],
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<FormSchema>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      productType: ProductType.PHYSICAL,
+      attributes: [],
+      variants: [],
+    },
   });
 
-  const [newAttribute, setNewAttribute] = useState({ name: '', value: '' });
-  const [newVariant, setNewVariant] = useState({ name: '', value: '', price: '' });
+  const productType = watch('productType');
+  const [previewUrl, setPreviewUrl] = useState<string>('');
 
-  const handleChange = <T extends keyof CreateProductDto>(key: T, value: CreateProductDto[T]) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  };
+  const {
+    fields: attributeFields,
+    append: appendAttribute,
+    remove: removeAttribute,
+  } = useFieldArray({ control, name: 'attributes' });
 
-  const handleAddAttribute = () => {
-    if (!newAttribute.name || !newAttribute.value) return;
-    handleChange('attributes', [
-      ...(form.attributes || []),
-      {
-        attributeName: newAttribute.name,
-        attributeValue: newAttribute.value,
-      },
-    ]);
-    setNewAttribute({ name: '', value: '' });
-  };
+  const {
+    fields: variantFields,
+    append: appendVariant,
+    remove: removeVariant,
+  } = useFieldArray({ control, name: 'variants' });
 
-  const handleAddVariant = () => {
-    if (!newVariant.name || !newVariant.value) return;
-    handleChange('variants', [
-      ...(form.variants || []),
-      {
-        variantName: newVariant.name,
-        variantValue: newVariant.value,
-        additionalPrice: parseFloat(newVariant.price) || 0,
-      },
-    ]);
-    setNewVariant({ name: '', value: '', price: '' });
-  };
+  const { mutateAsync: createProduct } = useCreateProductMutation();
+  const router = useRouter();
 
-  const handleRemoveAttribute = (index: number) => {
-    const updated = [...(form.attributes || [])];
-    updated.splice(index, 1);
-    handleChange('attributes', updated);
-  };
-
-  const handleRemoveVariant = (index: number) => {
-    const updated = [...(form.variants || [])];
-    updated.splice(index, 1);
-    handleChange('variants', updated);
-  };
-
-  const handleSubmit = async () => {
-    // TODO: Replace with actual API integration
-    console.log('Submitted Product:', form);
-    router.push('/store/products'); // or confirmation page
+  const onSubmit = async (data: FormSchema) => {
+    try {
+      const result = await createProduct(data);
+      toast.success('Product created successfully!');
+      router.push(`/stores/${result.store.id}`);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to create product');
+    }
   };
 
   return (
     <AppLayout>
-      <div className="pb-16">
-        <h1 className="text-2xl font-bold mb-4">Add New Product</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-20">
+        <h1 className="text-2xl font-bold">Create New Product</h1>
 
-        {/* Name */}
         <Input
           label="Product Name"
-          value={form.name}
-          onChange={(e) => handleChange('name', e.target.value)}
-          className="mb-4"
-          isRequired
+          {...register('name')}
+          isInvalid={!!errors.name}
+          errorMessage={errors.name?.message}
         />
 
-        {/* Price */}
         <Input
           label="Price (TON)"
           type="number"
-          value={form.price.toString()}
-          onChange={(e) => handleChange('price', parseFloat(e.target.value))}
-          className="mb-4"
-          isRequired
+          {...register('price', { valueAsNumber: true })}
+          isInvalid={!!errors.price}
+          errorMessage={errors.price?.message}
         />
 
-        {/* Description */}
         <Textarea
           label="Description"
-          value={form.description}
-          onChange={(e) => handleChange('description', e.target.value)}
-          className="mb-4"
+          {...register('description')}
+          placeholder="Write a short product description..."
         />
 
-        {/* Image URL */}
         <Input
-          label="Product Image URL"
-          value={form.imageUrl}
-          onChange={(e) => handleChange('imageUrl', e.target.value)}
-          className="mb-4"
-          isRequired
+          label="Image URL"
+          {...register('imageUrl')}
+          onChange={(e) => {
+            setPreviewUrl(e.target.value);
+          }}
+          isInvalid={!!errors.imageUrl}
+          errorMessage={errors.imageUrl?.message}
         />
 
-        {/* Product Type */}
-        <Select
-          label="Product Type"
-          selectedKeys={new Set([form.productType])}
-          onSelectionChange={(keys) => {
-            const type = Array.from(keys)[0] as ProductType;
-            handleChange('productType', type);
-          }}
-          className="mb-4"
-        >
-          {Object.values(ProductType).map((type) => (
-            <SelectItem key={type}>{type}</SelectItem>
+        {previewUrl && (
+          <img src={previewUrl} alt="Preview" className="w-full rounded-xl border mt-2" />
+        )}
+
+        <Select label="Product Type" selectedKeys={new Set([productType])}>
+          {Object.entries(ProductType).map(([key, value]) => (
+            <SelectItem key={key}>{value}</SelectItem>
           ))}
         </Select>
 
-        {/* Conditional Fields */}
-        {form.productType === ProductType.PHYSICAL && (
+        {productType === 'physical' && (
           <Input
-            label="Stock"
+            label="Stock Quantity"
             type="number"
-            value={form.stock?.toString() || ''}
-            onChange={(e) => handleChange('stock', parseInt(e.target.value))}
-            className="mb-4"
+            {...register('stock', { valueAsNumber: true })}
           />
         )}
 
-        {form.productType === ProductType.DIGITAL && (
+        {productType === 'digital' && (
           <Input
             label="Download Link"
-            value={form.downloadLink || ''}
-            onChange={(e) => handleChange('downloadLink', e.target.value)}
-            className="mb-4"
+            {...register('downloadLink')}
+            isInvalid={!!errors.downloadLink}
+            errorMessage={errors.downloadLink?.message}
           />
         )}
 
-        <Divider className="my-6" />
-
         {/* Attributes */}
-        <h2 className="text-lg font-semibold mb-2">Attributes</h2>
-        <div className="flex gap-2 mb-2">
-          <Input
-            placeholder="Attribute Name"
-            value={newAttribute.name}
-            onChange={(e) => setNewAttribute((p) => ({ ...p, name: e.target.value }))}
-          />
-          <Input
-            placeholder="Value"
-            value={newAttribute.value}
-            onChange={(e) => setNewAttribute((p) => ({ ...p, value: e.target.value }))}
-          />
-          <Button size="sm" onPress={handleAddAttribute} variant="ghost">
-            <FaPlus />
-          </Button>
-        </div>
-        <div className="flex flex-wrap gap-2 mb-6">
-          {form.attributes?.map((attr, i) => (
-            <Chip
-              key={i}
-              color="primary"
-              endContent={
-                <Tooltip content="Remove">
-                  <FaTrash className="cursor-pointer" onClick={() => handleRemoveAttribute(i)} />
-                </Tooltip>
-              }
-            >
-              {attr.attributeName}: {attr.attributeValue}
-            </Chip>
+        <section>
+          <h2 className="font-semibold mb-2">Attributes</h2>
+          {attributeFields.map((field, index) => (
+            <div key={field.id} className="flex items-center gap-2 mb-2">
+              <Input {...register(`attributes.${index}.attributeName`)} placeholder="Name" />
+              <Input {...register(`attributes.${index}.attributeValue`)} placeholder="Value" />
+              <Button variant="light" size="sm" onPress={() => removeAttribute(index)}>
+                <FaTrash />
+              </Button>
+            </div>
           ))}
-        </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            startContent={<FaPlus />}
+            onPress={() => appendAttribute({ attributeName: '', attributeValue: '' })}
+          >
+            Add Attribute
+          </Button>
+        </section>
 
         {/* Variants */}
-        <h2 className="text-lg font-semibold mb-2">Variants</h2>
-        <div className="flex flex-col gap-2 mb-2">
-          <div className="flex gap-2">
-            <Input
-              placeholder="Variant Name"
-              value={newVariant.name}
-              onChange={(e) => setNewVariant((p) => ({ ...p, name: e.target.value }))}
-            />
-            <Input
-              placeholder="Value"
-              value={newVariant.value}
-              onChange={(e) => setNewVariant((p) => ({ ...p, value: e.target.value }))}
-            />
-          </div>
-          <div className="flex gap-2">
-            <Input
-              placeholder="Additional Price"
-              type="number"
-              value={newVariant.price}
-              onChange={(e) => setNewVariant((p) => ({ ...p, price: e.target.value }))}
-            />
-            <Button size="sm" onPress={handleAddVariant} variant="ghost">
-              <FaPlus />
-            </Button>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-2 mb-8">
-          {form.variants?.map((variant, i) => (
-            <Chip
-              key={i}
-              color="secondary"
-              endContent={
-                <FaTrash className="cursor-pointer" onClick={() => handleRemoveVariant(i)} />
-              }
-            >
-              {variant.variantName} - {variant.variantValue} (+{variant.additionalPrice} TON)
-            </Chip>
+        <section>
+          <h2 className="font-semibold mb-2">Variants</h2>
+          {variantFields.map((field, index) => (
+            <div key={field.id} className="flex items-center gap-2 mb-2">
+              <Input {...register(`variants.${index}.variantName`)} placeholder="Name" />
+              <Input {...register(`variants.${index}.variantValue`)} placeholder="Value" />
+              <Input
+                {...register(`variants.${index}.additionalPrice`, {
+                  valueAsNumber: true,
+                })}
+                placeholder="Extra Price"
+                type="number"
+              />
+              <Button variant="light" size="sm" onPress={() => removeVariant(index)}>
+                <FaTrash />
+              </Button>
+            </div>
           ))}
-        </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            startContent={<FaPlus />}
+            onPress={() =>
+              appendVariant({
+                variantName: '',
+                variantValue: '',
+                additionalPrice: 0,
+              })
+            }
+          >
+            Add Variant
+          </Button>
+        </section>
 
-        {/* Submit */}
-        <Button color="primary" onPress={handleSubmit} fullWidth>
-          Create Product
+        <Button
+          type="submit"
+          color="primary"
+          fullWidth
+          isDisabled={isSubmitting}
+          isLoading={isSubmitting}
+        >
+          {isSubmitting ? 'Creating...' : 'Create Product'}
         </Button>
-      </div>
+      </form>
     </AppLayout>
   );
 }
