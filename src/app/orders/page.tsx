@@ -39,9 +39,7 @@ export default function OrdersPage() {
     <AppLayout>
       <div className="mb-6 mx-4">
         <h1 className="text-2xl font-bold">My Orders</h1>
-        <p className=" text-sm mt-1">
-          Track your purchases and check order status.
-        </p>
+        <p className=" text-sm mt-1">Track your purchases and check order status.</p>
       </div>
 
       {orders?.length === 0 ? (
@@ -76,7 +74,6 @@ function OrderCard({ order }: { order: Order }) {
       </CardHeader>
 
       <CardBody className="px-4 pb-4 space-y-3">
-        {/* Store Info */}
         <div className="text-sm">
           <p className="">
             <span className="font-medium">Store:</span> {order.store.name}
@@ -88,7 +85,6 @@ function OrderCard({ order }: { order: Order }) {
 
         <Divider />
 
-        {/* Items */}
         <div className="space-y-1">
           {order.items.map((item: OrderItem) => (
             <div key={item.id} className="flex justify-between text-sm ">
@@ -100,7 +96,6 @@ function OrderCard({ order }: { order: Order }) {
           ))}
         </div>
 
-        {/* Shipment */}
         {order.shipment && (
           <div className="mt-3">
             <div className="flex items-center gap-2  mb-1">
@@ -115,7 +110,6 @@ function OrderCard({ order }: { order: Order }) {
           </div>
         )}
 
-        {/* Payment */}
         {order.payment && (
           <div className="mt-3">
             <div className="flex items-center gap-2  mb-1">
@@ -127,7 +121,6 @@ function OrderCard({ order }: { order: Order }) {
           </div>
         )}
 
-        {/* CTA Buttons */}
         <div className="pt-2 flex justify-end gap-2">
           {isPaymentPending && (
             <Button variant="bordered" size="sm">
