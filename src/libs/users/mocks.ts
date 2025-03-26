@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { UserPublicPreview, UserRole, UserSummary } from './types';
+import { UserPrivateProfile, UserPublicPreview, UserRole, UserSummary } from './types';
 import { generateMockAddress } from '@/libs/location/mocks';
 
 export function generateMockUserPublicPreview(): UserPublicPreview {
@@ -20,5 +20,17 @@ export function generateMockUserSummary(): UserSummary {
     lastName: faker.person.lastName(),
     role: faker.helpers.arrayElement(Object.values(UserRole)),
     address: generateMockAddress(),
+  };
+}
+
+export function generateMockUserPrivateProfile(): UserPrivateProfile {
+  return {
+    ...generateMockUserSummary(),
+    telegramId: faker.string.alphanumeric(),
+    phoneNumber: faker.phone.number(),
+    email: faker.internet.email(),
+    walletAddress: faker.finance.ethereumAddress(),
+    stores: [],
+    orders: [],
   };
 }
