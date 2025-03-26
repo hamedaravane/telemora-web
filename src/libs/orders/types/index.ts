@@ -1,13 +1,7 @@
-import { UserPreview } from '@/libs/users/types';
-import { StorePreview } from '@/libs/stores/types';
-import { PaymentPreview } from '@/libs/payments/types';
 import { ProductPreview } from '@/libs/products/types';
-
-/**
- * Models in this file are implemented according to the backend project specifications.
- * It is strongly recommended **not** to modify them under any circumstances.
- * Any changes to these models may destabilize or even break the entire system.
- */
+import { StorePreview } from '@/libs/stores/types';
+import { PaymentSummary } from '@/libs/payments/types';
+import { UserSummary } from '@/libs/users/types';
 
 export enum OrderStatus {
   PENDING = 'pending',
@@ -20,30 +14,33 @@ export enum OrderStatus {
   REFUNDED = 'refunded',
 }
 
-export interface Order {
-  id: number;
-  buyer: UserPreview;
-  store: StorePreview;
-  status: OrderStatus;
-  items: OrderItem[];
-  shipment: OrderShipment;
-  payment: PaymentPreview;
-  totalAmount: number;
-  deliveryDate: Date;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface OrderItem {
-  id: number;
+export interface OrderItemPreview {
   product: ProductPreview;
   quantity: number;
   totalPrice: number;
 }
 
+export interface OrderSummary {
+  id: number | string;
+  status: OrderStatus;
+  totalAmount: number;
+  store: StorePreview;
+  deliveryDate: Date;
+  createdAt: Date;
+}
+
+export interface OrderDetail extends OrderSummary {
+  items: OrderItemPreview[];
+  shipment?: OrderShipment;
+  payment?: PaymentSummary;
+  buyer: UserSummary;
+}
+
 export interface OrderShipment {
   id: number;
   trackingNumber: string;
+  carrierTrackingUrl?: string;
+  status?: 'created' | 'in_transit' | 'delivered' | 'failed';
   courierService: string;
   deliveryEstimate: Date;
   shippedAt: Date;

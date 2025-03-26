@@ -1,11 +1,6 @@
-import { Store, StorePreview } from '@/libs/stores/types';
-import { Review } from '@/libs/reviews/types';
-
-/**
- * Models in this file are implemented according to the backend project specifications.
- * It is strongly recommended **not** to modify them under any circumstances.
- * Any changes to these models may destabilize or even break the entire system.
- */
+import { StorePreview } from '@/libs/stores/types';
+import { ReviewPreview } from '@/libs/reviews/types';
+import { Media } from '@/types';
 
 export enum ProductType {
   PHYSICAL = 'physical',
@@ -13,40 +8,27 @@ export enum ProductType {
   SERVICE = 'service',
 }
 
-export interface Product {
-  id: number;
+export interface ProductPreview {
+  id: number | string;
   name: string;
+  slug?: string;
   price: number;
-  description?: string;
-  imageUrl: string;
-  store: Store;
-  productType: ProductType;
-  attributes: ProductAttribute[];
-  variants: ProductVariant[];
-  reviews: Review[];
-  downloadLink?: string;
-  stock?: number;
-  isApproved: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  image: Media;
 }
 
-export interface ProductPreview {
-  id: number;
-  name: string;
-  price: number;
-  description?: string;
-  imageUrl: string;
-  store: StorePreview;
+export interface ProductSummary extends ProductPreview {
   productType: ProductType;
-  attributes: ProductAttribute[];
-  variants: ProductVariant[];
-  reviews: Review[];
-  downloadLink?: string;
+  store: StorePreview;
+}
+
+export interface ProductDetail extends ProductSummary {
+  description?: string;
+  attributes?: ProductAttribute[];
+  variants?: ProductVariant[];
   stock?: number;
-  isApproved: boolean;
+  downloadLink?: string;
+  reviews?: ReviewPreview[];
   createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface ProductAttribute {

@@ -1,11 +1,5 @@
-import { Order } from '@/libs/orders/types';
-import { User, UserPreview } from '@/libs/users/types';
-
-/**
- * Models in this file are implemented according to the backend project specifications.
- * It is strongly recommended **not** to modify them under any circumstances.
- * Any changes to these models may destabilize or even break the entire system.
- */
+import { OrderSummary } from '@/libs/orders/types';
+import { UserSummary } from '@/libs/users/types';
 
 export enum PaymentStatus {
   PENDING = 'pending',
@@ -15,32 +9,21 @@ export enum PaymentStatus {
   REFUNDED = 'refunded',
 }
 
-export interface Payment {
-  id: string;
-  paymentId: string;
-  order: Order;
-  user: User;
-  amount: string;
+export interface PaymentSummary {
+  id: number | string;
   status: PaymentStatus;
+  amount: string;
   transactionHash: string;
-  fromWalletAddress: string;
-  toWalletAddress: string;
-  gasFee: string;
-  commission: string;
+  createdAt: Date;
 }
 
-export interface PaymentPreview {
-  id: string;
-  paymentId: string;
-  order: Order;
-  user: UserPreview;
-  amount: string;
-  status: PaymentStatus;
-  transactionHash: string;
-  fromWalletAddress: string;
-  toWalletAddress: string;
-  gasFee: string;
-  commission: string;
+export interface PaymentDetail extends PaymentSummary {
+  gasFee?: string;
+  commission?: string;
+  fromWalletAddress?: string;
+  toWalletAddress?: string;
+  order: OrderSummary;
+  user: UserSummary;
 }
 
 export interface CreatePaymentDto {

@@ -1,13 +1,6 @@
-import { City, Country, State } from '@/libs/location/types';
-import { User } from '@/libs/users/types';
-import { Order } from '@/libs/orders/types';
-import { ProductPreview } from '@/libs/products/types';
-
-/**
- * Models in this file are implemented according to the backend project specifications.
- * It is strongly recommended **not** to modify them under any circumstances.
- * Any changes to these models may destabilize or even break the entire system.
- */
+import { UserSummary } from '@/libs/users/types';
+import { Media } from '@/types';
+import { Address } from '@/libs/location/types';
 
 export enum StoreCategory {
   ELECTRONICS = 'Electronics',
@@ -73,42 +66,28 @@ export enum StoreCategory {
   OTHER = 'Other',
 }
 
-export interface Store {
-  id: number;
+export interface StorePreview {
+  id: number | string;
   name: string;
-  logoUrl?: string;
-  description?: string;
-  category: StoreCategory;
-  owner: User;
-  admins: User[];
-  products: ProductPreview[];
-  orders: Order[];
-  contactNumber?: string;
-  email?: string;
-  country?: Country;
-  state?: State;
-  city?: City;
-  socialMediaLinks?: { [platform: string]: string };
+  slug?: string;
+  logo?: Media;
   reputation: number;
-  workingHours?: Record<string, { open: string; close: string }>;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date;
+  isActive: boolean;
 }
 
-export interface StorePreview {
-  id: number;
-  name: string;
-  logoUrl?: string;
-  description?: string;
+export interface StoreSummary extends StorePreview {
   category: StoreCategory;
+  address: Address;
+}
+
+export interface StoreDetail extends StoreSummary {
+  description?: string;
+  owner: UserSummary;
   contactNumber?: string;
   email?: string;
-  country?: Country;
-  state?: State;
-  city?: City;
-  reputation: number;
+  socialMediaLinks?: Record<string, string>;
   workingHours?: Record<string, { open: string; close: string }>;
+  createdAt: Date;
 }
 
 export interface CreateStoreBasicDto {
@@ -118,10 +97,15 @@ export interface CreateStoreBasicDto {
   email?: string;
 }
 
-export interface CreateStoreLocationDto {
-  country?: number;
-  state?: number;
-  city?: number;
+export interface CreateAddressDto {
+  countryId: number;
+  stateId?: number;
+  cityId?: number;
+  streetLine1: string;
+  streetLine2?: string;
+  postalCode?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface CreateStoreCategoryDto {

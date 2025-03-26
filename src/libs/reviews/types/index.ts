@@ -1,11 +1,4 @@
-import { UserPreview } from '@/libs/users/types';
-import { ProductPreview } from '@/libs/products/types';
-
-/**
- * Models in this file are implemented according to the backend project specifications.
- * It is strongly recommended **not** to modify them under any circumstances.
- * Any changes to these models may destabilize or even break the entire system.
- */
+import { UserPublicPreview } from '@/libs/users/types';
 
 export enum ReportReason {
   SPAM = 'Spam',
@@ -26,30 +19,33 @@ export enum ReportReason {
   OTHER = 'Other',
 }
 
-export interface Review {
-  id: number;
-  buyer: UserPreview;
-  product: ProductPreview;
+export interface ReviewPreview {
+  id: number | string;
   rating: number;
   comment?: string;
-  images?: string[];
-  videos?: string[];
-  replies: ReviewReply[];
-  reports: ReviewReport[];
+  productId: number | string;
+  buyer: UserPublicPreview;
   createdAt: Date;
-  updatedAt: Date;
 }
 
-export interface ReviewReply {
+export interface ReviewDetail extends ReviewPreview {
+  images?: string[];
+  videos?: string[];
+  replies: ReviewReplyPreview[];
+  reports: ReviewReportPreview[];
+  isFlagged?: boolean;
+}
+
+export interface ReviewReplyPreview {
   id: number;
-  seller: UserPreview;
+  seller: UserPublicPreview;
   replyText: string;
   createdAt: Date;
 }
 
-export interface ReviewReport {
+export interface ReviewReportPreview {
   id: number;
-  reportedBy: UserPreview;
+  reportedBy: UserPublicPreview;
   reason: ReportReason;
   comment?: string;
   reportedAt: Date;

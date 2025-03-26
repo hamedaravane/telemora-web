@@ -1,42 +1,45 @@
-import { Store, StoreCategory } from '@/libs/stores/types';
 import { faker } from '@faker-js/faker';
-import { ProductType } from '@/libs/products/types';
-import { generateMockUser } from '@/libs/users/mocks';
-import { generateMockCity, generateMockCountry, generateMockState } from '@/libs/location/mocks';
+import { StoreCategory, StoreDetail, StorePreview, StoreSummary } from './types';
+import { generateMockAddress } from '@/libs/location/mocks';
+import { generateMockUserSummary } from '@/libs/users/mocks';
 
-export function generateMockStores(count: number) {
-  return Array.from({ length: count }, (_, index): Store => generateMockStore(index));
+export function generateMockStorePreview(): StorePreview {
+  return {
+    id: faker.number.int(),
+    name: faker.company.name(),
+    slug: faker.helpers.slugify(faker.company.name()),
+    logo: {
+      url: faker.image.url(),
+      alt: faker.company.name(),
+    },
+    reputation: faker.number.float({ min: 1, max: 5, fractionDigits: 1 }),
+    isActive: true,
+  };
 }
 
-export function generateMockStore(id: number = 0): Store {
+export function generateMockStoreSummary(): StoreSummary {
   return {
-    id,
-    name: faker.company.buzzNoun(),
-    logoUrl: faker.image.urlPicsumPhotos(),
+    ...generateMockStorePreview(),
+    category: faker.helpers.arrayElement(Object.values(StoreCategory)),
+    address: generateMockAddress(),
+  };
+}
+
+export function generateMockStoreDetail(): StoreDetail {
+  return {
+    ...generateMockStoreSummary(),
     description: faker.lorem.paragraph(),
-    category: faker.helpers.enumValue(StoreCategory),
-    owner: generateMockUser(),
-    admins: [],
-    products: [
-      {
-        id: faker.number.int(100),
-        name: faker.commerce.productName(),
-        price: +faker.finance.amount(),
-        imageUrl: faker.image.urlPicsumPhotos(),
-        productType: faker.helpers.enumValue(ProductType),
-      },
-    ],
-    orders: [],
+    owner: generateMockUserSummary(),
     contactNumber: faker.phone.number(),
     email: faker.internet.email(),
-    country: generateMockCountry(),
-    state: generateMockState(),
-    city: generateMockCity(),
-    socialMediaLinks: { Instagram: faker.internet.username() },
-    reputation: faker.number.float({ min: 0, max: 5 }),
-    workingHours: {},
+    socialMediaLinks: {
+      instagram: faker.internet.url(),
+      twitter: faker.internet.url(),
+    },
+    workingHours: {
+      mon: { open: '09:00', close: '17:00' },
+      tue: { open: '09:00', close: '17:00' },
+    },
     createdAt: faker.date.past(),
-    updatedAt: faker.date.past(),
-    deletedAt: faker.date.past(),
   };
 }

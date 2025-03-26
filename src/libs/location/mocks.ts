@@ -1,35 +1,37 @@
-import { City, Country, State } from '@/libs/location/types';
 import { faker } from '@faker-js/faker';
+import { Address, CanonicalLocation } from './types';
 
-export function generateMockCountry(): Country {
+export function generateMockCanonicalLocation(type: CanonicalLocation['type']): CanonicalLocation {
   return {
-    id: faker.number.int(100),
-    code: faker.location.zipCode(),
-    name: faker.location.country(),
-    nameLocal: { fa: faker.location.country() },
-    phoneCode: faker.string.numeric(2),
-    currency: faker.finance.currencyName(),
-    region: faker.location.continent(),
-    capital: faker.location.city(),
-  };
-}
-
-export function generateMockState(): State {
-  return {
-    id: faker.number.int(100),
-    name: faker.location.state(),
-    code: faker.location.zipCode(),
-    nameLocal: { fa: faker.location.state() },
-  };
-}
-
-export function generateMockCity(): City {
-  return {
-    id: faker.number.int(100),
-    name: faker.location.city(),
-    nameLocal: { fa: faker.location.city() },
+    id: faker.number.int(),
+    name:
+      type === 'city'
+        ? faker.location.city()
+        : type === 'state'
+          ? faker.location.state()
+          : faker.location.country(),
+    type,
+    parentId: faker.number.int(),
     postalCode: faker.location.zipCode(),
-    latitude: faker.location.latitude(),
-    longitude: faker.location.longitude(),
+    latitude: Number(faker.location.latitude()),
+    longitude: Number(faker.location.longitude()),
+  };
+}
+
+export function generateMockAddress(): Address {
+  return {
+    id: faker.number.int(),
+    label: 'Home',
+    country: generateMockCanonicalLocation('country'),
+    state: generateMockCanonicalLocation('state'),
+    city: generateMockCanonicalLocation('city'),
+    streetLine1: faker.location.streetAddress(),
+    streetLine2: faker.location.secondaryAddress(),
+    postalCode: faker.location.zipCode(),
+    latitude: Number(faker.location.latitude()),
+    longitude: Number(faker.location.longitude()),
+    type: 'shipping',
+    isDefault: true,
+    createdAt: faker.date.past(),
   };
 }

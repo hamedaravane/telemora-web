@@ -1,26 +1,40 @@
-export interface Country {
+export interface CanonicalLocation {
   id: number;
-  code: string;
   name: string;
-  nameLocal: Record<string, string>;
-  phoneCode: string;
-  currency: string;
-  region: string;
-  capital: string;
+  type: 'country' | 'state' | 'city';
+  parentId?: number;
+  postalCode?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
-export interface State {
+export interface Address {
   id: number;
-  name: string;
-  code: string;
-  nameLocal: Record<string, string>;
+  label?: string;
+  country: CanonicalLocation;
+  state?: CanonicalLocation;
+  city?: CanonicalLocation;
+  fullText?: string;
+  streetLine1: string;
+  streetLine2?: string;
+  postalCode?: string;
+  latitude?: number;
+  longitude?: number;
+  type?: 'user' | 'store' | 'shipping' | 'billing' | 'pickup';
+  isDefault?: boolean;
+  createdAt: Date;
 }
 
-export interface City {
-  id: number;
-  name: string;
-  nameLocal: Record<string, string>;
-  postalCode: string;
-  latitude: number;
-  longitude: number;
+export interface RegionFilter {
+  countryId?: number;
+  stateId?: number;
+  cityId?: number;
+}
+
+export interface GeoFilter {
+  center: {
+    latitude: number;
+    longitude: number;
+  };
+  radiusKm: number;
 }

@@ -1,28 +1,24 @@
-import { User, UserRole } from '@/libs/users/types';
 import { faker } from '@faker-js/faker';
-import { generateMockCity, generateMockCountry, generateMockState } from '@/libs/location/mocks';
+import { UserPublicPreview, UserRole, UserSummary } from './types';
+import { generateMockAddress } from '@/libs/location/mocks';
 
-export function generateMockUser(id: number = 0): User {
+export function generateMockUserPublicPreview(): UserPublicPreview {
   return {
-    id,
-    telegramId: faker.number.octal(),
+    id: faker.number.int(),
+    username: faker.internet.username(),
+    handle: faker.helpers.slugify(faker.internet.username()),
+    photo: {
+      url: faker.image.url(),
+    },
+  };
+}
+
+export function generateMockUserSummary(): UserSummary {
+  return {
+    ...generateMockUserPublicPreview(),
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
-    username: faker.internet.username(),
-    languageCode: faker.string.alpha(),
-    hasTelegramPremium: faker.datatype.boolean(),
-    photoUrl: faker.image.urlPicsumPhotos(),
-    phoneNumber: faker.phone.number(),
-    email: faker.internet.email(),
-    role: faker.helpers.enumValue(UserRole),
-    walletAddress: faker.finance.ethereumAddress(),
-    country: generateMockCountry(),
-    state: generateMockState(),
-    city: generateMockCity(),
-    orders: [],
-    reviews: [],
-    stores: [],
-    payments: [],
-    createdAt: faker.date.past(),
+    role: faker.helpers.arrayElement(Object.values(UserRole)),
+    address: generateMockAddress(),
   };
 }
