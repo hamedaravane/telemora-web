@@ -8,7 +8,7 @@ const BottomNavigation = () => {
         <FaHome size={18} />
         <span className="text-xs">Market</span>
       </Link>
-      <Link className="flex flex-col items-center gap-y-1" href="/store">
+      <Link className="flex flex-col items-center gap-y-1" href="/stores">
         <FaStore size={18} />
         <span className="text-xs">Store</span>
       </Link>

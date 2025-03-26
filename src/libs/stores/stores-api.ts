@@ -8,7 +8,7 @@ import {
   Store,
 } from '@/libs/stores/types';
 import { useQuery } from '@tanstack/react-query';
-import { generateMockStore } from '@/libs/stores/mocks';
+import { generateMockStore, generateMockStores } from '@/libs/stores/mocks';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -18,7 +18,7 @@ export const fetchStores = async (): Promise<Store[]> => {
 };
 
 export const fetchMockStores = async (): Promise<Store[]> => {
-  return [];
+  return generateMockStores(2);
 };
 
 export function useStoresData() {

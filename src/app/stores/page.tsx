@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Card, CardBody, CardHeader, Spinner } from '@heroui/react';
+import { Button, Card, CardHeader, Spinner } from '@heroui/react';
 import { useUser } from '@/context/user-context';
 import Image from 'next/image';
 import { useStoresData } from '@/libs/stores/stores-api';
@@ -70,7 +70,7 @@ export default function StoreListPage() {
                     alt={`${store.name} logo`}
                     width={48}
                     height={48}
-                    className="rounded-full object-cover"
+                    className="rounded-full aspect-square object-cover"
                     unoptimized={false}
                     sizes="48px"
                   />
@@ -90,10 +90,6 @@ export default function StoreListPage() {
                   </p>
                 </div>
               </CardHeader>
-
-              <CardBody className="pt-0 pl-[60px]">
-                <p className="text-sm text-gray-500">Reputation: {store.reputation ?? 0}</p>
-              </CardBody>
             </Card>
           ))}
 
