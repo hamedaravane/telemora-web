@@ -33,7 +33,7 @@ export function generateMockStore(id: number = 0): Store {
     state: generateMockState(),
     city: generateMockCity(),
     socialMediaLinks: { Instagram: faker.internet.username() },
-    reputation: faker.number.int(5),
+    reputation: faker.number.float({ min: 0, max: 5 }),
     workingHours: {},
     createdAt: faker.date.past(),
     updatedAt: faker.date.past(),
