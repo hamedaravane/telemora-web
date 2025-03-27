@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { useOrdersData } from '@/libs/orders/orders-api';
 import AppLayout from '@/components/app-layout';
 import { Button, Card, CardBody, CardHeader, Divider, Spinner } from '@heroui/react';
-import { Order, OrderItem } from '@/libs/orders/types';
 import { format } from 'date-fns';
-import { FaBoxOpen, FaChevronRight, FaTruck, FaWallet } from 'react-icons/fa6';
+import { FaBoxOpen, FaChevronRight, FaWallet } from 'react-icons/fa6';
+import { OrderSummary } from '@/libs/orders/types';
 
 export default function OrdersPage() {
   const router = useRouter();
@@ -59,9 +59,8 @@ export default function OrdersPage() {
   );
 }
 
-function OrderCard({ order }: { order: Order }) {
+function OrderCard({ order }: { order: OrderSummary }) {
   const formattedDate = format(new Date(order.createdAt), 'PPP');
-  const isPaymentPending = order.payment.status === 'pending';
 
   return (
     <Card className="shadow-md rounded-xl">
@@ -85,44 +84,18 @@ function OrderCard({ order }: { order: Order }) {
 
         <Divider />
 
-        <div className="space-y-1">
-          {order.items.map((item: OrderItem) => (
-            <div key={item.id} className="flex justify-between text-sm ">
-              <span>
-                {item.product.name} x {item.quantity}
-              </span>
-              <span>${item.totalPrice.toFixed(2)}</span>
-            </div>
-          ))}
-        </div>
-
-        {order.shipment && (
-          <div className="mt-3">
-            <div className="flex items-center gap-2  mb-1">
-              <FaTruck />
-              <p className="text-sm font-medium">Shipment</p>
-            </div>
-            <p className="text-xs">Courier: {order.shipment.courierService}</p>
-            <p className="text-xs">Tracking: {order.shipment.trackingNumber}</p>
-            <p className="text-xs">
-              Estimated: {format(new Date(order.shipment.deliveryEstimate), 'PPP')}
-            </p>
-          </div>
-        )}
-
-        {order.payment && (
+        {order.status && (
           <div className="mt-3">
             <div className="flex items-center gap-2  mb-1">
               <FaWallet />
               <p className="text-sm font-medium">Payment</p>
             </div>
-            <p className="text-xs">Status: {order.payment.status}</p>
-            <p className="text-xs truncate">Tx Hash: {order.payment.transactionHash || 'N/A'}</p>
+            <p className="text-xs">Status: {order.status}</p>
           </div>
         )}
 
         <div className="pt-2 flex justify-end gap-2">
-          {isPaymentPending && (
+          {order.status === 'pending' && (
             <Button variant="bordered" size="sm">
               Complete Payment
             </Button>
