@@ -25,6 +25,8 @@ export interface ProductDetail extends ProductSummary {
   description?: string;
   attributes?: ProductAttribute[];
   variants?: ProductVariant[];
+  categoryId: number;
+  categoryPath?: ProductCategoryPath;
   stock?: number;
   downloadLink?: string;
   reviews?: ReviewPreview[];
@@ -76,4 +78,28 @@ export interface UpdateProductDto {
   stock?: number;
   attributes?: CreateProductAttributeDto[];
   variants?: CreateProductVariantDto[];
+}
+
+export interface ProductCategoryNode {
+  id: number;
+  name: string;
+  slug: string;
+  level: number;
+  parentId?: number;
+  children?: ProductCategoryNode[];
+}
+
+export type ProductCategoryTree = ProductCategoryNode[];
+export type ProductCategoryFlat = Omit<ProductCategoryNode, 'children'>;
+export type ProductCategoryMap = Record<number, ProductCategoryNode>;
+
+export type ProductCategoryPath = {
+  id: number;
+  name: string;
+  slug: string;
+}[];
+
+export interface ProductCategoryFilter {
+  categoryId?: number;
+  includeDescendants?: boolean;
 }

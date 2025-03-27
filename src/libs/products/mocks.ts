@@ -55,6 +55,19 @@ export function generateMockProductDetail(id: number): ProductDetail {
         additionalPrice: Number(faker.commerce.price({ min: 1, max: 20 })),
       }),
     ),
+    categoryId: faker.number.int(),
+    categoryPath: [
+      {
+        id: faker.number.int(),
+        name: faker.commerce.department(),
+        slug: faker.helpers.slugify(faker.commerce.department()),
+      },
+      {
+        id: faker.number.int(),
+        name: faker.commerce.productAdjective(),
+        slug: faker.helpers.slugify(faker.commerce.productAdjective()),
+      },
+    ],
     stock: faker.number.int({ min: 0, max: 100 }),
     downloadLink: productType === 'digital' ? faker.internet.url() : undefined,
     reviews: [generateMockReviewPreview(id), generateMockReviewPreview(id + 1)],

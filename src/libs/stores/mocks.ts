@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { StoreCategory, StoreDetail, StorePreview, StoreSummary } from './types';
+import { StoreDetail, StorePreview, StoreSummary } from './types';
 import { generateMockAddress } from '@/libs/location/mocks';
 import { generateMockUserSummary } from '@/libs/users/mocks';
 
@@ -20,7 +20,6 @@ export function generateMockStorePreview(): StorePreview {
 export function generateMockStoreSummary(): StoreSummary {
   return {
     ...generateMockStorePreview(),
-    category: faker.helpers.arrayElement(Object.values(StoreCategory)),
     address: generateMockAddress(),
   };
 }

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button, Input, Switch } from '@heroui/react';
 import { useStoreCreation } from '@/context/store-creation-context';
 import AppLayout from '@/components/app-layout';
-import { WorkingHourDto } from '@/libs/stores/types';
+import { WorkingHour } from '@/libs/stores/types';
 
 const DAYS: string[] = [
   'Monday',
@@ -21,12 +21,15 @@ export default function CreateStoreWorkingHours() {
   const router = useRouter();
   const { storeData, updateStoreData } = useStoreCreation();
 
-  const [workingHours, setWorkingHours] = useState<Record<string, WorkingHourDto>>(() => {
+  const [workingHours, setWorkingHours] = useState<Record<string, WorkingHour>>(() => {
     const initial = storeData.workingHours ?? {};
-    return DAYS.reduce((acc, day) => {
-      acc[day] = initial[day] || { open: '', close: '' };
-      return acc;
-    }, {} as Record<string, WorkingHourDto>);
+    return DAYS.reduce(
+      (acc, day) => {
+        acc[day] = initial[day] || { open: '', close: '' };
+        return acc;
+      },
+      {} as Record<string, WorkingHour>,
+    );
   });
 
   const handleChange = (day: string, field: 'open' | 'close', value: string) => {
@@ -51,9 +54,7 @@ export default function CreateStoreWorkingHours() {
 
   const handleNext = () => {
     const cleanWorkingHours = Object.fromEntries(
-      Object.entries(workingHours).filter(
-        ([_, { open, close }]) => open && close,
-      ),
+      Object.entries(workingHours).filter(([_, { open, close }]) => open && close),
     );
     updateStoreData({ workingHours: cleanWorkingHours });
     router.push('/store/create/logo-upload');

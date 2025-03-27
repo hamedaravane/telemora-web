@@ -1,24 +1,25 @@
 import axios from 'axios';
 import {
+  CreateAddressDto,
   CreateStoreBasicDto,
-  CreateStoreCategoryDto,
-  CreateStoreLocationDto,
   CreateStoreLogoDto,
+  CreateStoreTagsDto,
   CreateStoreWorkingHoursDto,
-  Store,
+  StoreDetail,
+  StoreSummary,
 } from '@/libs/stores/types';
 import { useQuery } from '@tanstack/react-query';
-import { generateMockStore, generateMockStores } from '@/libs/stores/mocks';
+import { generateMockStoreDetail, generateMockStoreSummary } from '@/libs/stores/mocks';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
-export const fetchStores = async (): Promise<Store[]> => {
+export const fetchStores = async (): Promise<StoreSummary[]> => {
   const response = await axios.get(`${API_BASE_URL}/stores`);
   return response.data;
 };
 
-export const fetchMockStores = async (): Promise<Store[]> => {
-  return generateMockStores(2);
+export const fetchMockStores = async (): Promise<StoreSummary[]> => {
+  return Array.from({ length: 10 }, () => generateMockStoreSummary());
 };
 
 export function useStoresData() {
@@ -28,19 +29,19 @@ export function useStoresData() {
   });
 }
 
-export const fetchStoreById = async (id: number): Promise<Store> => {
+export const fetchStoreById = async (id: number): Promise<StoreDetail> => {
   const response = await axios.get(`${API_BASE_URL}/stores/${id}`);
   return response.data;
 };
 
-export const fetchMockStoreById = async (id: number): Promise<Store> => {
-  return generateMockStore(id);
+export const fetchMockStoreById = async (): Promise<StoreDetail> => {
+  return generateMockStoreDetail();
 };
 
 export function useSingleStoreDataById(id: number) {
   return useQuery({
     queryKey: ['store', id],
-    queryFn: () => fetchMockStoreById(id),
+    queryFn: () => fetchMockStoreById(),
   });
 }
 
@@ -49,12 +50,12 @@ export const createBasicInfo = async (data: CreateStoreBasicDto) => {
   return response.data;
 };
 
-export const updateStoreLocation = async (data: CreateStoreLocationDto) => {
+export const updateStoreLocation = async (data: CreateAddressDto) => {
   const response = await axios.post(`${API_BASE_URL}/stores/create/location`, data);
   return response.data;
 };
 
-export const selectStoreCategory = async (data: CreateStoreCategoryDto) => {
+export const selectStoreCategory = async (data: CreateStoreTagsDto) => {
   const response = await axios.post(`${API_BASE_URL}/stores/create/category`, data);
   return response.data;
 };
@@ -66,8 +67,8 @@ export const setStoreWorkingHours = async (data: CreateStoreWorkingHoursDto) => 
 
 export const uploadStoreLogo = async (data: CreateStoreLogoDto) => {
   const formData = new FormData();
-  if (data.logoUrl) {
-    const fileBlob = new Blob([data.logoUrl], { type: 'image/*' });
+  if (data.logoFile) {
+    const fileBlob = new Blob([data.logoFile], { type: 'image/*' });
     formData.append('logo', fileBlob);
     const response = await axios.post(`${API_BASE_URL}/stores/create/logo`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },

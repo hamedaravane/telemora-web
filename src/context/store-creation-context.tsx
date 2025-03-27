@@ -10,13 +10,17 @@ import {
 } from '@/libs/stores/stores-api';
 import {
   CreateStoreBasicDto,
-  CreateStoreCategoryDto,
   CreateStoreLocationDto,
+  CreateStoreTagsDto,
   CreateStoreWorkingHoursDto,
   StoreCategory,
 } from '@/libs/stores/types';
 
-interface StoreCreationState extends CreateStoreBasicDto, CreateStoreLocationDto, CreateStoreCategoryDto, CreateStoreWorkingHoursDto {
+interface StoreCreationState
+  extends CreateStoreBasicDto,
+    CreateStoreLocationDto,
+    CreateStoreTagsDto,
+    CreateStoreWorkingHoursDto {
   logoUrl?: File | null;
 }
 
@@ -63,7 +67,7 @@ export function StoreCreationProvider({ children }: { children: React.ReactNode 
       }
 
       if (storeData.logoUrl) {
-        await uploadStoreLogo({ logoUrl: storeData.logoUrl });
+        await uploadStoreLogo({ logoFile: storeData.logoUrl });
       }
 
       console.log('Store created successfully!');
