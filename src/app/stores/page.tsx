@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Card, CardHeader, Spinner } from '@heroui/react';
+import { Button, Card, CardHeader, Chip, Spinner } from '@heroui/react';
 import { useUser } from '@/context/user-context';
 import Image from 'next/image';
 import { useStoresData } from '@/libs/stores/stores-api';
@@ -58,15 +58,17 @@ export default function StoreListPage() {
               key={store.id}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleOpenStore(store.id)}
+              onKeyDown={(e) =>
+                (e.key === 'Enter' || e.key === ' ') && handleOpenStore(Number(store.id))
+              }
               className="cursor-pointer transition-transform hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary"
-              onPress={() => handleOpenStore(store.id)}
+              onPress={() => handleOpenStore(Number(store.id))}
               aria-label={`Open store: ${store.name}`}
             >
               <CardHeader className="flex items-center gap-3">
-                {store.logoUrl ? (
+                {store.logo?.url ? (
                   <Image
-                    src={store.logoUrl}
+                    src={store.logo.url}
                     alt={`${store.name} logo`}
                     width={48}
                     height={48}
@@ -83,11 +85,7 @@ export default function StoreListPage() {
                   <h2 className="font-semibold text-base line-clamp-1">
                     {store.name ?? 'Unnamed Store'}
                   </h2>
-                  <p className="text-sm text-gray-500">
-                    {typeof store.category === 'string'
-                      ? store.category
-                      : (store.category ?? 'Uncategorized')}
-                  </p>
+                  <div>{store.tags?.map((tag, index) => <Chip key={index}>{tag}</Chip>)}</div>
                 </div>
               </CardHeader>
             </Card>
