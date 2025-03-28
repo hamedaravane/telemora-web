@@ -29,7 +29,7 @@ export default function ProfilePage() {
         <section>
           <div>
             <Image
-              src={user.photoUrl ?? '/default-profile.png'}
+              src={user.photo?.url ?? '/default-profile.png'}
               alt="user profile photo"
               width={100}
               height={100}

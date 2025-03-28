@@ -3,8 +3,8 @@
 import React, { createContext, useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { UserPrivateProfile } from '@/libs/users/types';
-import { sendTelegramInitData } from '@/libs/users/users-api';
 import { initData, useSignal } from '@telegram-apps/sdk-react';
+import { generateMockUserPrivateProfile } from '@/libs/users/mocks';
 
 interface UserContextType {
   user: UserPrivateProfile | null;
@@ -22,7 +22,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   const { data: user, isLoading } = useQuery({
     queryKey: ['userUser', initDataStr],
-    queryFn: () => sendTelegramInitData(initDataStr!),
+    // queryFn: () => sendTelegramInitData(initDataStr!),
+    queryFn: () => generateMockUserPrivateProfile(),
     enabled: hasInitData,
   });
 
