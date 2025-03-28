@@ -1,22 +1,13 @@
 'use client';
 
-import { WebApp } from '@/types/telegram';
-
-declare global {
-  interface Window {
-    Telegram?: {
-      WebApp?: WebApp;
-    };
-  }
-}
-
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { User } from '@/libs/users/types';
+import { UserPrivateProfile } from '@/libs/users/types';
 import { sendTelegramInitData } from '@/libs/users/users-api';
+import { initData, useSignal } from '@telegram-apps/sdk-react';
 
 interface UserContextType {
-  user: User | null;
+  user: UserPrivateProfile | null;
   isLoading: boolean;
 }
 
@@ -26,23 +17,13 @@ const UserContext = createContext<UserContextType>({
 });
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [initData, setInitData] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (window.Telegram?.WebApp?.initData) {
-      setInitData(window.Telegram.WebApp.initData);
-    } else {
-      setInitData('development_environment');
-    }
-  }, []);
+  const initDataStr = useSignal(initData.raw);
+  const hasInitData = !!initDataStr && initDataStr !== '';
 
   const { data: user, isLoading } = useQuery({
-    queryKey: ['userUser', initData],
-    queryFn: async () => {
-      if (!initData) throw new Error('Missing initData');
-      return await sendTelegramInitData(initData);
-    },
-    enabled: !!initData,
+    queryKey: ['userUser', initDataStr],
+    queryFn: () => sendTelegramInitData(initDataStr!),
+    enabled: hasInitData,
   });
 
   return (
@@ -51,6 +32,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     </UserContext.Provider>
   );
 }
+
 export function useUser() {
   return useContext(UserContext);
 }

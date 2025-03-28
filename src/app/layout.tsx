@@ -4,6 +4,7 @@ import './globals.css';
 import { UserProvider } from '@/context/user-context';
 import { QueryContext } from '@/context/query-context';
 import TonConnectClientProvider from '@/components/TonConnectClientProvider';
+import TelegramInit from '@/components/telegram-init';
 
 export const metadata: Metadata = {
   title: 'Telemart',
@@ -18,6 +19,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         <title></title>
       </head>
       <body className="antialiased">
+        <TelegramInit />
         <TonConnectClientProvider>
           <QueryContext>
             <UserProvider>{children}</UserProvider>
