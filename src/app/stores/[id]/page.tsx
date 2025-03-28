@@ -8,7 +8,7 @@ import {
   Button,
   Card,
   CardBody,
-  CardHeader,
+  Chip,
   Spinner,
   Tooltip,
 } from '@heroui/react';
@@ -28,10 +28,7 @@ export default function StoreDetailsPage() {
 
   const { data: store, isLoading, error } = useSingleStoreDataById(Number(storeId));
 
-  const isOwnerOrAdmin =
-    user &&
-    store &&
-    (store.owner.id === user.id || store.admins.some((admin) => admin.id === user.id));
+  const isOwner = user && store && store.owner.id === user.id;
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -67,9 +64,9 @@ export default function StoreDetailsPage() {
       {/* Store Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          {store.logoUrl && (
+          {store.logo?.url && (
             <Image
-              src={store.logoUrl}
+              src={store.logo.url}
               alt={store.name}
               width={48}
               height={48}
@@ -78,7 +75,7 @@ export default function StoreDetailsPage() {
           )}
           <div>
             <h1 className="text-xl font-bold">{store.name}</h1>
-            <p className="text-sm text-gray-500">{store.category}</p>
+            <div>{store.tags?.map((tag, index) => <Chip key={index}>{tag}</Chip>)}</div>
             <StarRating rating={store.reputation} />
           </div>
         </div>
@@ -89,7 +86,7 @@ export default function StoreDetailsPage() {
               <FaShareAlt />
             </Button>
           </Tooltip>
-          {isOwnerOrAdmin && (
+          {isOwner && (
             <Tooltip content="Edit Store">
               <Button size="sm" variant="ghost" onPress={handleEdit}>
                 <FaEdit />
@@ -160,7 +157,7 @@ export default function StoreDetailsPage() {
           ))}
         </div>
 
-        {isOwnerOrAdmin && (
+        {isOwner && (
           <div className="text-center mt-4">
             <Button onPress={handleAddProduct} startContent={<FaPlus />}>
               Add Product
@@ -169,27 +166,8 @@ export default function StoreDetailsPage() {
         )}
       </div>
 
-      {/* Admin-only Orders Panel */}
-      {isOwnerOrAdmin && store.orders && store.orders.length > 0 && (
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">Recent Orders</h2>
-          <div className="space-y-2">
-            {store.orders.slice(0, 3).map((order) => (
-              <Card key={order.id}>
-                <CardHeader className="text-sm font-semibold">
-                  Order #{order.id} — {new Date(order.createdAt).toLocaleDateString()}
-                </CardHeader>
-                <CardBody className="text-sm text-gray-600">
-                  Total: ${order.totalAmount.toFixed(2)}
-                </CardBody>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Danger Zone (Owner Only) */}
-      {isOwnerOrAdmin && (
+      {isOwner && (
         <div className="mt-6">
           <Button
             variant="bordered"

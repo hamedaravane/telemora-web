@@ -1,6 +1,7 @@
 import { UserSummary } from '@/libs/users/types';
 import { Media } from '@/types';
 import { Address } from '@/libs/location/types';
+import { ProductPreview } from '@/libs/products/types';
 
 export interface StorePreview {
   id: number | string;
@@ -23,6 +24,7 @@ export interface StoreDetail extends StoreSummary {
   email?: string;
   socialMediaLinks?: Record<string, string>;
   workingHours?: Record<string, WorkingHour>;
+  products: ProductPreview[];
   createdAt: Date;
 }
 
