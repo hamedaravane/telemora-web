@@ -13,7 +13,7 @@ export default function StoreListPage() {
   const router = useRouter();
   const { data: stores, error, isLoading } = useStoresData();
 
-  const handleCreateStore = () => router.push('/store/create/basic-information');
+  const handleCreateStore = () => router.push('/stores/create/basic-information');
   const handleOpenStore = (id: number) => router.push(`/stores/${id}`);
 
   if (isAuthLoading || isLoading) {
