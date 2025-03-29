@@ -9,6 +9,8 @@ import { StorePreview } from '@/libs/stores/types';
 import { HomeFeedSection } from '@/libs/market/types';
 import { Button, ScrollShadow, Spinner } from '@heroui/react';
 import Link from 'next/link';
+import StarRating from '@/components/star-rating';
+import Price from '@/components/price';
 
 export default function MarketPage() {
   const { data, isLoading, error, refetch } = useMarketData();
@@ -103,7 +105,7 @@ function MarketProductCard({ product }: { product: ProductPreview }) {
   return (
     <Link
       href={`/products/${product.id}`}
-      className="min-w-[140px] max-w-[160px] shrink-0 bg-white rounded-xl shadow hover:shadow-md transition overflow-hidden"
+      className="min-w-[140px] max-w-[160px] shrink-0  rounded-xl shadow hover:shadow-md transition overflow-hidden"
     >
       <div className="w-full h-[120px] relative">
         <Image
@@ -116,7 +118,7 @@ function MarketProductCard({ product }: { product: ProductPreview }) {
       </div>
       <div className="p-2">
         <h3 className="text-sm font-medium truncate">{product.name}</h3>
-        <p className="text-xs text-gray-500">${product.price}</p>
+        <Price amount={product.price}></Price>
       </div>
     </Link>
   );
@@ -126,7 +128,7 @@ function MarketStoreCard({ store }: { store: StorePreview }) {
   return (
     <Link
       href={`/stores/${store.id}`}
-      className="min-w-[120px] max-w-[140px] shrink-0 flex flex-col items-center text-center p-3 bg-white rounded-xl shadow hover:shadow-md transition"
+      className="min-w-[120px] max-w-[140px] shrink-0 flex flex-col items-center text-center p-3 rounded-xl shadow hover:shadow-md transition"
     >
       <div className="relative w-14 h-14">
         <Image
@@ -139,7 +141,7 @@ function MarketStoreCard({ store }: { store: StorePreview }) {
       </div>
       <div className="mt-2">
         <p className="text-sm font-semibold truncate">{store.name}</p>
-        <p className="text-xs text-gray-500">⭐ {store.reputation.toFixed(1)}</p>
+        <StarRating rating={store.reputation}></StarRating>
       </div>
     </Link>
   );
@@ -147,8 +149,8 @@ function MarketStoreCard({ store }: { store: StorePreview }) {
 
 function MarketCategoryCard({ category }: { category: ProductCategoryNode }) {
   return (
-    <div className="bg-gray-100 rounded-lg p-4 text-center hover:bg-gray-200 transition">
+    <Button variant="flat" className="rounded-lg p-4 text-center transition">
       <h4 className="text-sm font-medium">{category.name}</h4>
-    </div>
+    </Button>
   );
 }

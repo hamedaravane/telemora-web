@@ -19,7 +19,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
         <title></title>
       </head>
       <body className="antialiased">
-        <TelegramInit />
+        {/*<TelegramInit />*/}
         <TonConnectClientProvider>
           <QueryContext>
             <UserProvider>{children}</UserProvider>

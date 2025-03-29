@@ -18,7 +18,7 @@ export function generateMockProductPreview(id: number): ProductPreview {
     slug: faker.helpers.slugify(faker.commerce.productName()),
     price: Number(faker.commerce.price({ min: 10, max: 500 })),
     image: {
-      url: faker.image.url(),
+      url: faker.image.urlPicsumPhotos(),
       alt: faker.commerce.productAdjective(),
       width: 600,
       height: 400,
