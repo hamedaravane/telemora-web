@@ -14,10 +14,6 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <meta name="viewport" content="width=400, initial-scale=1.0, user-scalable=no" />
-        <title></title>
-      </head>
       <body className="antialiased">
         {/*<TelegramInit />*/}
         <TonConnectClientProvider>

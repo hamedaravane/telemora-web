@@ -6,7 +6,7 @@ import BottomNavigation from './bottom-navigation';
 
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className="min-h-screen relative max-w-sm mx-auto">
+    <div className="min-h-screen">
       <CustomNavbar />
       <div className="overflow-y-scroll">{children}</div>
       <div className="h-24"></div>

@@ -15,7 +15,7 @@ export default function SplashScreen() {
   }, [router]);
 
   return (
-    <div className="h-screen bg-neutral-800">
+    <div className="h-screen">
       <div className="w-24 h-3/5 mx-auto flex justify-center items-end">
         <Spinner size="sm" color="white" label="Authenticating..." />
       </div>

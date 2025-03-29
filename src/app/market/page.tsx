@@ -7,7 +7,7 @@ import AppLayout from '@/components/app-layout';
 import { ProductCategoryNode, ProductPreview } from '@/libs/products/types';
 import { StorePreview } from '@/libs/stores/types';
 import { HomeFeedSection } from '@/libs/market/types';
-import { Button, ScrollShadow, Spinner } from '@heroui/react';
+import { Button, Card, CardBody, CardFooter, ScrollShadow, Spinner } from '@heroui/react';
 import Link from 'next/link';
 import StarRating from '@/components/star-rating';
 import Price from '@/components/price';
@@ -95,7 +95,7 @@ function MarketSection({ section }: { section: HomeFeedSection }) {
 
 function HorizontalScroll({ children }: { children: React.ReactNode }) {
   return (
-    <ScrollShadow orientation="horizontal" className="flex gap-4 overflow-x-auto pb-2 -mx-1 px-1">
+    <ScrollShadow className="flex gap-x-4 max-w-full" hideScrollBar orientation="horizontal">
       {children}
     </ScrollShadow>
   );
@@ -103,54 +103,46 @@ function HorizontalScroll({ children }: { children: React.ReactNode }) {
 
 function MarketProductCard({ product }: { product: ProductPreview }) {
   return (
-    <Link
-      href={`/products/${product.id}`}
-      className="min-w-[140px] max-w-[160px] shrink-0  rounded-xl shadow hover:shadow-md transition overflow-hidden"
-    >
-      <div className="w-full h-[120px] relative">
-        <Image
-          src={product.image.url}
-          alt={product.image.alt || 'Product'}
-          fill
-          sizes="150px"
-          className="object-cover"
-        />
-      </div>
-      <div className="p-2">
-        <h3 className="text-sm font-medium truncate">{product.name}</h3>
-        <Price amount={product.price}></Price>
-      </div>
+    <Link href={`/products/${product.id}`}>
+      <Card>
+        <CardBody className="min-h-32">
+          <Image
+            src={product.image.url}
+            alt={product.image.alt || 'Product'}
+            fill
+            sizes="128px"
+            className="object-cover h-32 aspect-square"
+          />
+        </CardBody>
+        <CardFooter className="flex-col justify-start items-start">
+          <h3 className="text-sm font-medium truncate">{product.name}</h3>
+          <Price amount={product.price} />
+        </CardFooter>
+      </Card>
     </Link>
   );
 }
 
 function MarketStoreCard({ store }: { store: StorePreview }) {
   return (
-    <Link
-      href={`/stores/${store.id}`}
-      className="min-w-[120px] max-w-[140px] shrink-0 flex flex-col items-center text-center p-3 rounded-xl shadow hover:shadow-md transition"
-    >
-      <div className="relative w-14 h-14">
+    <Link href={`/stores/${store.id}`} className="w-32">
+      <div className="text-center h-14 w-14">
         <Image
           src={store.logo?.url || '/placeholder.png'}
           alt={store.name}
-          fill
-          sizes="64px"
-          className="rounded-full object-cover"
+          width={32}
+          height={32}
+          className="object-cover rounded-full h-14 w-14 aspect-square"
         />
       </div>
       <div className="mt-2">
-        <p className="text-sm font-semibold truncate">{store.name}</p>
-        <StarRating rating={store.reputation}></StarRating>
+        <p className="text-sm font-semibold max-w-full truncate">{store.name}</p>
+        <StarRating rating={store.reputation} />
       </div>
     </Link>
   );
 }
 
 function MarketCategoryCard({ category }: { category: ProductCategoryNode }) {
-  return (
-    <Button variant="flat" className="rounded-lg p-4 text-center transition">
-      <h4 className="text-sm font-medium">{category.name}</h4>
-    </Button>
-  );
+  return <Button variant="flat">{category.name}</Button>;
 }
