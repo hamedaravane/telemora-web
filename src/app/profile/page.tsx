@@ -6,10 +6,9 @@ import { Button, Card, CardBody, CardHeader, Spinner } from '@heroui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { UserPrivateProfile } from '@/libs/users/types';
-import { StorePreview } from '@/libs/stores/types';
 import { OrderSummary } from '@/libs/orders/types';
-import StarRating from '@/components/shared/star-rating';
 import Price from '@/components/shared/price';
+import { StorePreviewCard } from '@/components/stores/preview-card';
 
 export default function ProfilePage() {
   const { user, isLoading } = useUser();
@@ -39,7 +38,16 @@ export default function ProfilePage() {
     <AppLayout>
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-10">
         <ProfileCard user={user} />
-        {user.stores && user.stores.length > 0 && <MyStores stores={user.stores} />}
+        {user.stores && user.stores.length > 0 && (
+          <section>
+            <h3 className="text-base font-semibold mb-3">My Stores</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {user.stores.map((store) => (
+                <StorePreviewCard key={store.id} store={store} />
+              ))}
+            </div>
+          </section>
+        )}
         {user.orders && user.orders.length > 0 && <RecentOrders orders={user.orders} />}
       </main>
     </AppLayout>
@@ -74,33 +82,6 @@ function ProfileCard({ user }: { user: UserPrivateProfile }) {
         )}
       </div>
     </div>
-  );
-}
-
-function MyStores({ stores }: { stores: StorePreview[] }) {
-  return (
-    <section>
-      <h3 className="text-base font-semibold mb-3">My Stores</h3>
-      <div className="grid grid-cols-2 gap-3">
-        {stores.map((store) => (
-          <Link href={`/stores/${store.id}`} key={store.id}>
-            <Card className="w-full hover:shadow-sm transition">
-              <CardBody className="text-center">
-                <Image
-                  src={store.logo?.url || '/fallback-store.png'}
-                  alt="Store"
-                  width={64}
-                  height={64}
-                  className="mx-auto rounded-full h-16 w-16 object-cover mb-2"
-                />
-                <p className="text-sm font-medium">{store.name}</p>
-                <StarRating rating={store.reputation} />
-              </CardBody>
-            </Card>
-          </Link>
-        ))}
-      </div>
-    </section>
   );
 }
 

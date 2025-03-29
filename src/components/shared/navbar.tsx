@@ -10,7 +10,7 @@ const CustomNavbar = () => {
       </NavbarBrand>
       <NavbarContent justify="end">
         <NavbarItem>
-          <Avatar size="sm" src={user?.photoUrl || '/default-profile.png'} />
+          <Avatar size="sm" src={user?.photo?.url || '/default-profile.png'} />
         </NavbarItem>
       </NavbarContent>
     </Navbar>
