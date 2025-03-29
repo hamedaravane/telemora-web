@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import {
   ProductAttribute,
+  ProductCategoryNode,
   ProductDetail,
   ProductPreview,
   ProductSummary,
@@ -73,4 +74,53 @@ export function generateMockProductDetail(id: number): ProductDetail {
     reviews: [generateMockReviewPreview(id), generateMockReviewPreview(id + 1)],
     createdAt: faker.date.past(),
   };
+}
+
+let categoryIdCounter = 1;
+
+export function generateMockCategoryTree(count: number = 8): ProductCategoryNode[] {
+  const tree: ProductCategoryNode[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const parentId = categoryIdCounter++;
+    const parent: ProductCategoryNode = {
+      id: parentId,
+      name: faker.commerce.department(),
+      slug: faker.helpers.slugify(faker.commerce.department()).toLowerCase(),
+      level: 0,
+      children: [],
+    };
+
+    const subcategoryCount = faker.number.int({ min: 2, max: 4 });
+    for (let j = 0; j < subcategoryCount; j++) {
+      const childId = categoryIdCounter++;
+      const child: ProductCategoryNode = {
+        id: childId,
+        name: faker.commerce.product(),
+        slug: faker.helpers.slugify(faker.commerce.product()).toLowerCase(),
+        level: 1,
+        parentId: parent.id,
+        children: [],
+      };
+
+      const subSubCount = faker.number.int({ min: 1, max: 3 });
+      for (let k = 0; k < subSubCount; k++) {
+        const subChildId = categoryIdCounter++;
+        const subChild: ProductCategoryNode = {
+          id: subChildId,
+          name: faker.commerce.productAdjective(),
+          slug: faker.helpers.slugify(faker.commerce.productAdjective()).toLowerCase(),
+          level: 2,
+          parentId: child.id,
+        };
+        child.children?.push(subChild);
+      }
+
+      parent.children?.push(child);
+    }
+
+    tree.push(parent);
+  }
+
+  return tree;
 }
