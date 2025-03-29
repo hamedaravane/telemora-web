@@ -6,7 +6,7 @@ import { Button, Card, CardHeader, Chip, Spinner } from '@heroui/react';
 import { useUser } from '@/context/user-context';
 import Image from 'next/image';
 import { useStoresData } from '@/libs/stores/stores-api';
-import AppLayout from '@/components/app-layout';
+import AppLayout from '@/components/shared/app-layout';
 
 export default function StoreListPage() {
   const { isLoading: isAuthLoading } = useUser();

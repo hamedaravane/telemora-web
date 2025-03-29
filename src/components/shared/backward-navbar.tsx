@@ -4,7 +4,7 @@ const BackwardNavbar = () => {
   return (
     <Navbar>
       <NavbarBrand>
-        <Link href=".." />
+        <Link href="../.." />
       </NavbarBrand>
       <NavbarContent justify="end">
         <NavbarItem>

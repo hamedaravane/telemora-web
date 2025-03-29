@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { UserProvider } from '@/context/user-context';
 import { QueryContext } from '@/context/query-context';
-import TonConnectClientProvider from '@/components/TonConnectClientProvider';
-import TelegramInit from '@/components/telegram-init';
+import TonConnectClientProvider from '@/components/shared/TonConnectClientProvider';
+import TelegramInit from '@/components/shared/telegram-init';
 
 export const metadata: Metadata = {
   title: 'Telemart',

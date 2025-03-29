@@ -6,7 +6,7 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FaPlus, FaTrash } from 'react-icons/fa6';
-import AppLayout from '@/components/app-layout';
+import AppLayout from '@/components/shared/app-layout';
 import toast from 'react-hot-toast';
 import { useCreateProductMutation } from '@/libs/products/products-api';
 import { useRouter } from 'next/navigation';

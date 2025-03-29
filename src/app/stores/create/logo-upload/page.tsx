@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button, Spinner } from '@heroui/react';
 import Image from 'next/image';
 import { useStoreCreation } from '@/context/store-creation-context';
-import AppLayout from '@/components/app-layout';
+import AppLayout from '@/components/shared/app-layout';
 
 export default function CreateStoreLogoUpload() {
   const { storeData, updateStoreData, submitStore } = useStoreCreation();

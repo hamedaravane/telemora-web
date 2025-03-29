@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useOrdersData } from '@/libs/orders/orders-api';
-import AppLayout from '@/components/app-layout';
+import AppLayout from '@/components/shared/app-layout';
 import { Button, Card, CardBody, CardHeader, Divider, Spinner } from '@heroui/react';
 import { format } from 'date-fns';
 import { FaBoxOpen, FaChevronRight, FaWallet } from 'react-icons/fa6';

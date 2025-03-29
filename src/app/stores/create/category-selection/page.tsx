@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button, Select, SelectItem } from '@heroui/react';
 import { useStoreCreation } from '@/context/store-creation-context';
 import { StoreCategory } from '@/libs/stores/types';
-import AppLayout from '@/components/app-layout';
+import AppLayout from '@/components/shared/app-layout';
 
 export default function CreateStoreCategorySelection() {
   const { storeData, updateStoreData } = useStoreCreation();

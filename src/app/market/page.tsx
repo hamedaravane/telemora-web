@@ -3,14 +3,14 @@
 import React from 'react';
 import Image from 'next/image';
 import { useMarketData } from '@/libs/market/market-api';
-import AppLayout from '@/components/app-layout';
+import AppLayout from '@/components/shared/app-layout';
 import { ProductCategoryNode, ProductPreview } from '@/libs/products/types';
 import { StorePreview } from '@/libs/stores/types';
 import { HomeFeedSection } from '@/libs/market/types';
 import { Button, Card, CardBody, CardFooter, ScrollShadow, Spinner } from '@heroui/react';
 import Link from 'next/link';
-import StarRating from '@/components/star-rating';
-import Price from '@/components/price';
+import StarRating from '@/components/shared/star-rating';
+import Price from '@/components/shared/price';
 
 export default function MarketPage() {
   const { data, isLoading, error, refetch } = useMarketData();

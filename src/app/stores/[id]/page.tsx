@@ -15,11 +15,11 @@ import {
 import Image from 'next/image';
 import { useUser } from '@/context/user-context';
 import { useSingleStoreDataById } from '@/libs/stores/stores-api';
-import AppLayout from '@/components/app-layout';
-import Price from '@/components/price';
+import AppLayout from '@/components/shared/app-layout';
+import Price from '@/components/shared/price';
 import { FaPlus } from 'react-icons/fa6';
 import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
-import StarRating from '@/components/star-rating';
+import StarRating from '@/components/shared/star-rating';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams();

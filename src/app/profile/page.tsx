@@ -1,6 +1,6 @@
 'use client';
 
-import AppLayout from '@/components/app-layout';
+import AppLayout from '@/components/shared/app-layout';
 import { useUser } from '@/context/user-context';
 import { Button, Card, CardBody, CardHeader, Spinner } from '@heroui/react';
 import Image from 'next/image';
@@ -8,8 +8,8 @@ import Link from 'next/link';
 import { UserPrivateProfile } from '@/libs/users/types';
 import { StorePreview } from '@/libs/stores/types';
 import { OrderSummary } from '@/libs/orders/types';
-import StarRating from '@/components/star-rating';
-import Price from '@/components/price';
+import StarRating from '@/components/shared/star-rating';
+import Price from '@/components/shared/price';
 
 export default function ProfilePage() {
   const { user, isLoading } = useUser();

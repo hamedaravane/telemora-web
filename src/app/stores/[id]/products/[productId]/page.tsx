@@ -74,8 +74,8 @@
 import { Button, Spinner } from '@heroui/react';
 import { useGetProductById } from '@/libs/products/products-api';
 import { useParams } from 'next/navigation';
-import AppLayout from '@/components/app-layout';
-import Price from '@/components/price';
+import AppLayout from '@/components/shared/app-layout';
+import Price from '@/components/shared/price';
 import Image from 'next/image';
 
 export default function ProductDetailsPage() {

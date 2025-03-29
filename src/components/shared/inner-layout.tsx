@@ -1,7 +1,7 @@
 'use client';
 
 import BottomNavigation from './bottom-navigation';
-import BackwardNavbar from '@/components/backward-navbar';
+import BackwardNavbar from '@/components/shared/backward-navbar';
 
 const InnerLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (

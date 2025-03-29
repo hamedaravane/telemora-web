@@ -6,7 +6,7 @@ import { Button, Select, SelectItem, Spinner } from '@heroui/react';
 import { useStoreCreation } from '@/context/store-creation-context';
 import { useCities, useCountries, useStates } from '@/libs/location/location-api';
 import { locationManager, useSignal } from '@telegram-apps/sdk-react';
-import AppLayout from '@/components/app-layout';
+import AppLayout from '@/components/shared/app-layout';
 
 export default function CreateStoreLocation() {
   const router = useRouter();
