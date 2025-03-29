@@ -1,6 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { UserPrivateProfile, UserPublicPreview, UserRole, UserSummary } from './types';
 import { generateMockAddress } from '@/libs/location/mocks';
+import { generateMockStorePreview } from '@/libs/stores/mocks';
+import { generateMockOrderSummary } from '@/libs/orders/mocks';
 
 export function generateMockUserPublicPreview(): UserPublicPreview {
   return {
@@ -8,7 +10,7 @@ export function generateMockUserPublicPreview(): UserPublicPreview {
     username: faker.internet.username(),
     handle: faker.helpers.slugify(faker.internet.username()),
     photo: {
-      url: faker.image.url(),
+      url: faker.image.personPortrait(),
     },
   };
 }
@@ -30,7 +32,11 @@ export function generateMockUserPrivateProfile(): UserPrivateProfile {
     phoneNumber: faker.phone.number(),
     email: faker.internet.email(),
     walletAddress: faker.finance.ethereumAddress(),
-    stores: [],
-    orders: [],
+    stores: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () =>
+      generateMockStorePreview(),
+    ),
+    orders: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () =>
+      generateMockOrderSummary(),
+    ),
   };
 }

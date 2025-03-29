@@ -12,6 +12,12 @@ const nextConfig = {
       {
         hostname: 'loremflickr.com',
       },
+      {
+        hostname: 'avatars.githubusercontent.com',
+      },
+      {
+        hostname: 'cdn.jsdelivr.net',
+      },
     ],
   },
 };
