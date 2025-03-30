@@ -1,14 +1,14 @@
 'use client';
 
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import CustomNavbar from './navbar';
 import BottomNavigation from './bottom-navigation';
 
-const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div className="min-h-screen px-4">
+    <div className="min-h-screen">
       <CustomNavbar />
-      <div className="overflow-y-scroll">{children}</div>
+      <div className="overflow-y-scroll px-4">{children}</div>
       <div className="h-24"></div>
       <BottomNavigation />
     </div>

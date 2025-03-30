@@ -2,8 +2,9 @@
 
 import BottomNavigation from './bottom-navigation';
 import BackwardNavbar from '@/components/shared/backward-navbar';
+import React, { PropsWithChildren } from 'react';
 
-const InnerLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const InnerLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <div className="h-screen relative">
       <BackwardNavbar />

@@ -16,8 +16,10 @@ export default function ProductPreviewCard({ product }: { product: ProductPrevie
           <Image
             src={product.image.url}
             alt={product.image.alt ?? product.name}
+            priority={true}
             fill
-            className="object-cover"
+            sizes="(min-width: 640px) 32vw, 100vw"
+            className="object-cover h-32 w-32"
           />
         </CardBody>
         <CardFooter className="block space-y-2">

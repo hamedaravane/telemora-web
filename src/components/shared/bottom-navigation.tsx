@@ -1,4 +1,4 @@
-import { FaHome, FaShoppingCart, FaStore, FaUser } from 'react-icons/fa';
+import { FaClipboard, FaHome, FaStore, FaUser } from 'react-icons/fa';
 import { Link } from '@heroui/link';
 
 const BottomNavigation = () => {
@@ -13,7 +13,7 @@ const BottomNavigation = () => {
         <span className="text-xs">Store</span>
       </Link>
       <Link className="flex flex-col items-center gap-y-1" href="/orders">
-        <FaShoppingCart size={18} />
+        <FaClipboard size={18} />
         <span className="text-xs">Orders</span>
       </Link>
       <Link className="flex flex-col items-center gap-y-1" href="/profile">

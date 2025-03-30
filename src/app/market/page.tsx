@@ -1,16 +1,12 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { useMarketData } from '@/libs/market/market-api';
 import AppLayout from '@/components/shared/app-layout';
 import { ProductCategoryNode, ProductPreview } from '@/libs/products/types';
 import { StorePreview } from '@/libs/stores/types';
 import { HomeFeedSection } from '@/libs/market/types';
-import { Button, Card, CardBody, CardFooter, ScrollShadow, Spinner } from '@heroui/react';
-import Link from 'next/link';
-import StarRating from '@/components/shared/star-rating';
-import Price from '@/components/shared/price';
+import { Button, ScrollShadow, Spinner } from '@heroui/react';
 import ProductPreviewCard from '@/components/products/preview-card';
 import { StorePreviewCard } from '@/components/stores/preview-card';
 
