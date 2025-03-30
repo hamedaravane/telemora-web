@@ -7,6 +7,7 @@ import AppLayout from '@/components/shared/app-layout';
 import { Button, Spinner } from '@heroui/react';
 import { FaBoxOpen } from 'react-icons/fa6';
 import OrderSummaryCard from '@/components/orders/summary-card';
+import { PageHeader } from '@/components/shared/page-header';
 
 export default function OrdersPage() {
   const router = useRouter();
@@ -36,10 +37,7 @@ export default function OrdersPage() {
 
   return (
     <AppLayout>
-      <div className="mb-6 mx-4">
-        <h1 className="text-2xl font-bold">My Orders</h1>
-        <p className=" text-sm mt-1">Track your purchases and check order status.</p>
-      </div>
+      <PageHeader title="My Orders" subtitle="Track your purchases and check order status." />
 
       {orders?.length === 0 ? (
         <div className="flex flex-col items-center text-center mt-20">

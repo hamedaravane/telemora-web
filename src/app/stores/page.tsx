@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useStoresData } from '@/libs/stores/stores-api';
 import AppLayout from '@/components/shared/app-layout';
 import StoreSummaryCard from '@/components/stores/summary-card';
+import { PageHeader } from '@/components/shared/page-header';
 
 export default function StoreListPage() {
   const { isLoading: isAuthLoading } = useUser();
@@ -41,8 +42,7 @@ export default function StoreListPage() {
 
   return (
     <AppLayout>
-      <h1 className="text-2xl font-bold text-center mb-4">My Stores</h1>
-      <p className="text-center text-gray-500 mb-6">Manage your business from here</p>
+      <PageHeader title="My Stores" subtitle="Manage your business from here" />
 
       {stores && stores.length === 0 ? (
         <div className="text-center mt-12">

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button, Input, Spinner } from '@heroui/react';
 import { useStoreCreation } from '@/context/store-creation-context';
 import AppLayout from '@/components/shared/app-layout';
+import { PageHeader } from '@/components/shared/page-header';
 
 export default function CreateStoreBasicInformation() {
   const { storeData, updateStoreData } = useStoreCreation();
@@ -37,11 +38,10 @@ export default function CreateStoreBasicInformation() {
         Step 1 of 5
       </div>
 
-      <h1 className="text-2xl font-bold mb-4">Basic Information</h1>
-      <p className="text-gray-600 mb-6">
-        Your store&#39;s name and description will be visible to customers. Choose a name that
-        reflects your brand.
-      </p>
+      <PageHeader
+        title="Basic Information"
+        subtitle="Your store's name and description will be visible to customers. Choose a name that reflects your brand."
+      />
 
       <Input
         id="store-name"
