@@ -9,11 +9,11 @@ import {
   uploadStoreLogo,
 } from '@/libs/stores/stores-api';
 import {
-  CreateStoreBasicDto,
   CreateAddressDto,
+  CreateStoreBasicDto,
+  CreateStoreLogoDto,
   CreateStoreTagsDto,
   CreateStoreWorkingHoursDto,
-  CreateStoreLogoDto,
 } from '@/libs/stores/types';
 
 type StoreCreationState = CreateStoreBasicDto &

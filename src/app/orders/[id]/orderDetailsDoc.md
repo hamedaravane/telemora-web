@@ -103,9 +103,9 @@ export interface CreatePaymentDto {
 
 - Display **color-coded status badges** for order processing.
 - If the order **is being shipped**, show:
-    - **Courier service name** & **tracking number**.
-    - **Estimated delivery date**.
-    - A clickable **tracking link**.
+  - **Courier service name** & **tracking number**.
+  - **Estimated delivery date**.
+  - A clickable **tracking link**.
 
 ### **8. UI/UX Guidelines**
 

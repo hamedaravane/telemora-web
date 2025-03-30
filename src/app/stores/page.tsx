@@ -2,9 +2,8 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Card, CardHeader, Chip, Spinner } from '@heroui/react';
+import { Button, Spinner } from '@heroui/react';
 import { useUser } from '@/context/user-context';
-import Image from 'next/image';
 import { useStoresData } from '@/libs/stores/stores-api';
 import AppLayout from '@/components/shared/app-layout';
 import StoreSummaryCard from '@/components/stores/summary-card';

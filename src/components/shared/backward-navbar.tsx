@@ -1,4 +1,4 @@
-import { Avatar, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link } from '@heroui/react';
+import { Avatar, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem } from '@heroui/react';
 
 const BackwardNavbar = () => {
   return (
