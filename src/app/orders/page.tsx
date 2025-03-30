@@ -4,10 +4,8 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useOrdersData } from '@/libs/orders/orders-api';
 import AppLayout from '@/components/shared/app-layout';
-import { Button, Card, CardBody, CardHeader, Divider, Spinner } from '@heroui/react';
-import { format } from 'date-fns';
-import { FaBoxOpen, FaChevronRight, FaWallet } from 'react-icons/fa6';
-import { OrderSummary } from '@/libs/orders/types';
+import { Button, Spinner } from '@heroui/react';
+import { FaBoxOpen } from 'react-icons/fa6';
 import OrderSummaryCard from '@/components/orders/summary-card';
 
 export default function OrdersPage() {
