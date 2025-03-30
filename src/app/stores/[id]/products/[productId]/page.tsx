@@ -80,7 +80,7 @@ import Image from 'next/image';
 
 export default function ProductDetailsPage() {
   const params = useParams();
-  const { data: product, isLoading, error, refetch } = useGetProductById(+params.id);
+  const { data: product, isLoading, error, refetch } = useGetProductById(+params.productId);
 
   if (isLoading) {
     return (
@@ -101,7 +101,7 @@ export default function ProductDetailsPage() {
     return (
       <AppLayout>
         <div className="flex flex-col gap-4 p-6">
-          <Image src={product.imageUrl} height={200} width={200} alt={product.name} />
+          <Image src={product.image.url} height={200} width={200} alt={product.name} />
           <h3 className="text-3xl font-bold">{product.name}</h3>
           <p className="">{product.description}</p>
           <Price amount={product.price}></Price>

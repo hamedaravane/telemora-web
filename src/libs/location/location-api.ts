@@ -1,4 +1,4 @@
-import { City, Country, State } from '@/libs/location/types';
+/*
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
@@ -48,3 +48,4 @@ export function useCities(stateId?: number) {
     staleTime: 1000 * 60 * 30,
   });
 }
+*/

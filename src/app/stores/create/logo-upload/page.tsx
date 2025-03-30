@@ -93,7 +93,7 @@ export default function CreateStoreLogoUpload() {
     setIsProcessing(false);
 
     if (processedFile) {
-      updateStoreData({ logoUrl: processedFile });
+      updateStoreData({ logoFile: processedFile });
       setPreviewUrl(URL.createObjectURL(processedFile));
     } else {
       alert('Failed to process the image. Try again.');
@@ -101,7 +101,7 @@ export default function CreateStoreLogoUpload() {
   };
 
   const handleRemoveImage = () => {
-    updateStoreData({ logoUrl: null });
+    updateStoreData({ logoFile: undefined });
     setPreviewUrl(null);
   };
 
@@ -141,7 +141,7 @@ export default function CreateStoreLogoUpload() {
       <Button
         onPress={handleSubmit}
         className="mt-6"
-        isDisabled={isProcessing || !storeData.logoUrl}
+        isDisabled={isProcessing || !storeData.logoFile}
       >
         Submit Store
       </Button>

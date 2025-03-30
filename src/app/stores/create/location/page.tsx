@@ -1,3 +1,4 @@
+/*
 'use client';
 
 import React, { useState } from 'react';
@@ -106,7 +107,6 @@ export default function CreateStoreLocation() {
         )}
       </div>
 
-      {/* Country Select */}
       {loadingCountries ? (
         <Spinner />
       ) : (
@@ -124,7 +124,6 @@ export default function CreateStoreLocation() {
         </Select>
       )}
 
-      {/* State Select */}
       {storeData.countryId &&
         (loadingStates ? (
           <Spinner />
@@ -143,7 +142,6 @@ export default function CreateStoreLocation() {
           </Select>
         ))}
 
-      {/* City Select */}
       {storeData.stateId &&
         (loadingCities ? (
           <Spinner />
@@ -162,7 +160,6 @@ export default function CreateStoreLocation() {
           </Select>
         ))}
 
-      {/* Navigation */}
       <div className="mt-6 flex justify-between">
         <Button variant="bordered" onPress={handleBack}>
           Back
@@ -178,3 +175,4 @@ export default function CreateStoreLocation() {
     </AppLayout>
   );
 }
+*/
