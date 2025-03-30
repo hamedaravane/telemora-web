@@ -7,6 +7,7 @@ import { useStoreCreation } from '@/context/store-creation-context';
 import { useCities, useCountries, useStates } from '@/libs/location/location-api';
 import { locationManager, useSignal } from '@telegram-apps/sdk-react';
 import AppLayout from '@/components/shared/app-layout';
+import { PageHeader } from '@/components/shared/page-header';
 
 export default function CreateStoreLocation() {
   const router = useRouter();
@@ -78,11 +79,11 @@ export default function CreateStoreLocation() {
   return (
     <AppLayout>
       <div className="text-sm text-gray-500 mb-4">Step 2 of 5</div>
-      <h1 className="text-2xl font-bold mb-2">Step 2: Store Location</h1>
-      <p className="text-gray-600 text-sm mb-6">
-        Set your store’s country and city so customers can find you. You can skip this if you don’t
-        sell physical products.
-      </p>
+      <PageHeader
+        title="Store Address"
+        subtitle="Set your store’s country and city so customers can find you. You can skip this if you don’t
+        sell physical products."
+      />
 
       <div className="mb-4">
         <Button

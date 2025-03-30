@@ -6,6 +6,7 @@ import { Button, Input, Switch } from '@heroui/react';
 import { useStoreCreation } from '@/context/store-creation-context';
 import AppLayout from '@/components/shared/app-layout';
 import { WorkingHour } from '@/libs/stores/types';
+import { PageHeader } from '@/components/shared/page-header';
 
 const DAYS: string[] = [
   'Monday',
@@ -67,10 +68,10 @@ export default function CreateStoreWorkingHours() {
   return (
     <AppLayout>
       <div className="text-sm text-gray-500 mb-4">Step 4 of 5</div>
-      <h1 className="text-2xl font-bold mb-2">Store Working Hours</h1>
-      <p className="text-gray-600 text-sm mb-6">
-        Optionally set when your store is open. Customers will see this info on your store page.
-      </p>
+      <PageHeader
+        title="Store Working Hours"
+        subtitle="Optionally set when your store is open. Customers will see this info on your store page."
+      />
 
       <div className="space-y-5">
         {DAYS.map((day) => {
