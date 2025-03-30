@@ -23,6 +23,7 @@ export function generateMockStoreSummary(): StoreSummary {
     ...generateMockStorePreview(),
     address: generateMockAddress(),
     description: faker.lorem.paragraph(),
+    tags: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => faker.lorem.word()),
   };
 }
 

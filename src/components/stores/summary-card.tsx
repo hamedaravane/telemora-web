@@ -30,14 +30,16 @@ const StoreSummaryCard = ({ store }: { store: StoreSummary }) => {
         </CardHeader>
         <CardBody>
           <p className="text-xs truncate">{store.description}</p>
-          <p className="text-xs truncate">{formatAddress(store.address)}</p>
         </CardBody>
-        <CardFooter>
-          {store.tags?.slice(0, 3).map((tag) => (
-            <Chip key={tag} size="sm">
-              {tag}
-            </Chip>
-          ))}
+        <CardFooter className="block space-y-2">
+          <p className="text-xs truncate">{formatAddress(store.address)}</p>
+          <div className="space-x-1">
+            {store.tags?.slice(0, 3).map((tag) => (
+              <Chip key={tag} size="sm">
+                {tag}
+              </Chip>
+            ))}
+          </div>
         </CardFooter>
       </Card>
     </Link>
