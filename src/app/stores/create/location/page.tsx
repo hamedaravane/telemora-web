@@ -13,8 +13,8 @@ export default function CreateStoreLocation() {
   const { storeData, updateStoreData } = useStoreCreation();
 
   const { data: countries, isLoading: loadingCountries } = useCountries();
-  const { data: states, isLoading: loadingStates } = useStates(storeData.country);
-  const { data: cities, isLoading: loadingCities } = useCities(storeData.state);
+  const { data: states, isLoading: loadingStates } = useStates(storeData.countryId);
+  const { data: cities, isLoading: loadingCities } = useCities(storeData.stateId);
 
   const isSupported = useSignal(locationManager.isSupported);
   const isAccessGranted = useSignal(locationManager.isAccessGranted);
@@ -41,16 +41,16 @@ export default function CreateStoreLocation() {
 
       const nearest = await res.json();
 
-      if (!storeData.country && nearest.country?.id) {
-        updateStoreData({ country: nearest.country.id });
+      if (!storeData.countryId && nearest.country?.id) {
+        updateStoreData({ countryId: nearest.country.id });
       }
 
-      if (!storeData.state && nearest.state?.id) {
-        updateStoreData({ state: nearest.state.id });
+      if (!storeData.stateId && nearest.state?.id) {
+        updateStoreData({ stateId: nearest.state.id });
       }
 
-      if (!storeData.city && nearest.city?.id) {
-        updateStoreData({ city: nearest.city.id });
+      if (!storeData.cityId && nearest.city?.id) {
+        updateStoreData({ cityId: nearest.city.id });
       }
     } catch (e) {
       const error = e as Error;
@@ -111,10 +111,10 @@ export default function CreateStoreLocation() {
       ) : (
         <Select
           label="Country"
-          selectedKeys={storeData.country ? new Set([storeData.country.toString()]) : undefined}
+          selectedKeys={storeData.countryId ? new Set([storeData.countryId.toString()]) : undefined}
           onSelectionChange={(keys) => {
             const selectedId = Number(Array.from(keys)[0]);
-            updateStoreData({ country: selectedId, state: undefined, city: undefined });
+            updateStoreData({ countryId: selectedId, stateId: undefined, cityId: undefined });
           }}
         >
           {countries!.map((country) => (
@@ -124,16 +124,16 @@ export default function CreateStoreLocation() {
       )}
 
       {/* State Select */}
-      {storeData.country &&
+      {storeData.countryId &&
         (loadingStates ? (
           <Spinner />
         ) : (
           <Select
             label="State"
-            selectedKeys={storeData.state ? new Set([storeData.state.toString()]) : undefined}
+            selectedKeys={storeData.stateId ? new Set([storeData.stateId.toString()]) : undefined}
             onSelectionChange={(keys) => {
               const selectedId = Number(Array.from(keys)[0]);
-              updateStoreData({ state: selectedId, city: undefined });
+              updateStoreData({ stateId: selectedId, cityId: undefined });
             }}
           >
             {states!.map((state) => (
@@ -143,16 +143,16 @@ export default function CreateStoreLocation() {
         ))}
 
       {/* City Select */}
-      {storeData.state &&
+      {storeData.stateId &&
         (loadingCities ? (
           <Spinner />
         ) : (
           <Select
             label="City"
-            selectedKeys={storeData.city ? new Set([storeData.city.toString()]) : undefined}
+            selectedKeys={storeData.cityId ? new Set([storeData.cityId.toString()]) : undefined}
             onSelectionChange={(keys) => {
               const selectedId = Number(Array.from(keys)[0]);
-              updateStoreData({ city: selectedId });
+              updateStoreData({ cityId: selectedId });
             }}
           >
             {cities!.map((city) => (
