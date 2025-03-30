@@ -2,13 +2,13 @@
 
 import AppLayout from '@/components/shared/app-layout';
 import { useUser } from '@/context/user-context';
-import { Button, Card, CardBody, CardHeader, Spinner } from '@heroui/react';
+import { Button, Spinner } from '@heroui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { UserPrivateProfile } from '@/libs/users/types';
 import { OrderSummary } from '@/libs/orders/types';
-import Price from '@/components/shared/price';
 import { StorePreviewCard } from '@/components/stores/preview-card';
+import OrderSummaryCard from '@/components/orders/summary-card';
 
 export default function ProfilePage() {
   const { user, isLoading } = useUser();
@@ -91,17 +91,7 @@ function RecentOrders({ orders }: { orders: OrderSummary[] }) {
       <h3 className="text-base font-semibold mb-3">Recent Orders</h3>
       <div className="space-y-2">
         {orders.slice(0, 3).map((order) => (
-          <Card key={order.id}>
-            <CardHeader className="flex justify-between text-sm">
-              <p>Order #{order.id}</p>
-              <p className="text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</p>
-            </CardHeader>
-            <CardBody className="text-sm text-gray-600">
-              <Price amount={order.totalAmount} />
-              <p>Status: {order.status}</p>
-              <p>Store: {order.store?.name}</p>
-            </CardBody>
-          </Card>
+          <OrderSummaryCard key={order.id} order={order} />
         ))}
         <div className="text-center mt-2">
           <Link href="/orders">
