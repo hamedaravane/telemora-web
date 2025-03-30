@@ -8,6 +8,7 @@ import { Button, Card, CardBody, CardHeader, Divider, Spinner } from '@heroui/re
 import { format } from 'date-fns';
 import { FaBoxOpen, FaChevronRight, FaWallet } from 'react-icons/fa6';
 import { OrderSummary } from '@/libs/orders/types';
+import OrderSummaryCard from '@/components/orders/summary-card';
 
 export default function OrdersPage() {
   const router = useRouter();
@@ -51,60 +52,10 @@ export default function OrdersPage() {
       ) : (
         <div className="space-y-4 pb-10">
           {orders.map((order) => (
-            <OrderCard key={order.id} order={order} />
+            <OrderSummaryCard key={order.id} order={order} />
           ))}
         </div>
       )}
     </AppLayout>
-  );
-}
-
-function OrderCard({ order }: { order: OrderSummary }) {
-  const formattedDate = format(new Date(order.createdAt), 'PPP');
-
-  return (
-    <Card className="shadow-md rounded-xl">
-      <CardHeader className="flex items-center justify-between px-4 pt-4">
-        <div>
-          <h2 className="text-sm font-semibold">Order #{order.id}</h2>
-          <p className="text-xs">{formattedDate}</p>
-        </div>
-        <div className="text-xs rounded px-1 border">{order.status}</div>
-      </CardHeader>
-
-      <CardBody className="px-4 pb-4 space-y-3">
-        <div className="text-sm">
-          <p className="">
-            <span className="font-medium">Store:</span> {order.store.name}
-          </p>
-          <p className="">
-            <span className="font-medium">Total:</span> ${order.totalAmount.toFixed(2)}
-          </p>
-        </div>
-
-        <Divider />
-
-        {order.status && (
-          <div className="mt-3">
-            <div className="flex items-center gap-2  mb-1">
-              <FaWallet />
-              <p className="text-sm font-medium">Payment</p>
-            </div>
-            <p className="text-xs">Status: {order.status}</p>
-          </div>
-        )}
-
-        <div className="pt-2 flex justify-end gap-2">
-          {order.status === 'pending' && (
-            <Button variant="bordered" size="sm">
-              Complete Payment
-            </Button>
-          )}
-          <Button variant="flat" size="sm" endContent={<FaChevronRight />}>
-            View Details
-          </Button>
-        </div>
-      </CardBody>
-    </Card>
   );
 }

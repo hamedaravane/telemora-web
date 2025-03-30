@@ -7,6 +7,7 @@ import { useUser } from '@/context/user-context';
 import Image from 'next/image';
 import { useStoresData } from '@/libs/stores/stores-api';
 import AppLayout from '@/components/shared/app-layout';
+import StoreSummaryCard from '@/components/stores/summary-card';
 
 export default function StoreListPage() {
   const { isLoading: isAuthLoading } = useUser();
@@ -52,50 +53,14 @@ export default function StoreListPage() {
           </Button>
         </div>
       ) : (
-        <div className="grid gap-4">
+        <div className="space-y-4">
           {stores!.map((store) => (
-            <Card
-              key={store.id}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) =>
-                (e.key === 'Enter' || e.key === ' ') && handleOpenStore(Number(store.id))
-              }
-              className="cursor-pointer transition-transform hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary"
-              onPress={() => handleOpenStore(Number(store.id))}
-              aria-label={`Open store: ${store.name}`}
-            >
-              <CardHeader className="flex items-center gap-3">
-                {store.logo?.url ? (
-                  <Image
-                    src={store.logo.url}
-                    alt={`${store.name} logo`}
-                    width={48}
-                    height={48}
-                    className="rounded-full aspect-square object-cover"
-                    unoptimized={false}
-                    sizes="48px"
-                  />
-                ) : (
-                  <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-                    <span className="text-gray-600 text-xl">🏪</span>
-                  </div>
-                )}
-                <div className="flex flex-col">
-                  <h2 className="font-semibold text-base line-clamp-1">
-                    {store.name ?? 'Unnamed Store'}
-                  </h2>
-                  <div>{store.tags?.map((tag, index) => <Chip key={index}>{tag}</Chip>)}</div>
-                </div>
-              </CardHeader>
-            </Card>
+            <StoreSummaryCard key={store.id} store={store} />
           ))}
 
-          <div className="text-center mt-8">
-            <Button variant="bordered" size="lg" onPress={handleCreateStore}>
-              + New Store
-            </Button>
-          </div>
+          <Button fullWidth variant="bordered" size="lg" onPress={handleCreateStore}>
+            + New Store
+          </Button>
         </div>
       )}
     </AppLayout>

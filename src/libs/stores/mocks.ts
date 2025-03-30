@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { StoreDetail, StorePreview, StoreSummary } from './types';
 import { generateMockAddress } from '@/libs/location/mocks';
 import { generateMockUserSummary } from '@/libs/users/mocks';
+import { generateMockProductPreview } from '@/libs/products/mocks';
 
 export function generateMockStorePreview(): StorePreview {
   return {
@@ -21,14 +22,17 @@ export function generateMockStoreSummary(): StoreSummary {
   return {
     ...generateMockStorePreview(),
     address: generateMockAddress(),
+    description: faker.lorem.paragraph(),
   };
 }
 
 export function generateMockStoreDetail(): StoreDetail {
   return {
     ...generateMockStoreSummary(),
-    description: faker.lorem.paragraph(),
     owner: generateMockUserSummary(),
+    products: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, (_, index) =>
+      generateMockProductPreview(index),
+    ),
     contactNumber: faker.phone.number(),
     email: faker.internet.email(),
     socialMediaLinks: {

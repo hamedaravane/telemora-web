@@ -15,10 +15,10 @@ export interface StorePreview {
 export interface StoreSummary extends StorePreview {
   tags?: string[];
   address: Address;
+  description?: string;
 }
 
 export interface StoreDetail extends StoreSummary {
-  description?: string;
   owner: UserSummary;
   contactNumber?: string;
   email?: string;

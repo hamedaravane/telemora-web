@@ -19,7 +19,7 @@ export const fetchStores = async (): Promise<StoreSummary[]> => {
 };
 
 export const fetchMockStores = async (): Promise<StoreSummary[]> => {
-  return Array.from({ length: 10 }, () => generateMockStoreSummary());
+  return Array.from({ length: 2 }, () => generateMockStoreSummary());
 };
 
 export function useStoresData() {
