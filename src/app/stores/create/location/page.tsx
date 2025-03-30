@@ -73,7 +73,7 @@ export default function CreateStoreLocation() {
     }
   };
 
-  const handleNext = () => router.push('/store/create/category-selection');
+  const handleNext = () => router.push('/store/create/tags');
   const handleBack = () => router.push('/store/create/basic-information');
 
   return (
