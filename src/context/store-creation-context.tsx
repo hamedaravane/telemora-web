@@ -10,19 +10,17 @@ import {
 } from '@/libs/stores/stores-api';
 import {
   CreateStoreBasicDto,
-  CreateStoreLocationDto,
+  CreateAddressDto,
   CreateStoreTagsDto,
   CreateStoreWorkingHoursDto,
-  StoreCategory,
+  CreateStoreLogoDto,
 } from '@/libs/stores/types';
 
-interface StoreCreationState
-  extends CreateStoreBasicDto,
-    CreateStoreLocationDto,
-    CreateStoreTagsDto,
-    CreateStoreWorkingHoursDto {
-  logoUrl?: File | null;
-}
+type StoreCreationState = CreateStoreBasicDto &
+  CreateAddressDto &
+  CreateStoreTagsDto &
+  CreateStoreWorkingHoursDto &
+  CreateStoreLogoDto;
 
 interface StoreCreationContextType {
   storeData: StoreCreationState;
@@ -38,12 +36,17 @@ export function StoreCreationProvider({ children }: { children: React.ReactNode 
     description: '',
     contactNumber: '',
     email: '',
-    country: undefined,
-    state: undefined,
-    city: undefined,
-    category: StoreCategory.OTHER,
+    countryId: 0,
+    stateId: 0,
+    cityId: 0,
+    postalCode: '',
+    streetLine1: '',
+    streetLine2: '',
+    latitude: 0,
+    longitude: 0,
+    tags: [],
     workingHours: {},
-    logoUrl: null,
+    logoFile: undefined,
   });
 
   const updateStoreData = (newData: Partial<StoreCreationState>) => {
@@ -56,7 +59,7 @@ export function StoreCreationProvider({ children }: { children: React.ReactNode 
 
       await createBasicInfo(storeData);
 
-      if (storeData.country) {
+      if (storeData.countryId) {
         await updateStoreLocation(storeData);
       }
 
@@ -66,8 +69,8 @@ export function StoreCreationProvider({ children }: { children: React.ReactNode 
         await setStoreWorkingHours(storeData);
       }
 
-      if (storeData.logoUrl) {
-        await uploadStoreLogo({ logoFile: storeData.logoUrl });
+      if (storeData.logoFile) {
+        await uploadStoreLogo({ logoFile: storeData.logoFile });
       }
 
       console.log('Store created successfully!');

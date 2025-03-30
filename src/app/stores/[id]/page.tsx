@@ -2,24 +2,15 @@
 
 import React from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import {
-  Accordion,
-  AccordionItem,
-  Button,
-  Card,
-  CardBody,
-  Chip,
-  Spinner,
-  Tooltip,
-} from '@heroui/react';
+import { Accordion, AccordionItem, Button, Chip, Spinner, Tooltip } from '@heroui/react';
 import Image from 'next/image';
 import { useUser } from '@/context/user-context';
 import { useSingleStoreDataById } from '@/libs/stores/stores-api';
 import AppLayout from '@/components/shared/app-layout';
-import Price from '@/components/shared/price';
 import { FaPlus } from 'react-icons/fa6';
 import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
 import StarRating from '@/components/shared/star-rating';
+import ProductPreviewCard from '@/components/products/preview-card';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams();
@@ -148,12 +139,7 @@ export default function StoreDetailsPage() {
 
         <div className="grid grid-cols-2 gap-3">
           {store.products.slice(0, 4).map((product) => (
-            <Card key={product.id} className="rounded-xl">
-              <CardBody className="p-3">
-                <p className="font-semibold">{product.name}</p>
-                <Price amount={product.price} />
-              </CardBody>
-            </Card>
+            <ProductPreviewCard key={product.id} product={product} />
           ))}
         </div>
 

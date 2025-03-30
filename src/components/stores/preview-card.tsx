@@ -4,7 +4,6 @@ import StarRating from '@/components/shared/star-rating';
 import Link from 'next/link';
 import React from 'react';
 import { Card, CardBody, cn } from '@heroui/react';
-import { FaCheck, FaLock, FaUnlock } from 'react-icons/fa';
 
 export const StorePreviewCard = ({ store }: { store: StorePreview }) => {
   return (
