@@ -176,3 +176,13 @@ export default function CreateStoreLocation() {
   );
 }
 */
+export default function StoreLocationPage() {
+  return (
+    <div className="flex flex-col items-center justify-center h-screen">
+      <h1 className="text-3xl font-bold mb-4">Store Location</h1>
+      <p className="text-lg text-gray-600 mb-8">
+        This page is currently under development. Please check back later.
+      </p>
+    </div>
+  );
+}
