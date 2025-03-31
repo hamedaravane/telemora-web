@@ -2,7 +2,7 @@
 
 import AppLayout from '@/components/shared/app-layout';
 import { useUser } from '@/context/user-context';
-import { Button, Divider, Spinner } from '@heroui/react';
+import { Button, Divider, Skeleton } from '@heroui/react';
 import Image from 'next/image';
 import { UserPrivateProfile } from '@/libs/users/types';
 import { StorePreviewCard } from '@/components/stores/preview-card';
@@ -17,9 +17,38 @@ export default function ProfilePage() {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="min-h-screen flex items-center justify-center">
-          <Spinner size="lg" />
-        </div>
+        <main className="max-w-2xl mx-auto px-4 py-6 space-y-10">
+          <div className="space-y-4">
+            <div className="flex flex-col items-center">
+              <Skeleton className="w-32 h-32 rounded-full" />
+              <Skeleton className="w-40 h-4 mt-4 rounded" />
+              <Skeleton className="w-24 h-3 mt-2 rounded" />
+            </div>
+
+            <div className="flex space-x-2">
+              <Skeleton className="h-10 flex-1 rounded-md" />
+              <Skeleton className="h-10 flex-1 rounded-md" />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-28 rounded-md" />
+            <div className="grid grid-cols-2 gap-3">
+              {[...Array(2)].map((_, i) => (
+                <Skeleton key={i} className="aspect-square w-full rounded-md" />
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-32 rounded-md" />
+            <div className="space-y-3">
+              {[...Array(2)].map((_, i) => (
+                <Skeleton key={i} className="h-24 w-full rounded-md" />
+              ))}
+            </div>
+          </div>
+        </main>
       </AppLayout>
     );
   }
