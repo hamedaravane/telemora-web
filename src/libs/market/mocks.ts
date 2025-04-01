@@ -1,8 +1,6 @@
 import { HomeFeedResponse, HomeFeedSection } from './types';
 import { generateMockCategoryTree, generateMockProductPreview } from '@/libs/products/mocks';
 import { generateMockStorePreview } from '@/libs/stores/mocks';
-import { ProductCategoryNode, ProductPreview } from '@/libs/products/types';
-import { StorePreview } from '@/libs/stores/types';
 
 export function generateMockHomeFeedResponse(): HomeFeedResponse {
   return {
@@ -16,7 +14,7 @@ export function generateMockHomeFeedResponse(): HomeFeedResponse {
 }
 
 function generateMockCategoryGridSection(): HomeFeedSection {
-  const categories: ProductCategoryNode[] = generateMockCategoryTree(8);
+  const categories = generateMockCategoryTree(8);
   return {
     id: 'popular-categories',
     type: 'categoryGrid',
@@ -26,9 +24,7 @@ function generateMockCategoryGridSection(): HomeFeedSection {
 }
 
 function generateMockDealsOfDaySection(): HomeFeedSection {
-  const products: ProductPreview[] = Array.from({ length: 10 }, (_, i) =>
-    generateMockProductPreview(i + 1),
-  );
+  const products = Array.from({ length: 10 }, (_, i) => generateMockProductPreview(i + 1));
   const future = new Date();
   future.setHours(future.getHours() + 12);
 
@@ -43,9 +39,7 @@ function generateMockDealsOfDaySection(): HomeFeedSection {
 }
 
 function generateMockEditorsPickSection(): HomeFeedSection {
-  const picks: ProductPreview[] = Array.from({ length: 8 }, (_, i) =>
-    generateMockProductPreview(i + 20),
-  );
+  const picks = Array.from({ length: 8 }, (_, i) => generateMockProductPreview(i + 20));
 
   return {
     id: 'editors-picks',
@@ -57,7 +51,7 @@ function generateMockEditorsPickSection(): HomeFeedSection {
 }
 
 function generateMockLocalSellersSection(): HomeFeedSection {
-  const stores: StorePreview[] = Array.from({ length: 6 }, () => generateMockStorePreview());
+  const stores = Array.from({ length: 6 }, () => generateMockStorePreview());
 
   return {
     id: 'local-sellers',

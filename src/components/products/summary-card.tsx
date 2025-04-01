@@ -35,7 +35,7 @@ export default function ProductSummaryCard({ product, className }: ProductSummar
       className={`flex items-center gap-3 p-3 rounded-lg border border-gray-200 bg-white hover:shadow-sm transition-all ${className}`}
     >
       <div className="relative w-16 h-16 rounded-md overflow-hidden bg-gray-100 shrink-0">
-        <Image src={image.url} alt={image.alt ?? name} fill className="object-cover" />
+        <Image src={image[0].url} alt={image[0].alt ?? name} fill className="object-cover" />
       </div>
 
       <div className="flex-1 space-y-1">

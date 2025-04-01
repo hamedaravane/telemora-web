@@ -17,12 +17,12 @@ export function generateMockProductPreview(id: number): ProductPreview {
     name: faker.commerce.productName(),
     slug: faker.helpers.slugify(faker.commerce.productName()),
     price: Number(faker.commerce.price({ min: 10, max: 500 })),
-    image: {
+    image: Array.from({ length: 4 }, () => ({
       url: faker.image.urlPicsumPhotos(),
       alt: faker.commerce.productAdjective(),
       width: 600,
       height: 400,
-    },
+    })),
     storeId: faker.number.int({ min: 10, max: 300 }),
   };
 }

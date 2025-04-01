@@ -13,7 +13,7 @@ export interface ProductPreview {
   name: string;
   slug?: string;
   price: number;
-  image: Media;
+  image: Media[];
   storeId: number | string;
 }
 
