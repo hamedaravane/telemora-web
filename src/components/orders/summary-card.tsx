@@ -1,7 +1,7 @@
 'use client';
 
 import { OrderStatus, OrderSummary } from '@/libs/orders/types';
-import { Badge, Card, CardBody, CardHeader } from '@heroui/react';
+import { Card, CardBody, CardHeader, Chip } from '@heroui/react';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import Price from '@/components/shared/price';
@@ -25,9 +25,9 @@ export default function OrderSummaryCard({ order, href, className }: OrderSummar
             <span className="text-gray-400">{store.name}</span>
           </p>
         </div>
-        <Badge color={getOrderStatusColor(status)} size="sm">
-          {getOrderStatusLabel(status)}
-        </Badge>
+        <Chip color={getOrderStatusColor(status)} size="sm">
+          {status}
+        </Chip>
       </CardHeader>
 
       <CardBody className="text-sm text-gray-700">
@@ -43,29 +43,6 @@ export default function OrderSummaryCard({ order, href, className }: OrderSummar
   );
 
   return href ? <Link href={href}>{cardContent}</Link> : cardContent;
-}
-
-export function getOrderStatusLabel(status: OrderStatus): string {
-  switch (status) {
-    case OrderStatus.PENDING:
-      return 'Pending';
-    case OrderStatus.CONFIRMED:
-      return 'Confirmed';
-    case OrderStatus.PROCESSING:
-      return 'Processing';
-    case OrderStatus.SHIPPED:
-      return 'Shipped';
-    case OrderStatus.DELIVERED:
-      return 'Delivered';
-    case OrderStatus.COMPLETED:
-      return 'Completed';
-    case OrderStatus.CANCELED:
-      return 'Canceled';
-    case OrderStatus.REFUNDED:
-      return 'Refunded';
-    default:
-      return 'Unknown';
-  }
 }
 
 export function getOrderStatusColor(
