@@ -22,9 +22,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   const { data: user, isLoading } = useQuery({
     queryKey: ['userUser', initDataStr],
-    // queryFn: () => sendTelegramInitData(initDataStr!),
     queryFn: () => generateMockUserPrivateProfile(),
-    // enabled: hasInitData,
   });
 
   return (

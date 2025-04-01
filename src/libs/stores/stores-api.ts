@@ -55,8 +55,8 @@ export const updateStoreLocation = async (data: CreateAddressDto) => {
   return response.data;
 };
 
-export const selectStoreCategory = async (data: CreateStoreTagsDto) => {
-  const response = await axios.post(`${API_BASE_URL}/stores/create/category`, data);
+export const selectStoreTags = async (data: CreateStoreTagsDto) => {
+  const response = await axios.post(`${API_BASE_URL}/stores/create/tags`, data);
   return response.data;
 };
 
