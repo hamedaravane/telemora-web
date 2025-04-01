@@ -68,8 +68,9 @@ export default function CreateStoreLocation() {
         subtitle="Let customers know where your store is located. This helps local buyers discover you."
       />
 
-      <div className="mb-4">
+      <div className="flex gap-4 mb-4">
         <Button
+          fullWidth
           variant="bordered"
           size="sm"
           onPress={detectLocation}
@@ -82,9 +83,9 @@ export default function CreateStoreLocation() {
 
         {!isAccessGranted && (
           <Button
+            fullWidth
             size="sm"
             variant="ghost"
-            className="mt-2"
             onPress={() => locationManager.openSettings()}
           >
             Open Telegram Settings
@@ -92,65 +93,67 @@ export default function CreateStoreLocation() {
         )}
       </div>
 
-      {loadingCountries ? (
-        <Spinner />
-      ) : (
-        <Select
-          label="Country"
-          selectedKeys={countryId ? new Set([countryId.toString()]) : undefined}
-          onSelectionChange={(keys) => {
-            const selectedId = Number(Array.from(keys)[0]);
-            updateStoreData({
-              countryId: selectedId,
-              stateId: undefined,
-              cityId: undefined,
-            });
-          }}
-        >
-          {countries!.map((country) => (
-            <SelectItem key={country.id.toString()}>{country.name}</SelectItem>
-          ))}
-        </Select>
-      )}
-
-      {countryId &&
-        (loadingStates ? (
+      <div className="space-y-4">
+        {loadingCountries ? (
           <Spinner />
         ) : (
           <Select
-            label="State"
-            selectedKeys={stateId ? new Set([stateId.toString()]) : undefined}
+            label="Country"
+            selectedKeys={countryId ? new Set([countryId.toString()]) : undefined}
             onSelectionChange={(keys) => {
               const selectedId = Number(Array.from(keys)[0]);
               updateStoreData({
-                stateId: selectedId,
+                countryId: selectedId,
+                stateId: undefined,
                 cityId: undefined,
               });
             }}
           >
-            {states!.map((state) => (
-              <SelectItem key={state.id.toString()}>{state.name}</SelectItem>
-            ))}
+            {countries ? countries.map((country) => (
+              <SelectItem key={country.id.toString()}>{country.name}</SelectItem>
+            )) : <SelectItem key="0">Loading…</SelectItem>}
           </Select>
-        ))}
+        )}
 
-      {stateId &&
-        (loadingCities ? (
-          <Spinner />
-        ) : (
-          <Select
-            label="City"
-            selectedKeys={cityId ? new Set([cityId.toString()]) : undefined}
-            onSelectionChange={(keys) => {
-              const selectedId = Number(Array.from(keys)[0]);
-              updateStoreData({ cityId: selectedId });
-            }}
-          >
-            {cities!.map((city) => (
-              <SelectItem key={city.id.toString()}>{city.name}</SelectItem>
-            ))}
-          </Select>
-        ))}
+        {countryId &&
+          (loadingStates ? (
+            <Spinner />
+          ) : (
+            <Select
+              label="State"
+              selectedKeys={stateId ? new Set([stateId.toString()]) : undefined}
+              onSelectionChange={(keys) => {
+                const selectedId = Number(Array.from(keys)[0]);
+                updateStoreData({
+                  stateId: selectedId,
+                  cityId: undefined,
+                });
+              }}
+            >
+              {states ? states.map((state) => (
+                <SelectItem key={state.id.toString()}>{state.name}</SelectItem>
+              )) : <SelectItem key="0">Loading…</SelectItem>}
+            </Select>
+          ))}
+
+        {stateId &&
+          (loadingCities ? (
+            <Spinner />
+          ) : (
+            <Select
+              label="City"
+              selectedKeys={cityId ? new Set([cityId.toString()]) : undefined}
+              onSelectionChange={(keys) => {
+                const selectedId = Number(Array.from(keys)[0]);
+                updateStoreData({ cityId: selectedId });
+              }}
+            >
+              {cities ? cities.map((city) => (
+                <SelectItem key={city.id.toString()}>{city.name}</SelectItem>
+              )) : <SelectItem key="0">Loading…</SelectItem>}
+            </Select>
+          ))}
+      </div>
 
       <Input
         label="Street Line 1 (Optional)"

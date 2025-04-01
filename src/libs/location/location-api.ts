@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { CanonicalLocation, NearestLocationResponse } from './types';
 import axios from 'axios';
+import { generateMockCities, generateMockCountries, generateMockStates } from '@/libs/location/mocks';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -12,7 +13,7 @@ export const fetchCountries = async (): Promise<CanonicalLocation[]> => {
 export function useCountries() {
   return useQuery<CanonicalLocation[]>({
     queryKey: ['countries'],
-    queryFn: fetchCountries,
+    queryFn: generateMockCountries,
     staleTime: 1000 * 60 * 60,
   });
 }
@@ -26,7 +27,7 @@ export const fetchStates = async (countryId?: number): Promise<CanonicalLocation
 export function useStates(countryId?: number) {
   return useQuery<CanonicalLocation[]>({
     queryKey: ['states', countryId],
-    queryFn: () => fetchStates(countryId),
+    queryFn: () => generateMockStates(),
     enabled: !!countryId,
     staleTime: 1000 * 60 * 30,
   });
@@ -41,7 +42,7 @@ export const fetchCities = async (stateId?: number): Promise<CanonicalLocation[]
 export function useCities(stateId?: number) {
   return useQuery<CanonicalLocation[]>({
     queryKey: ['cities', stateId],
-    queryFn: () => fetchCities(stateId),
+    queryFn: () => generateMockCities(),
     enabled: !!stateId,
     staleTime: 1000 * 60 * 30,
   });

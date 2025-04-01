@@ -35,3 +35,15 @@ export function generateMockAddress(): Address {
     createdAt: faker.date.past(),
   };
 }
+
+export const generateMockCountries = (): CanonicalLocation[] => {
+  return Array.from({ length: 5 }, () => generateMockCanonicalLocation('country'));
+};
+
+export const generateMockStates = (): CanonicalLocation[] => {
+  return Array.from({ length: 5 }, () => generateMockCanonicalLocation('state'));
+};
+
+export const generateMockCities = (): CanonicalLocation[] => {
+  return Array.from({ length: 5 }, () => generateMockCanonicalLocation('city'));
+};
