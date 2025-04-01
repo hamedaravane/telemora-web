@@ -23,6 +23,7 @@ export function generateMockProductPreview(id: number): ProductPreview {
       width: 600,
       height: 400,
     },
+    storeId: faker.number.int({ min: 10, max: 300 }),
   };
 }
 

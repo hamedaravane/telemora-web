@@ -7,10 +7,9 @@ import Price from '@/components/shared/price';
 import { Card, CardBody, CardFooter } from '@heroui/react';
 
 export default function ProductPreviewCard({ product }: { product: ProductPreview }) {
-  const productLink = `/products/${product.id}`;
 
   return (
-    <Link href={productLink}>
+    <Link href={`/stores/${product.storeId}/products/${product.id}`}>
       <Card>
         <CardBody className="h-32">
           <Image

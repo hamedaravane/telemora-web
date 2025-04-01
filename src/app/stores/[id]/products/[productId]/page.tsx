@@ -100,13 +100,15 @@ export default function ProductDetailsPage() {
   } else {
     return (
       <AppLayout>
-        <div className="flex flex-col gap-4 p-6">
+        <div className="space-y-4">
           <Image src={product.image.url} height={200} width={200} alt={product.name} />
           <h3 className="text-3xl font-bold">{product.name}</h3>
           <p className="">{product.description}</p>
           <Price amount={product.price}></Price>
           <span>Quantity: {product.stock}</span>
-          <Button>Add to Card</Button>
+          <div>
+            <Button>Add to Card</Button>
+          </div>
         </div>
       </AppLayout>
     );
