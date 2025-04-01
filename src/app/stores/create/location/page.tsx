@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Input, Select, SelectItem, Spinner } from '@heroui/react';
+import { Button, Input, Select, SelectItem, Skeleton } from '@heroui/react';
 import { locationManager, useSignal } from '@telegram-apps/sdk-react';
 
 import { useStoreCreation } from '@/context/store-creation-context';
@@ -10,6 +10,7 @@ import { getNearestLocation, useCities, useCountries, useStates } from '@/libs/l
 
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
+import { FaGear, FaLocationDot } from 'react-icons/fa6';
 
 export default function CreateStoreLocation() {
   const router = useRouter();
@@ -71,11 +72,12 @@ export default function CreateStoreLocation() {
       <div className="flex gap-4 mb-4">
         <Button
           fullWidth
-          variant="bordered"
           size="sm"
+          variant="flat"
           onPress={detectLocation}
           isDisabled={!isSupported || isDetecting}
         >
+          <FaLocationDot />
           {isDetecting ? 'Detecting…' : 'Use Telegram Location'}
         </Button>
 
@@ -85,18 +87,18 @@ export default function CreateStoreLocation() {
           <Button
             fullWidth
             size="sm"
-            variant="ghost"
+            variant="flat"
             onPress={() => locationManager.openSettings()}
           >
+            <FaGear />
             Open Telegram Settings
           </Button>
         )}
       </div>
 
       <div className="space-y-4">
-        {loadingCountries ? (
-          <Spinner />
-        ) : (
+        {/* Country */}
+        <Skeleton className="rounded-md" isLoaded={!loadingCountries}>
           <Select
             label="Country"
             selectedKeys={countryId ? new Set([countryId.toString()]) : undefined}
@@ -113,12 +115,11 @@ export default function CreateStoreLocation() {
               <SelectItem key={country.id.toString()}>{country.name}</SelectItem>
             )) : <SelectItem key="0">Loading…</SelectItem>}
           </Select>
-        )}
+        </Skeleton>
 
-        {countryId &&
-          (loadingStates ? (
-            <Spinner />
-          ) : (
+        {/* State */}
+        {countryId && (
+          <Skeleton className="rounded-md" isLoaded={!loadingStates}>
             <Select
               label="State"
               selectedKeys={stateId ? new Set([stateId.toString()]) : undefined}
@@ -134,12 +135,12 @@ export default function CreateStoreLocation() {
                 <SelectItem key={state.id.toString()}>{state.name}</SelectItem>
               )) : <SelectItem key="0">Loading…</SelectItem>}
             </Select>
-          ))}
+          </Skeleton>
+        )}
 
-        {stateId &&
-          (loadingCities ? (
-            <Spinner />
-          ) : (
+        {/* City */}
+        {stateId && (
+          <Skeleton className="rounded-md" isLoaded={!loadingCities}>
             <Select
               label="City"
               selectedKeys={cityId ? new Set([cityId.toString()]) : undefined}
@@ -152,7 +153,8 @@ export default function CreateStoreLocation() {
                 <SelectItem key={city.id.toString()}>{city.name}</SelectItem>
               )) : <SelectItem key="0">Loading…</SelectItem>}
             </Select>
-          ))}
+          </Skeleton>
+        )}
       </div>
 
       <Input
@@ -163,17 +165,14 @@ export default function CreateStoreLocation() {
         className="mt-4"
       />
 
-      <div className="mt-6 flex justify-between">
+      <div className="mt-6 flex gap-4">
         <Button variant="bordered" onPress={handleBack}>
           Back
         </Button>
-        <Button onPress={handleNext}>Next</Button>
-      </div>
-
-      <div className="text-center mt-4">
-        <Button variant="ghost" size="sm" onPress={handleNext}>
+        <Button variant="flat" onPress={handleNext}>
           Skip
         </Button>
+        <Button fullWidth onPress={handleNext}>Next</Button>
       </div>
     </AppLayout>
   );
