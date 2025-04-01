@@ -1,116 +1,122 @@
 'use client';
-/**
- * Product Details Page Component
- *
- * This file is responsible for implementing the **Product Details Page**, which is a
- * **critical page** for user conversion. Since our platform earns revenue through **sales commissions**,
- * this page must be optimized to **convince users to make a purchase** using **marketing principles**
- * and **UI/UX best practices**.
- *
- * ## Purpose
- * The goal of this page is to **persuade** users to purchase a products or service by:
- * - Providing **clear, compelling products information**.
- * - **Building trust** through stores details, reviews, and transparency.
- * - Encouraging users to **add products to their order** and **proceed to checkout**.
- *
- * ## Product Data Structure
- * The server provides the following data:
- *
- * ```ts
- * export interface Product {
- *   id: number;
- *   name: string;
- *   price: number;
- *   description?: string;
- *   imageUrl: string;
- *   stores: Store;
- *   productType: ProductType;
- *   attributes: ProductAttribute[];
- *   variants: ProductVariant[];
- *   reviews: Review[];
- *   downloadLink?: string;
- *   stock?: number;
- *   isApproved: boolean;
- *   createdAt: Date;
- *   updatedAt: Date;
- * }
- * ```
- *
- * ## Key Design Considerations
- * - **Compelling Visuals**
- *   - Display the **products image** prominently with zoom capabilities.
- *   - Ensure **price & key details** are instantly visible.
- *   - Provide a **clear CTA button ("Buy Now")** at the top and bottom of the page.
- *
- * - **Trust & Transparency**
- *   - Show **stores information** to build credibility.
- *   - Display **user reviews** with a clear breakdown of ratings.
- *   - Highlight if the products is **approved** by the platform.
- *
- * - **Optimized Purchase Flow**
- *   - Users can **select variants** (if available).
- *   - If the **products is digital**, show the **download process** after purchase.
- *   - If the **products is physical**, show **shipping & stock information**.
- *   - Show an **"Add to Cart" button** that leads users to **checkout in the Orders Page**.
- *
- * - **Seamless Checkout Integration**
- *   - After adding a products to an order, **display a checkout button**.
- *   - Redirect users to the **Order Details Page** (`src/app/orders/[productId]/page.tsx`) to finalize payment.
- *
- * ## UI/UX Guidelines
- * - Use **HeroUI** pre-built components for styling.
- * - Implement **TailwindCSS** for any custom elements.
- * - Ensure a **mobile-friendly layout** with clear call-to-actions (CTAs).
- * - Provide **real-time updates** on stock & availability.
- *
- * ## Additional Enhancements
- * - **Social Proof:** Display trending or frequently bought products.
- * - **Product Recommendations:** Show similar products to increase engagement.
- * - **Animated Transitions:** Use smooth interactions to enhance user experience.
- *
- * TODO: Implement a high-converting products details page that effectively leads users to checkout.
- */
 
-import { Button, Spinner } from '@heroui/react';
-import { useGetProductById } from '@/libs/products/products-api';
 import { useParams } from 'next/navigation';
+import { useGetProductById } from '@/libs/products/products-api';
+import { Button, Divider, ScrollShadow, Skeleton } from '@heroui/react';
 import AppLayout from '@/components/shared/app-layout';
 import Price from '@/components/shared/price';
 import Image from 'next/image';
+import ReviewPreviewCard from '@/components/reviews/preview';
+import { PageHeader } from '@/components/shared/page-header';
+import { User } from '@heroui/user';
+import StarRating from '@/components/shared/star-rating';
 
 export default function ProductDetailsPage() {
-  const params = useParams();
-  const { data: product, isLoading, error, refetch } = useGetProductById(+params.productId);
+  const { productId } = useParams();
+  const { data: product, isLoading, error, refetch } = useGetProductById(+productId);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex justify-center items-center">
-        <Spinner size="lg" />
-      </div>
+      <AppLayout>
+        <div className="space-y-4">
+          <Skeleton className="w-full h-52 rounded-xl" />
+          <Skeleton className="w-3/4 h-6 rounded" />
+          <Skeleton className="w-1/2 h-6 rounded" />
+          <Skeleton className="w-full h-10 rounded" />
+        </div>
+      </AppLayout>
     );
   }
 
   if (error || !product) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center text-red-500">
-        <p>Failed to load market data.</p>
-        <Button onPress={() => refetch()}>Retry</Button>
-      </div>
-    );
-  } else {
-    return (
       <AppLayout>
-        <div className="space-y-4">
-          <Image src={product.image.url} height={200} width={200} alt={product.name} />
-          <h3 className="text-3xl font-bold">{product.name}</h3>
-          <p className="">{product.description}</p>
-          <Price amount={product.price}></Price>
-          <span>Quantity: {product.stock}</span>
-          <div>
-            <Button>Add to Card</Button>
-          </div>
+        <div className="min-h-screen flex flex-col items-center justify-center text-red-500">
+          <p>Failed to load product.</p>
+          <Button onPress={() => refetch()}>Retry</Button>
         </div>
       </AppLayout>
     );
   }
+
+  return (
+    <AppLayout>
+      <main className="space-y-6 px-2 py-4">
+        {product.image?.length > 0 && (
+          <ScrollShadow orientation="horizontal" className="flex gap-x-4 overflow-x-auto pb-2">
+            {product.image.map((img, index) => (
+              <Image
+                key={index}
+                src={img.url}
+                width={240}
+                height={240}
+                alt={product.name}
+                className="rounded-xl aspect-square object-cover w-60 shrink-0"
+              />
+            ))}
+          </ScrollShadow>
+        )}
+
+        <div>
+          <User
+            name={product.store.name}
+            avatarProps={{ src: product.store.logo?.url }}
+            description={<StarRating rating={product.store.reputation} />}
+          />
+        </div>
+
+        <div>
+          <h1 className="text-lg font-bold">{product.name}</h1>
+          <Price fontSize={16} amount={product.price} />
+        </div>
+
+        <Button fullWidth size="lg" className="mt-4">
+          Add to Cart
+        </Button>
+
+        <Divider />
+
+        {product.description && <PageHeader title={'Description'} subtitle={product.description} />}
+
+        {product.stock !== undefined && <p className=" ">In Stock: {product.stock}</p>}
+
+        {product.attributes && product.attributes.length > 0 && (
+          <div>
+            <h3 className="font-semibold mb-2">Attributes</h3>
+            <ul className="text-sm text-neutral-400 list-disc list-inside">
+              {product.attributes.map((attr, i) => (
+                <li key={i}>
+                  {attr.attributeName}: {attr.attributeValue}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {product.variants && product.variants.length > 0 && (
+          <div>
+            <h3 className="font-semibold   mb-2">Variants</h3>
+            <ul className="text-sm text-neutral-400 list-disc list-inside">
+              {product.variants.map((variant, i) => (
+                <li key={i}>
+                  {variant.variantName}: {variant.variantValue}
+                  {variant.additionalPrice && ` (+${variant.additionalPrice})`}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <Divider />
+
+        {product.reviews && product.reviews.length > 0 && (
+          <div className="space-y-2">
+            {product.reviews.map((review) => (
+              <ReviewPreviewCard key={review.id} content={review} />
+            ))}
+          </div>
+        )}
+      </main>
+    </AppLayout>
+  );
 }

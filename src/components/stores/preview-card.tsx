@@ -7,7 +7,7 @@ import { Card, CardBody, cn } from '@heroui/react';
 
 export const StorePreviewCard = ({ store }: { store: StorePreview }) => {
   return (
-    <Link href={`/stores/${store.id}`} passHref>
+    <Link href={`/stores/${store.id}`} className="block" passHref>
       <Card
         className={cn(
           'p-4 rounded-xl transition hover:shadow-md',
