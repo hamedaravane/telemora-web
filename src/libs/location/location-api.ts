@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { CanonicalLocation } from './types';
+import { CanonicalLocation, NearestLocationResponse } from './types';
 import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -13,7 +13,7 @@ export function useCountries() {
   return useQuery<CanonicalLocation[]>({
     queryKey: ['countries'],
     queryFn: fetchCountries,
-    staleTime: 1000 * 60 * 60, 
+    staleTime: 1000 * 60 * 60,
   });
 }
 
@@ -28,7 +28,7 @@ export function useStates(countryId?: number) {
     queryKey: ['states', countryId],
     queryFn: () => fetchStates(countryId),
     enabled: !!countryId,
-    staleTime: 1000 * 60 * 30, 
+    staleTime: 1000 * 60 * 30,
   });
 }
 
@@ -43,6 +43,18 @@ export function useCities(stateId?: number) {
     queryKey: ['cities', stateId],
     queryFn: () => fetchCities(stateId),
     enabled: !!stateId,
-    staleTime: 1000 * 60 * 30, 
+    staleTime: 1000 * 60 * 30,
   });
+}
+
+export async function getNearestLocation(lat: number, lng: number): Promise<NearestLocationResponse> {
+  const res = await fetch(
+    `${API_BASE_URL}/locations/nearest?lat=${lat}&lng=${lng}`,
+  );
+
+  if (!res.ok) {
+    throw new Error('Unable to resolve location from coordinates.');
+  }
+
+  return res.json();
 }

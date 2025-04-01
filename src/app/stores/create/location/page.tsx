@@ -6,7 +6,7 @@ import { Button, Input, Select, SelectItem, Spinner } from '@heroui/react';
 import { locationManager, useSignal } from '@telegram-apps/sdk-react';
 
 import { useStoreCreation } from '@/context/store-creation-context';
-import { useCities, useCountries, useStates } from '@/libs/location/location-api';
+import { getNearestLocation, useCities, useCountries, useStates } from '@/libs/location/location-api';
 
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
@@ -35,13 +35,7 @@ export default function CreateStoreLocation() {
       await locationManager.mount();
       const location = await locationManager.requestLocation();
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/locations/nearest?lat=${location.latitude}&lng=${location.longitude}`,
-      );
-
-      if (!res.ok) throw new Error('Unable to resolve location from coordinates.');
-
-      const nearest = await res.json();
+      const nearest = await getNearestLocation(location.latitude, location.longitude);
 
       updateStoreData({
         countryId: nearest.country?.id,

@@ -38,3 +38,9 @@ export interface GeoFilter {
   };
   radiusKm: number;
 }
+
+export interface NearestLocationResponse {
+  country: CanonicalLocation;
+  state?: CanonicalLocation;
+  city?: CanonicalLocation;
+}
