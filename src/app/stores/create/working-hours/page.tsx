@@ -120,17 +120,14 @@ export default function CreateStoreWorkingHours() {
         })}
       </div>
 
-      <div className="mt-8 flex justify-between">
+      <div className="mt-8 flex gap-x-2">
         <Button variant="bordered" onPress={handleBack}>
           Back
         </Button>
-        <Button onPress={handleNext}>Next</Button>
-      </div>
-
-      <div className="text-center mt-4">
-        <Button variant="ghost" size="sm" onPress={handleNext}>
+        <Button variant="ghost" onPress={handleNext}>
           Skip
         </Button>
+        <Button fullWidth onPress={handleNext}>Next</Button>
       </div>
     </AppLayout>
   );
