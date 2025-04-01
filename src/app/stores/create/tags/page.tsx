@@ -11,8 +11,8 @@ export default function CreateStoreTags() {
   const { storeData, updateStoreData } = useStoreCreation();
   const router = useRouter();
 
-  const handleNext = () => router.push('/store/create/working-hours');
-  const handleBack = () => router.push('/store/create/location');
+  const handleNext = () => router.push('/stores/create/working-hours');
+  const handleBack = () => router.push('/stores/create/location');
 
   return (
     <AppLayout>

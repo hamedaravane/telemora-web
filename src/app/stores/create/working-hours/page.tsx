@@ -58,11 +58,11 @@ export default function CreateStoreWorkingHours() {
       Object.entries(workingHours).filter(([_, { open, close }]) => open && close),
     );
     updateStoreData({ workingHours: cleanWorkingHours });
-    router.push('/store/create/logo-upload');
+    router.push('/stores/create/logo-upload');
   };
 
   const handleBack = () => {
-    router.push('/store/create/category-selection');
+    router.push('/stores/create/category-selection');
   };
 
   return (

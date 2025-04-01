@@ -58,8 +58,8 @@ export default function CreateStoreLocation() {
     }
   };
 
-  const handleNext = () => router.push('/store/create/tags');
-  const handleBack = () => router.push('/store/create/basic-information');
+  const handleNext = () => router.push('/stores/create/tags');
+  const handleBack = () => router.push('/stores/create/basic-information');
 
   return (
     <AppLayout>
