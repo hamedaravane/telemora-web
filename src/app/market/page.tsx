@@ -9,11 +9,9 @@ import { HomeFeedSection } from '@/libs/market/types';
 import { Button, ScrollShadow, Spinner } from '@heroui/react';
 import ProductPreviewCard from '@/components/products/preview-card';
 import { StorePreviewCard } from '@/components/stores/preview-card';
-import { initDataUser, useSignal } from '@telegram-apps/sdk-react';
 
 export default function MarketPage() {
   const { data, isLoading, error, refetch } = useMarketData();
-  const user = useSignal(initDataUser);
 
   if (isLoading) {
     return (
@@ -40,12 +38,11 @@ export default function MarketPage() {
 
   return (
     <AppLayout>
-      <pre>{JSON.stringify(user)}</pre>
-      {/*<div className="space-y-10">
+      <div className="space-y-10">
         {data.sections.map((section) => (
           <MarketSection key={section.id} section={section} />
         ))}
-      </div>*/}
+      </div>
     </AppLayout>
   );
 }
