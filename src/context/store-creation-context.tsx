@@ -31,7 +31,6 @@ interface StoreCreationContextType {
   error: string | null;
 }
 
-// -- Initial Default State
 const defaultStoreData: StoreCreationState = {
   name: '',
   description: '',
@@ -68,7 +67,6 @@ export const StoreCreationProvider = ({ children }: { children: React.ReactNode 
     try {
       console.log('[CREATE STORE] Submitting data:', storeData);
 
-      // Step 1: Basic Info
       await createBasicInfo({
         name: storeData.name,
         description: storeData.description,
@@ -76,7 +74,6 @@ export const StoreCreationProvider = ({ children }: { children: React.ReactNode 
         email: storeData.email,
       });
 
-      // Step 2: Address (optional check)
       if (storeData.countryId && storeData.streetLine1) {
         await updateStoreLocation({
           countryId: storeData.countryId,
@@ -90,17 +87,14 @@ export const StoreCreationProvider = ({ children }: { children: React.ReactNode 
         });
       }
 
-      // Step 3: Tags (optional)
       if (storeData.tags && storeData.tags.length > 0) {
         await selectStoreTags({ tags: storeData.tags });
       }
 
-      // Step 4: Working Hours (optional)
       if (storeData.workingHours && Object.keys(storeData.workingHours).length > 0) {
         await setStoreWorkingHours({ workingHours: storeData.workingHours });
       }
 
-      // Step 5: Logo Upload (optional)
       if (storeData.logoFile) {
         await uploadStoreLogo({ logoFile: storeData.logoFile });
       }

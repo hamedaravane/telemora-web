@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   CreateAddressDto,
   CreateStoreBasicDto,
@@ -10,12 +9,10 @@ import {
 } from '@/libs/stores/types';
 import { useQuery } from '@tanstack/react-query';
 import { generateMockStoreDetail, generateMockStoreSummary } from '@/libs/stores/mocks';
+import httpClient from '@/libs/common/http-client';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-
-export const fetchStores = async (): Promise<StoreSummary[]> => {
-  const response = await axios.get(`${API_BASE_URL}/stores`);
-  return response.data;
+export const fetchStores = async () => {
+  return httpClient.get<StoreSummary[]>('/stores');
 };
 
 export const fetchMockStores = async (): Promise<StoreSummary[]> => {
@@ -29,9 +26,8 @@ export function useStoresData() {
   });
 }
 
-export const fetchStoreById = async (id: number): Promise<StoreDetail> => {
-  const response = await axios.get(`${API_BASE_URL}/stores/${id}`);
-  return response.data;
+export const fetchStoreById = async (id: number) => {
+  return httpClient.get<StoreDetail>(`/stores/${id}`);
 };
 
 export const fetchMockStoreById = async (): Promise<StoreDetail> => {
@@ -46,23 +42,19 @@ export function useSingleStoreDataById(id: number) {
 }
 
 export const createBasicInfo = async (data: CreateStoreBasicDto) => {
-  const response = await axios.post(`${API_BASE_URL}/stores/create/basic`, data);
-  return response.data;
+  return httpClient.post<StoreDetail>('/stores/create/basic', data);
 };
 
 export const updateStoreLocation = async (data: CreateAddressDto) => {
-  const response = await axios.post(`${API_BASE_URL}/stores/create/location`, data);
-  return response.data;
+  return httpClient.post<StoreDetail>('/stores/create/location', data);
 };
 
 export const selectStoreTags = async (data: CreateStoreTagsDto) => {
-  const response = await axios.post(`${API_BASE_URL}/stores/create/tags`, data);
-  return response.data;
+  return httpClient.post<StoreDetail>('/stores/create/tags', data);
 };
 
 export const setStoreWorkingHours = async (data: CreateStoreWorkingHoursDto) => {
-  const response = await axios.post(`${API_BASE_URL}/stores/create/working_hour`, data);
-  return response.data;
+  return httpClient.post<StoreDetail>('/stores/create/working_hour', data);
 };
 
 export const uploadStoreLogo = async (data: CreateStoreLogoDto) => {
@@ -70,9 +62,8 @@ export const uploadStoreLogo = async (data: CreateStoreLogoDto) => {
   if (data.logoFile) {
     const fileBlob = new Blob([data.logoFile], { type: 'image/*' });
     formData.append('logo', fileBlob);
-    const response = await axios.post(`${API_BASE_URL}/stores/create/logo`, formData, {
+    return httpClient.post('/stores/create/logo', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-    return response.data;
   } else throw new Error('No file provided');
 };
