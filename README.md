@@ -101,7 +101,7 @@ This project is licensed under the **MIT License**.
 
 ### **Step 1: Fork the Repository**
 
-1. Open the [Telemora App GitHub repository](https://github.com/hamedaravane/telemart-app).
+1. Open the [Telemora App GitHub repository](https://github.com/hamedaravane/telemora-app).
 2. Click the "Fork" button in the top right corner of the page. This will create a copy of the
    repository under your GitHub account.
 
@@ -111,14 +111,14 @@ This project is licensed under the **MIT License**.
 2. Run the following command to clone your forked repository to your local machine:
 
    ```sh
-   git clone https://github.com/YOUR_GITHUB_USERNAME/telemart-app.git
+   git clone https://github.com/YOUR_GITHUB_USERNAME/telemora-app.git
    ```
 
    Replace `YOUR_GITHUB_USERNAME` with your actual GitHub username.
 
 3. Navigate to the project directory:
    ```sh
-   cd telemart-app
+   cd telemora-app
    ```
 
 ### **Step 3: Add the Original Repository as an Upstream**
@@ -127,7 +127,7 @@ To keep your local copy updated with the latest changes from the main repository
 remote:
 
 ```sh
-git remote add upstream https://github.com/hamedaravane/telemart-app.git
+git remote add upstream https://github.com/hamedaravane/telemora-app.git
 ```
 
 ### **Step 4: Create a New Branch**
@@ -175,7 +175,7 @@ git push origin feature-branch-name
 
 1. Go to your forked repository on GitHub.
 2. You will see a prompt to create a pull request after pushing your branch. Click on it.
-3. Make sure the base repository is `hamedaravane/telemart-app` and the base branch is `main`.
+3. Make sure the base repository is `hamedaravane/telemora-app` and the base branch is `main`.
 4. Add a clear title and description of your changes.
 5. Click "Create Pull Request."
 
