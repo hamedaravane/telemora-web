@@ -6,7 +6,7 @@ const CustomNavbar = () => {
   return (
     <Navbar>
       <NavbarBrand>
-        <p className="font-bold text-inherit">Telemart</p>
+        <p className="font-bold text-inherit">Telemora</p>
       </NavbarBrand>
       <NavbarContent justify="end">
         <NavbarItem>

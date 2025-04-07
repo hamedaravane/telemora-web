@@ -1,12 +1,12 @@
-# Telemart - A Marketplace Frontend Built with Next.js
+# Telemora - A Marketplace Frontend Built with Next.js
 
 ## Overview
 
-Telemart is a Telegram Mini App providing a seamless marketplace experience. Built with **Next.js**,
+Telemora is a Telegram Mini App providing a seamless marketplace experience. Built with **Next.js**,
 **React Query**, and **TailwindCSS**, it allows users to browse products, manage orders, create
 stores, and process payments using **TON Connect**.
 
-This project is designed as the frontend for the **Telemart API**, integrating authentication,
+This project is designed as the frontend for the **Telemora API**, integrating authentication,
 product management, order processing, and payment handling.
 
 ---
@@ -77,7 +77,7 @@ product management, order processing, and payment handling.
 
 ## API Integration
 
-This frontend interacts with the **Telemart API** for data fetching and operations.
+This frontend interacts with the **Telemora API** for data fetching and operations.
 
 | Feature        | Endpoint Example |
 |----------------|------------------|
@@ -97,11 +97,11 @@ This project is licensed under the **MIT License**.
 
 ---
 
-## **How to Contribute to the Telemart App Project on GitHub**
+## **How to Contribute to the Telemora App Project on GitHub**
 
 ### **Step 1: Fork the Repository**
 
-1. Open the [Telemart App GitHub repository](https://github.com/hamedaravane/telemart-app).
+1. Open the [Telemora App GitHub repository](https://github.com/hamedaravane/telemart-app).
 2. Click the "Fork" button in the top right corner of the page. This will create a copy of the
    repository under your GitHub account.
 

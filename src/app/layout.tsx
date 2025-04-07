@@ -7,7 +7,7 @@ import TonConnectClientProvider from '@/components/shared/TonConnectClientProvid
 import TelegramInit from '@/components/shared/telegram-init';
 
 export const metadata: Metadata = {
-  title: 'Telemart',
+  title: 'Telemora',
   description: 'Telegram mini app',
 };
 
