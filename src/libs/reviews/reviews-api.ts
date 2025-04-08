@@ -1,25 +1,34 @@
-import { CreateReviewDto, ReviewDetail, ReviewPreview } from '@/libs/reviews/types';
+import {
+  CreateReviewDto,
+  CreateReviewReplyDto,
+  CreateReviewReportDto,
+  ReviewDetail,
+  ReviewPreview,
+  ReviewReplyPreview,
+  ReviewReportPreview,
+} from '@/libs/reviews/types';
 import httpClient from '@/libs/common/http-client';
 
-export const createReviews = async (data: CreateReviewDto) => {
-  return httpClient.post<ReviewDetail>(`/reviews`, data);
-};
+export async function createReview(productId: number, data: CreateReviewDto) {
+  return httpClient.post<ReviewDetail>(`/reviews/${productId}`, data);
+}
 
-export const getAllReviews = async () => {
-  return httpClient.get<ReviewPreview[]>(`/reviews`);
-};
+export async function getProductReviews(productId: number) {
+  return httpClient.get<ReviewPreview[]>(`/reviews/${productId}`);
+}
 
-export const getReviewsById = async (id: string | number) => {
+export async function getReviewsById(id: string | number) {
   return httpClient.get<ReviewDetail>(`/reviews/${id}`);
-};
+}
 
-export const updateReviews = async (
-  id: string | number,
-  data: Omit<CreateReviewDto, 'images' | 'videos'>,
-) => {
-  return httpClient.patch<ReviewDetail>(`/reviews/${id}`, data);
-};
+export async function replyToReview(reviewId: number, data: CreateReviewReplyDto) {
+  return httpClient.post<ReviewReplyPreview>(`/reviews/${reviewId}/reply`, data);
+}
 
-export const deleteReviews = async (id: string | number) => {
+export async function reportReview(reviewId: number, data: CreateReviewReportDto) {
+  return httpClient.post<ReviewReportPreview>(`/reviews/${reviewId}/report`, data);
+}
+
+export async function deleteReviews(id: string | number) {
   return httpClient.delete<void>(`/reviews/${id}`);
-};
+}
