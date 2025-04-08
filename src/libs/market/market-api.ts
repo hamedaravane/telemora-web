@@ -1,13 +1,10 @@
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { HomeFeedResponse } from '@/libs/market/types';
 import { generateMockHomeFeedResponse } from '@/libs/market/mocks';
+import httpClient from '@/libs/common/http-client';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 export const getMarketPage = async (): Promise<HomeFeedResponse> => {
-  const response = await axios.get(`${API_BASE_URL}/market`);
-
-  return response.data;
+  return httpClient.get(`/market`);
 };
 
 export function useMarketData() {
