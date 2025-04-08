@@ -1,42 +1,27 @@
-import axios from 'axios';
 import {
   CreatePaymentDto,
   PaymentDetail,
   PaymentSummary,
   UpdatePaymentDto,
 } from '@/libs/payments/types';
+import httpClient from '@/libs/common/http-client';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-
-export const createPayments = async (data: CreatePaymentDto): Promise<PaymentDetail> => {
-  const response = await axios.post(`${API_BASE_URL}/payments`, data);
-
-  return response.data;
+export const createPayments = async (data: CreatePaymentDto) => {
+  return httpClient.post<PaymentDetail>(`/payments`, data);
 };
 
-export const getAllPayments = async (): Promise<PaymentSummary[]> => {
-  const response = await axios.get(`${API_BASE_URL}/payments`);
-
-  return response.data;
+export const getAllPayments = async () => {
+  return httpClient.get<PaymentSummary[]>(`/payments`);
 };
 
-export const getPaymentsById = async (id: string | number): Promise<PaymentDetail> => {
-  const response = await axios.get(`${API_BASE_URL}/payments/${id}`);
-
-  return response.data;
+export const getPaymentsById = async (id: string | number) => {
+  return httpClient.get<PaymentDetail>(`/payments/${id}`);
 };
 
-export const updatePayments = async (
-  id: string | number,
-  data: UpdatePaymentDto,
-): Promise<PaymentDetail> => {
-  const response = await axios.patch(`${API_BASE_URL}/payments/${id}`, data);
-
-  return response.data;
+export const updatePayments = async (id: string | number, data: UpdatePaymentDto) => {
+  return httpClient.patch<PaymentDetail>(`/payments/${id}`, data);
 };
 
 export const deletePayments = async (id: string | number): Promise<void> => {
-  const response = await axios.delete(`${API_BASE_URL}/payments/${id}`);
-
-  return response.data;
+  return httpClient.delete<void>(`/payments/${id}`);
 };
