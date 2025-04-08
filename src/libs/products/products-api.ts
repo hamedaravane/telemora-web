@@ -1,9 +1,7 @@
 import { CreateProductDto, ProductDetail } from '@/libs/products/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { generateMockProductDetail } from '@/libs/products/mocks';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+import httpClient from '@/libs/common/http-client';
 
 export function useGetProductById(id: number | null) {
   return useQuery<ProductDetail>({
@@ -16,8 +14,7 @@ export function useGetProductById(id: number | null) {
 }
 
 export async function createProduct(form: CreateProductDto): Promise<ProductDetail> {
-  const response = await axios.post(`${API_BASE_URL}/products`, form);
-  return response.data;
+  return httpClient.post(`/products`, form);
 }
 
 export function useCreateProductMutation() {
