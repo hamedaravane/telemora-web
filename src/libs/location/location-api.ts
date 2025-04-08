@@ -1,13 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { CanonicalLocation, NearestLocationResponse } from './types';
-import axios from 'axios';
-import { generateMockCities, generateMockCountries, generateMockStates } from '@/libs/location/mocks';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+import {
+  generateMockCities,
+  generateMockCountries,
+  generateMockStates,
+} from '@/libs/location/mocks';
+import httpClient from '@/libs/common/http-client';
 
 export const fetchCountries = async (): Promise<CanonicalLocation[]> => {
-  const res = await axios.get(`${API_BASE_URL}/locations/countries`);
-  return res.data;
+  return httpClient.get(`/locations/countries`);
 };
 
 export function useCountries() {
@@ -20,8 +21,7 @@ export function useCountries() {
 
 export const fetchStates = async (countryId?: number): Promise<CanonicalLocation[]> => {
   if (!countryId) return [];
-  const res = await axios.get(`${API_BASE_URL}/locations/states?countryId=${countryId}`);
-  return res.data;
+  return httpClient.get(`/locations/states?countryId=${countryId}`);
 };
 
 export function useStates(countryId?: number) {
@@ -35,8 +35,7 @@ export function useStates(countryId?: number) {
 
 export const fetchCities = async (stateId?: number): Promise<CanonicalLocation[]> => {
   if (!stateId) return [];
-  const res = await axios.get(`${API_BASE_URL}/locations/cities?stateId=${stateId}`);
-  return res.data;
+  return httpClient.get(`/locations/cities?stateId=${stateId}`);
 };
 
 export function useCities(stateId?: number) {
@@ -48,14 +47,10 @@ export function useCities(stateId?: number) {
   });
 }
 
-export async function getNearestLocation(lat: number, lng: number): Promise<NearestLocationResponse> {
-  const res = await fetch(
-    `${API_BASE_URL}/locations/nearest?lat=${lat}&lng=${lng}`,
-  );
-
-  if (!res.ok) {
-    throw new Error('Unable to resolve location from coordinates.');
-  }
-
-  return res.json();
+export async function getNearestLocation(lat: number, lng: number) {
+  return httpClient
+    .get<NearestLocationResponse>(`/locations/nearest?lat=${lat}&lng=${lng}`)
+    .catch(() => {
+      throw new Error('Unable to resolve location from coordinates.');
+    });
 }
