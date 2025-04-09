@@ -8,17 +8,12 @@ export default function SplashScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push('/market');
-    }, 10);
-    return () => clearTimeout(timer);
+    router.replace('/market');
   }, [router]);
 
   return (
-    <div className="h-screen">
-      <div className="w-24 h-3/5 mx-auto flex justify-center items-end">
-        <Spinner size="sm" color="white" label="Authenticating..." />
-      </div>
+    <div className="h-screen flex items-center justify-center">
+      <Spinner size="sm" color="white" label="Redirecting..." />
     </div>
   );
 }
