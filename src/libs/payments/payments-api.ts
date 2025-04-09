@@ -1,27 +1,14 @@
-import {
-  CreatePaymentDto,
-  PaymentDetail,
-  PaymentSummary,
-  UpdatePaymentDto,
-} from '@/libs/payments/types';
+import { CreatePaymentDto, PaymentDetail, PaymentSummary } from '@/libs/payments/types';
 import httpClient from '@/libs/common/http-client';
 
-export const createPayments = async (data: CreatePaymentDto) => {
-  return httpClient.post<PaymentDetail>(`/payments`, data);
-};
+export async function getPayments() {
+  return httpClient.get<PaymentSummary[]>('/payments');
+}
 
-export const getAllPayments = async () => {
-  return httpClient.get<PaymentSummary[]>(`/payments`);
-};
-
-export const getPaymentsById = async (id: string | number) => {
+export async function getPaymentDetails(id: number) {
   return httpClient.get<PaymentDetail>(`/payments/${id}`);
-};
+}
 
-export const updatePayments = async (id: string | number, data: UpdatePaymentDto) => {
-  return httpClient.patch<PaymentDetail>(`/payments/${id}`, data);
-};
-
-export const deletePayments = async (id: string | number): Promise<void> => {
-  return httpClient.delete<void>(`/payments/${id}`);
-};
+export async function createPayment(data: CreatePaymentDto) {
+  return httpClient.post<PaymentDetail>('/payments/create', data);
+}
