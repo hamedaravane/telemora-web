@@ -5,19 +5,19 @@ import { useParams, useRouter } from 'next/navigation';
 import { Accordion, AccordionItem, Button, Chip, Spinner, Tooltip } from '@heroui/react';
 import Image from 'next/image';
 import { useUser } from '@/context/user-context';
-import { useSingleStoreDataById } from '@/libs/stores/stores-api';
 import AppLayout from '@/components/shared/app-layout';
 import { FaPlus } from 'react-icons/fa6';
 import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
 import StarRating from '@/components/shared/star-rating';
 import ProductPreviewCard from '@/components/products/preview-card';
+import { useStoreDetails } from '@/libs/stores/stores-api';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams();
   const router = useRouter();
   const { user } = useUser();
 
-  const { data: store, isLoading, error } = useSingleStoreDataById(Number(storeId));
+  const { data: store, isLoading, error } = useStoreDetails(+storeId);
 
   const isOwner = user && store && store.owner.id === user.id;
 

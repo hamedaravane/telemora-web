@@ -14,6 +14,10 @@ async function getMyStores() {
   return httpClient.get<StoreSummary[]>('/stores/my');
 }
 
+async function getStoreDetails(storeId: number) {
+  return httpClient.get<StoreDetail>(`/stores/${storeId}`);
+}
+
 async function discoverStores() {
   return httpClient.get<StoreSummary[]>('/stores/discover');
 }
@@ -22,23 +26,23 @@ async function getFeaturedStores() {
   return httpClient.get<StoreSummary[]>('/stores/featured');
 }
 
-async function createBasicInfo(data: CreateStoreBasicDto) {
+export async function createBasicInfo(data: CreateStoreBasicDto) {
   return httpClient.post<StoreDetail>('/stores/create/basic', data);
 }
 
-async function updateStoreLocation(data: CreateAddressDto) {
+export async function updateStoreLocation(data: CreateAddressDto) {
   return httpClient.post<StoreDetail>('/stores/create/location', data);
 }
 
-async function selectStoreTags(data: CreateStoreTagsDto) {
+export async function selectStoreTags(data: CreateStoreTagsDto) {
   return httpClient.post<StoreDetail>('/stores/create/tags', data);
 }
 
-async function setStoreWorkingHours(data: CreateStoreWorkingHoursDto) {
+export async function setStoreWorkingHours(data: CreateStoreWorkingHoursDto) {
   return httpClient.post<StoreDetail>('/stores/create/working_hour', data);
 }
 
-async function uploadStoreLogo(data: CreateStoreLogoDto) {
+export async function uploadStoreLogo(data: CreateStoreLogoDto) {
   const formData = new FormData();
   if (data.logoFile) {
     const fileBlob = new Blob([data.logoFile], { type: 'image/*' });
@@ -53,6 +57,13 @@ export function useMyStores() {
   return useQuery<StoreSummary[]>({
     queryKey: ['stores', 'my'],
     queryFn: getMyStores,
+  });
+}
+
+export function useStoreDetails(storeId: number) {
+  return useQuery<StoreDetail>({
+    queryKey: ['stores', storeId],
+    queryFn: () => getStoreDetails(storeId),
   });
 }
 

@@ -2,16 +2,16 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useOrdersData } from '@/libs/orders/orders-api';
 import AppLayout from '@/components/shared/app-layout';
 import { Button, Spinner } from '@heroui/react';
 import { FaBoxOpen } from 'react-icons/fa6';
 import OrderSummaryCard from '@/components/orders/summary-card';
 import { PageHeader } from '@/components/shared/page-header';
+import { useMyOrders } from '@/libs/orders/orders-api';
 
 export default function OrdersPage() {
   const router = useRouter();
-  const { data: orders, error, isLoading } = useOrdersData();
+  const { data: orders, error, isLoading } = useMyOrders();
 
   const goToMarket = () => router.push('/market');
 

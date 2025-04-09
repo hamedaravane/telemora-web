@@ -4,15 +4,15 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Spinner } from '@heroui/react';
 import { useUser } from '@/context/user-context';
-import { useStoresData } from '@/libs/stores/stores-api';
 import AppLayout from '@/components/shared/app-layout';
 import StoreSummaryCard from '@/components/stores/summary-card';
 import { PageHeader } from '@/components/shared/page-header';
+import { useMyStores } from '@/libs/stores/stores-api';
 
 export default function StoreListPage() {
   const { isLoading: isAuthLoading } = useUser();
   const router = useRouter();
-  const { data: stores, error, isLoading } = useStoresData();
+  const { data: stores, error, isLoading } = useMyStores();
 
   const handleCreateStore = () => router.push('/stores/create/basic-information');
   const handleOpenStore = (id: number) => router.push(`/stores/${id}`);
@@ -54,7 +54,9 @@ export default function StoreListPage() {
       ) : (
         <div className="space-y-4">
           {stores!.map((store) => (
-            <StoreSummaryCard key={store.id} store={store} />
+            <div key={store.id} onClick={() => handleOpenStore(+store.id)}>
+              <StoreSummaryCard store={store} />
+            </div>
           ))}
 
           <Button fullWidth variant="bordered" size="lg" onPress={handleCreateStore}>

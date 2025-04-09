@@ -1,7 +1,6 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useGetProductById } from '@/libs/products/products-api';
 import { Button, Divider, ScrollShadow, Skeleton } from '@heroui/react';
 import AppLayout from '@/components/shared/app-layout';
 import Price from '@/components/shared/price';
@@ -10,10 +9,11 @@ import ReviewPreviewCard from '@/components/reviews/preview';
 import { PageHeader } from '@/components/shared/page-header';
 import { User } from '@heroui/user';
 import StarRating from '@/components/shared/star-rating';
+import { useProductDetails } from '@/libs/products/products-api';
 
 export default function ProductDetailsPage() {
-  const { productId } = useParams();
-  const { data: product, isLoading, error, refetch } = useGetProductById(+productId);
+  const { storeId, productId } = useParams();
+  const { data: product, isLoading, error, refetch } = useProductDetails(+storeId, +productId);
 
   if (isLoading) {
     return (

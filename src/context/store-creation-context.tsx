@@ -1,13 +1,6 @@
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
-import {
-  createBasicInfo,
-  selectStoreTags,
-  setStoreWorkingHours,
-  updateStoreLocation,
-  uploadStoreLogo,
-} from '@/libs/stores/stores-api';
 
 import {
   CreateAddressDto,
@@ -16,6 +9,13 @@ import {
   CreateStoreTagsDto,
   CreateStoreWorkingHoursDto,
 } from '@/libs/stores/types';
+import {
+  createBasicInfo,
+  selectStoreTags,
+  setStoreWorkingHours,
+  updateStoreLocation,
+  uploadStoreLogo,
+} from '@/libs/stores/stores-api';
 
 type StoreCreationState = CreateStoreBasicDto &
   CreateAddressDto &
