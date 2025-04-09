@@ -7,9 +7,25 @@ import {
 } from '@/libs/location/mocks';
 import httpClient from '@/libs/common/http-client';
 
-export const fetchCountries = async (): Promise<CanonicalLocation[]> => {
-  return httpClient.get(`/locations/countries`);
-};
+export async function getCountries() {
+  return httpClient.get<CanonicalLocation[]>(`/locations/countries`);
+}
+
+export async function getStatesByCountry(countryId: number) {
+  return httpClient.get<CanonicalLocation[]>(`countries/${countryId}/states`);
+}
+
+export async function getCitiesByState(stateId: number) {
+  return httpClient.get<CanonicalLocation[]>(`states/${stateId}/cities`);
+}
+
+export async function getNearestLocation(lat: number, lng: number) {
+  return httpClient
+    .get<NearestLocationResponse>(`/locations/nearest?lat=${lat}&lng=${lng}`)
+    .catch((e) => {
+      throw new Error(e);
+    });
+}
 
 export function useCountries() {
   return useQuery<CanonicalLocation[]>({
@@ -18,11 +34,6 @@ export function useCountries() {
     staleTime: 1000 * 60 * 60,
   });
 }
-
-export const fetchStates = async (countryId?: number): Promise<CanonicalLocation[]> => {
-  if (!countryId) return [];
-  return httpClient.get(`/locations/states?countryId=${countryId}`);
-};
 
 export function useStates(countryId?: number) {
   return useQuery<CanonicalLocation[]>({
@@ -33,11 +44,6 @@ export function useStates(countryId?: number) {
   });
 }
 
-export const fetchCities = async (stateId?: number): Promise<CanonicalLocation[]> => {
-  if (!stateId) return [];
-  return httpClient.get(`/locations/cities?stateId=${stateId}`);
-};
-
 export function useCities(stateId?: number) {
   return useQuery<CanonicalLocation[]>({
     queryKey: ['cities', stateId],
@@ -45,12 +51,4 @@ export function useCities(stateId?: number) {
     enabled: !!stateId,
     staleTime: 1000 * 60 * 30,
   });
-}
-
-export async function getNearestLocation(lat: number, lng: number) {
-  return httpClient
-    .get<NearestLocationResponse>(`/locations/nearest?lat=${lat}&lng=${lng}`)
-    .catch(() => {
-      throw new Error('Unable to resolve location from coordinates.');
-    });
 }
