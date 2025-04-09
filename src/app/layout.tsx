@@ -9,13 +9,18 @@ import TelegramInit from '@/components/shared/telegram-init';
 export const metadata: Metadata = {
   title: 'Telemora',
   description: 'Telegram mini app',
+  applicationName: 'Telemora',
+  appleWebApp: {
+    title: 'Telemora',
+  },
+  manifest: '/manifest.json',
 };
 
 export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-      <TelegramInit />
+        <TelegramInit />
         <TonConnectClientProvider>
           <QueryContext>
             <UserProvider>{children}</UserProvider>
