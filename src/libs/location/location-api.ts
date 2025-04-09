@@ -2,19 +2,19 @@ import { useQuery } from '@tanstack/react-query';
 import { CanonicalLocation, NearestLocationResponse } from './types';
 import httpClient from '@/libs/common/http-client';
 
-export async function getCountries() {
+async function getCountries() {
   return httpClient.get<CanonicalLocation[]>(`/locations/countries`);
 }
 
-export async function getStatesByCountry(countryId: number) {
+async function getStatesByCountry(countryId: number) {
   return httpClient.get<CanonicalLocation[]>(`countries/${countryId}/states`);
 }
 
-export async function getCitiesByState(stateId: number) {
+async function getCitiesByState(stateId: number) {
   return httpClient.get<CanonicalLocation[]>(`states/${stateId}/cities`);
 }
 
-export async function getNearestLocation(lat: number, lng: number) {
+async function getNearestLocation(lat: number, lng: number) {
   return httpClient
     .get<NearestLocationResponse>(`/locations/nearest?lat=${lat}&lng=${lng}`)
     .catch((e) => {
