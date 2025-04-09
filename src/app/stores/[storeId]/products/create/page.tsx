@@ -8,9 +8,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FaPlus, FaTrash } from 'react-icons/fa6';
 import AppLayout from '@/components/shared/app-layout';
 import toast from 'react-hot-toast';
-import { useCreateProductMutation } from '@/libs/products/products-api';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { ProductType } from '@/libs/products/types';
+import { useCreateProduct } from '@/libs/products/products-api';
 
 const schema = z.object({
   name: z.string().min(2, 'Name is required'),
@@ -42,6 +42,7 @@ const schema = z.object({
 type FormSchema = z.infer<typeof schema>;
 
 export default function CreateProductPage() {
+  const { storeId } = useParams();
   const {
     register,
     handleSubmit,
@@ -72,7 +73,7 @@ export default function CreateProductPage() {
     remove: removeVariant,
   } = useFieldArray({ control, name: 'variants' });
 
-  const { mutateAsync: createProduct } = useCreateProductMutation();
+  const { mutateAsync: createProduct } = useCreateProduct(+storeId);
   const router = useRouter();
 
   const onSubmit = async (data: FormSchema) => {

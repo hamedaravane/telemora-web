@@ -11,6 +11,7 @@ import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
 import StarRating from '@/components/shared/star-rating';
 import ProductPreviewCard from '@/components/products/preview-card';
 import { useStoreDetails } from '@/libs/stores/stores-api';
+import Error from '@/components/shared/error';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams();
@@ -40,15 +41,7 @@ export default function StoreDetailsPage() {
     );
   }
 
-  if (error || !store) {
-    return (
-      <AppLayout>
-        <div className="min-h-screen flex items-center justify-center">
-          <p className="text-red-500 text-sm">Failed to load store. Please try again later.</p>
-        </div>
-      </AppLayout>
-    );
-  }
+  if (error || !store) return <Error />;
 
   return (
     <AppLayout>

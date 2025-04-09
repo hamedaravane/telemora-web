@@ -10,6 +10,7 @@ import { PageHeader } from '@/components/shared/page-header';
 import { User } from '@heroui/user';
 import StarRating from '@/components/shared/star-rating';
 import { useProductDetails } from '@/libs/products/products-api';
+import Error from '@/components/shared/error';
 
 export default function ProductDetailsPage() {
   const { storeId, productId } = useParams();
@@ -28,16 +29,7 @@ export default function ProductDetailsPage() {
     );
   }
 
-  if (error || !product) {
-    return (
-      <AppLayout>
-        <div className="min-h-screen flex flex-col items-center justify-center text-red-500">
-          <p>Failed to load product.</p>
-          <Button onPress={() => refetch()}>Retry</Button>
-        </div>
-      </AppLayout>
-    );
-  }
+  if (error || !product) return <Error />;
 
   return (
     <AppLayout>
