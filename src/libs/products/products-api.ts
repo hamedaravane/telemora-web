@@ -5,46 +5,74 @@ import {
   UpdateProductDto,
 } from '@/libs/products/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { generateMockProductDetail } from '@/libs/products/mocks';
 import httpClient from '@/libs/common/http-client';
 
-export function useGetProductById(id: number | null) {
-  return useQuery<ProductDetail>({
-    queryKey: ['getProductById', id],
-    queryFn: () => generateMockProductDetail(id!),
-    staleTime: 1000 * 60 * 5,
-    retry: 2,
-    enabled: id !== null,
+async function getStoreProducts(storeId: number) {
+  return httpClient.get<ProductPreview[]>(`/stores/${storeId}/products`);
+}
+
+async function getProductDetails(storeId: number, productId: number) {
+  return httpClient.get<ProductDetail>(`/stores/${storeId}/products/${productId}`);
+}
+
+async function createProduct(storeId: number, data: CreateProductDto) {
+  return httpClient.post<ProductDetail>(`/stores/${storeId}/products`, data);
+}
+
+async function updateProduct(storeId: number, productId: number, data: UpdateProductDto) {
+  return httpClient.patch<ProductDetail>(`/stores/${storeId}/products/${productId}`, data);
+}
+
+async function deleteProduct(storeId: number, productId: number) {
+  return httpClient.delete<void>(`/stores/${storeId}/products/${productId}`);
+}
+
+export function useStoreProducts(storeId: number) {
+  return useQuery({
+    queryKey: ['store-products', storeId],
+    queryFn: () => getStoreProducts(storeId),
+    enabled: !!storeId,
   });
 }
 
-export function useCreateProductMutation() {
+export function useProductDetails(storeId: number, productId: number) {
+  return useQuery({
+    queryKey: ['product-details', storeId, productId],
+    queryFn: () => getProductDetails(storeId, productId),
+    enabled: !!storeId && !!productId,
+  });
+}
+
+export function useCreateProduct(storeId: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createProduct,
-    onSuccess: (newProduct) => {
-      queryClient.invalidateQueries({ queryKey: ['stores-products'] });
+    mutationFn: (data: CreateProductDto) => createProduct(storeId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['store-products', storeId] });
     },
   });
 }
 
-export async function getStoreProducts(storeId: number) {
-  return httpClient.get<ProductPreview[]>(`/stores/${storeId}/products`);
+export function useUpdateProduct(storeId: number, productId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: UpdateProductDto) => updateProduct(storeId, productId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['product-details', storeId, productId] });
+      queryClient.invalidateQueries({ queryKey: ['store-products', storeId] });
+    },
+  });
 }
 
-export async function getProductDetails(storeId: number, productId: number) {
-  return httpClient.get<ProductDetail>(`/stores/${storeId}/products/${productId}`);
-}
+export function useDeleteProduct(storeId: number, productId: number) {
+  const queryClient = useQueryClient();
 
-export async function createProduct(storeId: number, data: CreateProductDto) {
-  return httpClient.post<ProductDetail>(`/stores/${storeId}/products`, data);
-}
-
-export async function updateProduct(storeId: number, productId: number, data: UpdateProductDto) {
-  return httpClient.patch<ProductDetail>(`/stores/${storeId}/products/${productId}`, data);
-}
-
-export async function deleteProduct(storeId: number, productId: number) {
-  return httpClient.delete<void>(`/stores/${storeId}/products/${productId}`);
+  return useMutation({
+    mutationFn: () => deleteProduct(storeId, productId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['store-products', storeId] });
+    },
+  });
 }

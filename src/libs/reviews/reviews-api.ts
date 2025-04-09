@@ -8,27 +8,76 @@ import {
   ReviewReportPreview,
 } from '@/libs/reviews/types';
 import httpClient from '@/libs/common/http-client';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export async function createReview(productId: number, data: CreateReviewDto) {
+async function createReview(productId: number, data: CreateReviewDto) {
   return httpClient.post<ReviewDetail>(`/reviews/${productId}`, data);
 }
 
-export async function getProductReviews(productId: number) {
+async function getProductReviews(productId: number) {
   return httpClient.get<ReviewPreview[]>(`/reviews/${productId}`);
 }
 
-export async function getReviewsById(id: string | number) {
+async function getReviewsById(id: string | number) {
   return httpClient.get<ReviewDetail>(`/reviews/${id}`);
 }
 
-export async function replyToReview(reviewId: number, data: CreateReviewReplyDto) {
+async function replyToReview(reviewId: number, data: CreateReviewReplyDto) {
   return httpClient.post<ReviewReplyPreview>(`/reviews/${reviewId}/reply`, data);
 }
 
-export async function reportReview(reviewId: number, data: CreateReviewReportDto) {
+async function reportReview(reviewId: number, data: CreateReviewReportDto) {
   return httpClient.post<ReviewReportPreview>(`/reviews/${reviewId}/report`, data);
 }
 
-export async function deleteReviews(id: string | number) {
+async function deleteReviews(id: string | number) {
   return httpClient.delete<void>(`/reviews/${id}`);
+}
+
+export function useProductReviews(productId: number) {
+  return useQuery<ReviewPreview[]>({
+    queryKey: ['reviews', 'product', productId],
+    queryFn: () => getProductReviews(productId),
+  });
+}
+
+export function useReviewDetail(id: string | number) {
+  return useQuery<ReviewDetail>({
+    queryKey: ['reviews', 'detail', id],
+    queryFn: () => getReviewsById(id),
+  });
+}
+
+export function useCreateReview(productId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateReviewDto) => createReview(productId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reviews', 'product', productId] });
+    },
+  });
+}
+
+export function useReplyToReview(reviewId: number) {
+  return useMutation({
+    mutationFn: (data: CreateReviewReplyDto) => replyToReview(reviewId, data),
+  });
+}
+
+export function useReportReview(reviewId: number) {
+  return useMutation({
+    mutationFn: (data: CreateReviewReportDto) => reportReview(reviewId, data),
+  });
+}
+
+export function useDeleteReview() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string | number) => deleteReviews(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+  });
 }
