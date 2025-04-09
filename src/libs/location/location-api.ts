@@ -1,10 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { CanonicalLocation, NearestLocationResponse } from './types';
-import {
-  generateMockCities,
-  generateMockCountries,
-  generateMockStates,
-} from '@/libs/location/mocks';
 import httpClient from '@/libs/common/http-client';
 
 export async function getCountries() {
@@ -30,25 +25,30 @@ export async function getNearestLocation(lat: number, lng: number) {
 export function useCountries() {
   return useQuery<CanonicalLocation[]>({
     queryKey: ['countries'],
-    queryFn: generateMockCountries,
-    staleTime: 1000 * 60 * 60,
+    queryFn: getCountries,
   });
 }
 
-export function useStates(countryId?: number) {
+export function useStatesByCountry(countryId?: number) {
   return useQuery<CanonicalLocation[]>({
     queryKey: ['states', countryId],
-    queryFn: () => generateMockStates(),
+    queryFn: () => getStatesByCountry(countryId!),
     enabled: !!countryId,
-    staleTime: 1000 * 60 * 30,
   });
 }
 
-export function useCities(stateId?: number) {
+export function useCitiesByState(stateId?: number) {
   return useQuery<CanonicalLocation[]>({
     queryKey: ['cities', stateId],
-    queryFn: () => generateMockCities(),
+    queryFn: () => getCitiesByState(stateId!),
     enabled: !!stateId,
-    staleTime: 1000 * 60 * 30,
+  });
+}
+
+export function useNearestLocation(lat?: number, lng?: number) {
+  return useQuery<NearestLocationResponse>({
+    queryKey: ['nearest-location', lat, lng],
+    queryFn: () => getNearestLocation(lat!, lng!),
+    enabled: !!lat && !!lng,
   });
 }
