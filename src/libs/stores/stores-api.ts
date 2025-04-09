@@ -7,63 +7,95 @@ import {
   StoreDetail,
   StoreSummary,
 } from '@/libs/stores/types';
-import { useQuery } from '@tanstack/react-query';
-import { generateMockStoreDetail, generateMockStoreSummary } from '@/libs/stores/mocks';
 import httpClient from '@/libs/common/http-client';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
-export const fetchStores = async () => {
-  return httpClient.get<StoreSummary[]>('/stores');
-};
-
-export const fetchMockStores = async (): Promise<StoreSummary[]> => {
-  return Array.from({ length: 2 }, () => generateMockStoreSummary());
-};
-
-export function useStoresData() {
-  return useQuery({
-    queryKey: ['stores'],
-    queryFn: fetchMockStores,
-  });
+async function getMyStores() {
+  return httpClient.get<StoreSummary[]>('/stores/my');
 }
 
-export const fetchStoreById = async (id: number) => {
-  return httpClient.get<StoreDetail>(`/stores/${id}`);
-};
-
-export const fetchMockStoreById = async (): Promise<StoreDetail> => {
-  return generateMockStoreDetail();
-};
-
-export function useSingleStoreDataById(id: number) {
-  return useQuery({
-    queryKey: ['store', id],
-    queryFn: () => fetchMockStoreById(),
-  });
+async function discoverStores() {
+  return httpClient.get<StoreSummary[]>('/stores/discover');
 }
 
-export const createBasicInfo = async (data: CreateStoreBasicDto) => {
+async function getFeaturedStores() {
+  return httpClient.get<StoreSummary[]>('/stores/featured');
+}
+
+async function createBasicInfo(data: CreateStoreBasicDto) {
   return httpClient.post<StoreDetail>('/stores/create/basic', data);
-};
+}
 
-export const updateStoreLocation = async (data: CreateAddressDto) => {
+async function updateStoreLocation(data: CreateAddressDto) {
   return httpClient.post<StoreDetail>('/stores/create/location', data);
-};
+}
 
-export const selectStoreTags = async (data: CreateStoreTagsDto) => {
+async function selectStoreTags(data: CreateStoreTagsDto) {
   return httpClient.post<StoreDetail>('/stores/create/tags', data);
-};
+}
 
-export const setStoreWorkingHours = async (data: CreateStoreWorkingHoursDto) => {
+async function setStoreWorkingHours(data: CreateStoreWorkingHoursDto) {
   return httpClient.post<StoreDetail>('/stores/create/working_hour', data);
-};
+}
 
-export const uploadStoreLogo = async (data: CreateStoreLogoDto) => {
+async function uploadStoreLogo(data: CreateStoreLogoDto) {
   const formData = new FormData();
   if (data.logoFile) {
     const fileBlob = new Blob([data.logoFile], { type: 'image/*' });
     formData.append('logo', fileBlob);
-    return httpClient.post('/stores/create/logo', formData, {
+    return httpClient.post<StoreDetail>('/stores/create/logo', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   } else throw new Error('No file provided');
-};
+}
+
+export function useMyStores() {
+  return useQuery<StoreSummary[]>({
+    queryKey: ['stores', 'my'],
+    queryFn: getMyStores,
+  });
+}
+
+export function useDiscoverStores() {
+  return useQuery<StoreSummary[]>({
+    queryKey: ['stores', 'discover'],
+    queryFn: discoverStores,
+  });
+}
+
+export function useFeaturedStores() {
+  return useQuery<StoreSummary[]>({
+    queryKey: ['stores', 'featured'],
+    queryFn: getFeaturedStores,
+  });
+}
+
+export function useCreateBasicInfo() {
+  return useMutation({
+    mutationFn: (data: CreateStoreBasicDto) => createBasicInfo(data),
+  });
+}
+
+export function useUpdateStoreLocation() {
+  return useMutation({
+    mutationFn: (data: CreateAddressDto) => updateStoreLocation(data),
+  });
+}
+
+export function useSelectStoreTags() {
+  return useMutation({
+    mutationFn: (data: CreateStoreTagsDto) => selectStoreTags(data),
+  });
+}
+
+export function useSetStoreWorkingHours() {
+  return useMutation({
+    mutationFn: (data: CreateStoreWorkingHoursDto) => setStoreWorkingHours(data),
+  });
+}
+
+export function useUploadStoreLogo() {
+  return useMutation({
+    mutationFn: (data: CreateStoreLogoDto) => uploadStoreLogo(data),
+  });
+}
