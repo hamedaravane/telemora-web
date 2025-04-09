@@ -1,10 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import type { Metadata } from 'next';
 import './globals.css';
-import { UserProvider } from '@/context/user-context';
-import { QueryContext } from '@/context/query-context';
-import TonConnectClientProvider from '@/components/shared/TonConnectClientProvider';
-import TelegramInit from '@/components/shared/telegram-init';
+import { AppProviders } from '@/components/shared/app-providers';
 
 export const metadata: Metadata = {
   title: 'Telemora',
@@ -16,16 +13,11 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
 };
 
-export default async function RootLayout({ children }: PropsWithChildren) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-        <TelegramInit />
-        <TonConnectClientProvider>
-          <QueryContext>
-            <UserProvider>{children}</UserProvider>
-          </QueryContext>
-        </TonConnectClientProvider>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );
