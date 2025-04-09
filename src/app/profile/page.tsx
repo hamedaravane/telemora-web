@@ -10,6 +10,8 @@ import OrderSummaryCard from '@/components/orders/summary-card';
 import { FaGear } from 'react-icons/fa6';
 import { FaPen } from 'react-icons/fa';
 import { PageHeader } from '@/components/shared/page-header';
+import Error from '@/components/shared/error';
+import React from 'react';
 
 export default function ProfilePage() {
   const { user, isLoading } = useUser();
@@ -53,16 +55,7 @@ export default function ProfilePage() {
     );
   }
 
-  if (!user) {
-    return (
-      <AppLayout>
-        <div className="min-h-screen flex flex-col items-center justify-center text-center text-red-500 px-4">
-          <p className="mb-4">Failed to load profile data.</p>
-          <Button onPress={() => window.location.reload()}>Retry</Button>
-        </div>
-      </AppLayout>
-    );
-  }
+  if (!user) return <Error />;
 
   return (
     <AppLayout>

@@ -8,6 +8,7 @@ import { FaBoxOpen } from 'react-icons/fa6';
 import OrderSummaryCard from '@/components/orders/summary-card';
 import { PageHeader } from '@/components/shared/page-header';
 import { useMyOrders } from '@/libs/orders/orders-api';
+import Error from '@/components/shared/error';
 
 export default function OrdersPage() {
   const router = useRouter();
@@ -25,15 +26,7 @@ export default function OrdersPage() {
     );
   }
 
-  if (!orders || error) {
-    return (
-      <AppLayout>
-        <div className="flex flex-col items-center justify-center h-screen text-center">
-          <p className="text-red-500 text-sm">Failed to load orders. Please try again later.</p>
-        </div>
-      </AppLayout>
-    );
-  }
+  if (error || !orders) return <Error />;
 
   return (
     <AppLayout>

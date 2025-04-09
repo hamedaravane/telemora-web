@@ -27,9 +27,7 @@ export default function CreateStoreBasicInformation() {
   const handleNext = () => {
     if (!validateForm()) return;
     setIsLoading(true);
-    setTimeout(() => {
-      router.push('/stores/create/location');
-    }, 500);
+    router.push('/stores/create/location');
   };
 
   return (

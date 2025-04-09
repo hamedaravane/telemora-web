@@ -9,6 +9,7 @@ import { HomeFeedSection } from '@/libs/market/types';
 import { Button, ScrollShadow, Spinner } from '@heroui/react';
 import ProductPreviewCard from '@/components/products/preview-card';
 import { StorePreviewCard } from '@/components/stores/preview-card';
+import Error from '@/components/shared/error';
 
 export default function MarketPage() {
   const { data, isLoading, error, refetch } = useMarketData();
@@ -23,18 +24,7 @@ export default function MarketPage() {
     );
   }
 
-  if (error || !data) {
-    return (
-      <AppLayout>
-        <div className="min-h-screen flex flex-col items-center justify-center text-center px-6">
-          <p className="text-red-500 text-sm mb-4">
-            Failed to load market data. Please try again later.
-          </p>
-          <Button onPress={() => refetch()}>Retry</Button>
-        </div>
-      </AppLayout>
-    );
-  }
+  if (error || !data) return <Error />;
 
   return (
     <AppLayout>

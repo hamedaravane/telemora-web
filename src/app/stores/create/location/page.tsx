@@ -6,11 +6,16 @@ import { Button, Input, Select, SelectItem, Skeleton } from '@heroui/react';
 import { locationManager, useSignal } from '@telegram-apps/sdk-react';
 
 import { useStoreCreation } from '@/context/store-creation-context';
-import { getNearestLocation, useCities, useCountries, useStates } from '@/libs/location/location-api';
 
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
 import { FaGear, FaLocationDot } from 'react-icons/fa6';
+import {
+  useCitiesByState,
+  useCountries,
+  useNearestLocation,
+  useStatesByCountry,
+} from '@/libs/location/location-api';
 
 export default function CreateStoreLocation() {
   const router = useRouter();
@@ -19,8 +24,8 @@ export default function CreateStoreLocation() {
   const { countryId, stateId, cityId } = storeData;
 
   const { data: countries, isLoading: loadingCountries } = useCountries();
-  const { data: states, isLoading: loadingStates } = useStates(countryId);
-  const { data: cities, isLoading: loadingCities } = useCities(stateId);
+  const { data: states, isLoading: loadingStates } = useStatesByCountry(countryId);
+  const { data: cities, isLoading: loadingCities } = useCitiesByState(stateId);
 
   const isSupported = useSignal(locationManager.isSupported);
   const isAccessGranted = useSignal(locationManager.isAccessGranted);
@@ -36,13 +41,13 @@ export default function CreateStoreLocation() {
       await locationManager.mount();
       const location = await locationManager.requestLocation();
 
-      const nearest = await getNearestLocation(location.latitude, location.longitude);
+      const { data: nearest } = useNearestLocation(location.latitude, location.longitude);
 
       updateStoreData({
-        countryId: nearest.country?.id,
-        stateId: nearest.state?.id,
-        cityId: nearest.city?.id,
-        postalCode: nearest.city?.postalCode,
+        countryId: nearest?.country.id,
+        stateId: nearest?.state?.id,
+        cityId: nearest?.city?.id,
+        postalCode: nearest?.city?.postalCode,
         latitude: location.latitude,
         longitude: location.longitude,
       });
@@ -84,12 +89,7 @@ export default function CreateStoreLocation() {
         {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
 
         {!isAccessGranted && (
-          <Button
-            fullWidth
-            size="sm"
-            variant="flat"
-            onPress={() => locationManager.openSettings()}
-          >
+          <Button fullWidth size="sm" variant="flat" onPress={() => locationManager.openSettings()}>
             <FaGear />
             Open Telegram Settings
           </Button>
@@ -111,9 +111,13 @@ export default function CreateStoreLocation() {
               });
             }}
           >
-            {countries ? countries.map((country) => (
-              <SelectItem key={country.id.toString()}>{country.name}</SelectItem>
-            )) : <SelectItem key="0">Loading…</SelectItem>}
+            {countries ? (
+              countries.map((country) => (
+                <SelectItem key={country.id.toString()}>{country.name}</SelectItem>
+              ))
+            ) : (
+              <SelectItem key="0">Loading…</SelectItem>
+            )}
           </Select>
         </Skeleton>
 
@@ -131,9 +135,13 @@ export default function CreateStoreLocation() {
                 });
               }}
             >
-              {states ? states.map((state) => (
-                <SelectItem key={state.id.toString()}>{state.name}</SelectItem>
-              )) : <SelectItem key="0">Loading…</SelectItem>}
+              {states ? (
+                states.map((state) => (
+                  <SelectItem key={state.id.toString()}>{state.name}</SelectItem>
+                ))
+              ) : (
+                <SelectItem key="0">Loading…</SelectItem>
+              )}
             </Select>
           </Skeleton>
         )}
@@ -149,9 +157,11 @@ export default function CreateStoreLocation() {
                 updateStoreData({ cityId: selectedId });
               }}
             >
-              {cities ? cities.map((city) => (
-                <SelectItem key={city.id.toString()}>{city.name}</SelectItem>
-              )) : <SelectItem key="0">Loading…</SelectItem>}
+              {cities ? (
+                cities.map((city) => <SelectItem key={city.id.toString()}>{city.name}</SelectItem>)
+              ) : (
+                <SelectItem key="0">Loading…</SelectItem>
+              )}
             </Select>
           </Skeleton>
         )}
@@ -172,7 +182,9 @@ export default function CreateStoreLocation() {
         <Button variant="flat" onPress={handleNext}>
           Skip
         </Button>
-        <Button fullWidth onPress={handleNext}>Next</Button>
+        <Button fullWidth onPress={handleNext}>
+          Next
+        </Button>
       </div>
     </AppLayout>
   );

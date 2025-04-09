@@ -8,6 +8,7 @@ import AppLayout from '@/components/shared/app-layout';
 import StoreSummaryCard from '@/components/stores/summary-card';
 import { PageHeader } from '@/components/shared/page-header';
 import { useMyStores } from '@/libs/stores/stores-api';
+import Error from '@/components/shared/error';
 
 export default function StoreListPage() {
   const { isLoading: isAuthLoading } = useUser();
@@ -27,17 +28,7 @@ export default function StoreListPage() {
     );
   }
 
-  if (error) {
-    return (
-      <AppLayout>
-        <div className="min-h-screen flex items-center justify-center">
-          <p className="text-red-500 text-sm text-center">
-            Failed to load store data. Please try again later.
-          </p>
-        </div>
-      </AppLayout>
-    );
-  }
+  if (error) return <Error />;
 
   return (
     <AppLayout>
