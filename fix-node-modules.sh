@@ -7,7 +7,7 @@ if [ ! -f package.json ]; then
 fi
 
 echo "🧹 Cleaning up old dependencies..."
-rm -rf node_modules package-lock.json
+rm -rf node_modules package-lock.json .next
 
 echo "🚀 Clearing npm cache..."
 npm cache clean --force
