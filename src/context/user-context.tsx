@@ -12,13 +12,13 @@ const UserContext = createContext<UserPrivateProfile | null>(null);
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const initDataStr = useSignal(initData.raw);
 
-  const { data: user, isLoading, isError } = useTelegramAuth(initDataStr);
+  const { data: user, isLoading, isError, refetch } = useTelegramAuth(initDataStr);
 
   if (isLoading) {
     return <Spinner variant="gradient" label="Authorizing, please wait" />;
   }
 
-  if (isError || !user) return <ErrorPage />;
+  if (isError || !user) return <ErrorPage reload={refetch} />;
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }
