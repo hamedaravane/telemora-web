@@ -1,6 +1,6 @@
 import { StorePreview } from '@/libs/stores/types';
 import { OrderSummary } from '@/libs/orders/types';
-import { Media } from '@/types';
+import { Media } from '../../common/types';
 import { Address } from '@/libs/location/types';
 
 export enum UserRole {

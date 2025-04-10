@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import type { Metadata } from 'next';
 import './globals.css';
+import '@telegram-apps/telegram-ui/dist/styles.css';
 import { AppProviders } from '@/components/shared/app-providers';
 
 export const metadata: Metadata = {

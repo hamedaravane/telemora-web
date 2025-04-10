@@ -1,6 +1,6 @@
 import { StorePreview } from '@/libs/stores/types';
 import { ReviewPreview } from '@/libs/reviews/types';
-import { Media } from '@/types';
+import { Media } from '../../common/types';
 
 export enum ProductType {
   PHYSICAL = 'physical',

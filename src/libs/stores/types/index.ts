@@ -1,5 +1,5 @@
 import { UserSummary } from '@/libs/users/types';
-import { Media } from '@/types';
+import { Media } from '../../common/types';
 import { Address } from '@/libs/location/types';
 import { ProductPreview } from '@/libs/products/types';
 
