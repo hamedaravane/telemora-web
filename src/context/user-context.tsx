@@ -15,7 +15,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const { data: user, isLoading, isError, refetch } = useTelegramAuth(initDataStr);
 
   if (isLoading) {
-    return <Spinner variant="gradient" label="Authorizing, please wait" />;
+    return <Spinner label="Authorizing, please wait" />;
   }
 
   if (isError || !user) return <ErrorPage reload={refetch} />;
