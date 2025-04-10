@@ -5,7 +5,7 @@ import { UserPrivateProfile } from '@/libs/users/types';
 import { initData, useSignal } from '@telegram-apps/sdk-react';
 import { useTelegramAuth } from '@/libs/users/users-api';
 import { Spinner } from '@heroui/react';
-import Error from '@/components/shared/error';
+import ErrorPage from '@/components/shared/errorPage';
 
 const UserContext = createContext<UserPrivateProfile | null>(null);
 
@@ -18,7 +18,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     return <Spinner variant="gradient" label="Authorizing, please wait" />;
   }
 
-  if (isError || !user) return <Error />;
+  if (isError || !user) return <ErrorPage />;
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }

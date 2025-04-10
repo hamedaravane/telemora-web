@@ -8,7 +8,7 @@ import { FaBoxOpen } from 'react-icons/fa6';
 import OrderSummaryCard from '@/components/orders/summary-card';
 import { PageHeader } from '@/components/shared/page-header';
 import { useMyOrders } from '@/libs/orders/orders-api';
-import Error from '@/components/shared/error';
+import ErrorPage from '@/components/shared/errorPage';
 
 export default function OrdersPage() {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function OrdersPage() {
     );
   }
 
-  if (error || !orders) return <Error />;
+  if (error || !orders) return <ErrorPage />;
 
   return (
     <AppLayout>

@@ -11,7 +11,7 @@ import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
 import StarRating from '@/components/shared/star-rating';
 import ProductPreviewCard from '@/components/products/preview-card';
 import { useStoreDetails } from '@/libs/stores/stores-api';
-import Error from '@/components/shared/error';
+import ErrorPage from '@/components/shared/errorPage';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams();
@@ -41,7 +41,7 @@ export default function StoreDetailsPage() {
     );
   }
 
-  if (error || !store) return <Error />;
+  if (error || !store) return <ErrorPage />;
 
   return (
     <AppLayout>

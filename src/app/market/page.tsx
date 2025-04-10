@@ -9,7 +9,7 @@ import { HomeFeedSection } from '@/libs/market/types';
 import { Button, ScrollShadow, Spinner } from '@heroui/react';
 import ProductPreviewCard from '@/components/products/preview-card';
 import { StorePreviewCard } from '@/components/stores/preview-card';
-import Error from '@/components/shared/error';
+import ErrorPage from '@/components/shared/errorPage';
 
 export default function MarketPage() {
   const { data, isLoading, error, refetch } = useMarketData();
@@ -24,7 +24,7 @@ export default function MarketPage() {
     );
   }
 
-  if (error || !data) return <Error />;
+  if (error || !data) return <ErrorPage />;
 
   return (
     <AppLayout>

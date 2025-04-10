@@ -7,7 +7,7 @@ import AppLayout from '@/components/shared/app-layout';
 import StoreSummaryCard from '@/components/stores/summary-card';
 import { PageHeader } from '@/components/shared/page-header';
 import { useMyStores } from '@/libs/stores/stores-api';
-import Error from '@/components/shared/error';
+import ErrorPage from '@/components/shared/errorPage';
 
 export default function StoreListPage() {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function StoreListPage() {
     );
   }
 
-  if (error) return <Error />;
+  if (error) return <ErrorPage />;
 
   return (
     <AppLayout>

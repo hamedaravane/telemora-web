@@ -10,7 +10,7 @@ import { PageHeader } from '@/components/shared/page-header';
 import { User } from '@heroui/user';
 import StarRating from '@/components/shared/star-rating';
 import { useProductDetails } from '@/libs/products/products-api';
-import Error from '@/components/shared/error';
+import ErrorPage from '@/components/shared/errorPage';
 
 export default function ProductDetailsPage() {
   const { storeId, productId } = useParams();
@@ -29,7 +29,7 @@ export default function ProductDetailsPage() {
     );
   }
 
-  if (error || !product) return <Error />;
+  if (error || !product) return <ErrorPage />;
 
   return (
     <AppLayout>
