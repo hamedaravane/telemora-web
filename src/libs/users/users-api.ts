@@ -23,7 +23,7 @@ export function useTelegramAuth(initData?: string) {
     queryKey: ['me'],
     queryFn: () => sendTelegramInitData(initData!),
     enabled: !!initData,
-    staleTime: 1000 * 60 * 5, // 5 min
+    staleTime: 1000 * 60 * 5,
     retry: false,
   });
 }

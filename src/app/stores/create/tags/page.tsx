@@ -65,11 +65,7 @@ export default function CreateStoreTags() {
         <p className="text-sm font-medium mb-2 text-gray-600">Suggestions</p>
         <div className="flex flex-wrap gap-2">
           {TAG_SUGGESTIONS.map((tag) => (
-            <Tag
-              label={tag}
-              key={tag}
-              onClick={() => handleTagToggle(tag)}
-            />
+            <Tag label={tag} key={tag} onClick={() => handleTagToggle(tag)} />
           ))}
         </div>
       </section>

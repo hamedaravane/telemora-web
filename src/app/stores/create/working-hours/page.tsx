@@ -127,7 +127,9 @@ export default function CreateStoreWorkingHours() {
         <Button variant="ghost" onPress={handleNext}>
           Skip
         </Button>
-        <Button fullWidth onPress={handleNext}>Next</Button>
+        <Button fullWidth onPress={handleNext}>
+          Next
+        </Button>
       </div>
     </AppLayout>
   );
