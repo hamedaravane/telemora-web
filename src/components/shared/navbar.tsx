@@ -2,7 +2,7 @@ import { Avatar, Navbar, NavbarBrand, NavbarContent, NavbarItem } from '@heroui/
 import { useUser } from '@/context/user-context';
 
 const CustomNavbar = () => {
-  const { user } = useUser();
+  const user = useUser();
   return (
     <Navbar>
       <NavbarBrand>

@@ -16,7 +16,7 @@ import Error from '@/components/shared/error';
 export default function StoreDetailsPage() {
   const { storeId } = useParams();
   const router = useRouter();
-  const { user } = useUser();
+  const user = useUser();
 
   const { data: store, isLoading, error } = useStoreDetails(+storeId);
 

@@ -14,9 +14,9 @@ import Error from '@/components/shared/error';
 import React from 'react';
 
 export default function ProfilePage() {
-  const { user, isLoading } = useUser();
+  const user = useUser();
 
-  if (isLoading) {
+  if (!user) {
     return (
       <AppLayout>
         <main className="max-w-2xl mx-auto px-4 py-6 space-y-10">

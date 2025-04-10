@@ -1,13 +1,13 @@
 import { UpdateContactLocationDto, UpdateProfileDto, UserPrivateProfile } from '@/libs/users/types';
 import httpClient from '@/libs/common/http-client';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 async function sendTelegramInitData(initData: string) {
   return httpClient.post<UserPrivateProfile>(`/users/init-data`, { initData });
 }
 
 async function updateProfile(telegramId: number | string, data: UpdateProfileDto) {
-  return httpClient.patch<UserPrivateProfile>(`/users/profile/${telegramId}`, { data });
+  return httpClient.patch<UserPrivateProfile>(`/users/profile/${telegramId}`, data);
 }
 
 async function updateLanguage(telegramId: number | string, languageCode: string) {
@@ -15,12 +15,16 @@ async function updateLanguage(telegramId: number | string, languageCode: string)
 }
 
 async function updateContactLocation(telegramId: number | string, data: UpdateContactLocationDto) {
-  return httpClient.patch<UserPrivateProfile>(`/users/contact-location/${telegramId}`, { data });
+  return httpClient.patch<UserPrivateProfile>(`/users/contact-location/${telegramId}`, data);
 }
 
-export function useSendTelegramInitData() {
-  return useMutation({
-    mutationFn: (initData: string) => sendTelegramInitData(initData),
+export function useTelegramAuth(initData?: string) {
+  return useQuery({
+    queryKey: ['me'],
+    queryFn: () => sendTelegramInitData(initData!),
+    enabled: !!initData,
+    staleTime: 1000 * 60 * 5, // 5 min
+    retry: false,
   });
 }
 

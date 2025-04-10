@@ -1,38 +1,26 @@
 'use client';
 
 import React, { createContext, useContext } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { UserPrivateProfile } from '@/libs/users/types';
 import { initData, useSignal } from '@telegram-apps/sdk-react';
-import { sendTelegramInitData } from '@/libs/users/users-api';
+import { useTelegramAuth } from '@/libs/users/users-api';
+import { Spinner } from '@heroui/react';
+import Error from '@/components/shared/error';
 
-interface UserContextType {
-  user: UserPrivateProfile | null;
-  isLoading: boolean;
-}
-
-const UserContext = createContext<UserContextType>({
-  user: null,
-  isLoading: true,
-});
+const UserContext = createContext<UserPrivateProfile | null>(null);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const initDataStr = useSignal(initData.raw);
-  const hasInitData = !!initDataStr && initDataStr !== '';
 
-  const { data: user, isLoading } = useQuery({
-    queryKey: ['userUser', initDataStr],
-    queryFn: () => sendTelegramInitData(initDataStr!),
-    enabled: hasInitData,
-  });
+  const { data: user, isLoading, isError } = useTelegramAuth(initDataStr);
 
-  return (
-    <UserContext.Provider value={{ user: user ?? null, isLoading }}>
-      {children}
-    </UserContext.Provider>
-  );
+  if (isLoading) {
+    return <Spinner variant="gradient" label="Authorizing, please wait" />;
+  }
+
+  if (isError || !user) return <Error />;
+
+  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }
 
-export function useUser() {
-  return useContext(UserContext);
-}
+export const useUser = () => useContext(UserContext);

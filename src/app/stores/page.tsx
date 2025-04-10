@@ -3,7 +3,6 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Spinner } from '@heroui/react';
-import { useUser } from '@/context/user-context';
 import AppLayout from '@/components/shared/app-layout';
 import StoreSummaryCard from '@/components/stores/summary-card';
 import { PageHeader } from '@/components/shared/page-header';
@@ -11,14 +10,13 @@ import { useMyStores } from '@/libs/stores/stores-api';
 import Error from '@/components/shared/error';
 
 export default function StoreListPage() {
-  const { isLoading: isAuthLoading } = useUser();
   const router = useRouter();
   const { data: stores, error, isLoading } = useMyStores();
 
   const handleCreateStore = () => router.push('/stores/create/basic-information');
   const handleOpenStore = (id: number) => router.push(`/stores/${id}`);
 
-  if (isAuthLoading || isLoading) {
+  if (isLoading) {
     return (
       <AppLayout>
         <div className="min-h-screen flex items-center justify-center">
