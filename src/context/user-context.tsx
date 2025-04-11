@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext } from 'react';
 import { UserPrivateProfile } from '@/libs/users/types';
-import { initData, useSignal } from '@telegram-apps/sdk-react';
+import { initDataRaw, useSignal } from '@telegram-apps/sdk-react';
 import { useTelegramAuth } from '@/libs/users/users-api';
 import { Spinner } from '@heroui/react';
 import ErrorPage from '@/components/shared/errorPage';
@@ -10,7 +10,7 @@ import ErrorPage from '@/components/shared/errorPage';
 const UserContext = createContext<UserPrivateProfile | null>(null);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const initDataStr = useSignal(initData.raw);
+  const initDataStr = useSignal(initDataRaw);
 
   const { data: user, isLoading, isError, refetch } = useTelegramAuth(initDataStr);
 
