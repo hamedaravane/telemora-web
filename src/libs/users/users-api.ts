@@ -19,8 +19,9 @@ async function updateContactLocation(telegramId: number | string, data: UpdateCo
 }
 
 export function useTelegramAuth(initData?: string) {
+  console.log('is initData available?', initData);
   return useQuery({
-    queryKey: ['me'],
+    queryKey: ['me', initData!],
     queryFn: () => sendTelegramInitData(initData!),
     enabled: !!initData,
     staleTime: 1000 * 60 * 5,
