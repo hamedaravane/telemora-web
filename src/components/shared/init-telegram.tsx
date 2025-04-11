@@ -1,13 +1,7 @@
 'use client';
 
 import { PropsWithChildren, useEffect } from 'react';
-import {
-  emitEvent,
-  init,
-  isTMA,
-  mockTelegramEnv,
-  retrieveLaunchParams,
-} from '@telegram-apps/sdk-react';
+import { emitEvent, init, isTMA, mockTelegramEnv } from '@telegram-apps/sdk-react';
 
 export default function InitTelegram({ children }: PropsWithChildren) {
   useEffect(() => {
@@ -55,8 +49,7 @@ export default function InitTelegram({ children }: PropsWithChildren) {
           },
         });
 
-        const launchParams = retrieveLaunchParams();
-        init({ launchParams });
+        init();
       }
     });
   }, []);
