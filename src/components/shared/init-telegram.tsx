@@ -52,13 +52,13 @@ export default function InitTelegram({ children }: PropsWithChildren) {
         });
       }
 
-      await init(); // wait for proper init
-      setReady(true); // now it's safe to render children
+      await init();
+      setReady(true);
     };
 
     setup();
   }, []);
-  if (!ready) return null; // or a loading spinner if you'd like
+  if (!ready) return null;
 
   return <>{children}</>;
 }
