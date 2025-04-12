@@ -11,6 +11,7 @@ const UserContext = createContext<UserPrivateProfile | null>(null);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const initDataStr = useSignal(initDataRaw);
+  console.log('initDataStr', initDataStr); // still undefined
 
   const { data: user, isLoading, isError, refetch } = useTelegramAuth(initDataStr);
 

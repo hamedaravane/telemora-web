@@ -1,14 +1,16 @@
 'use client';
 
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { emitEvent, init, isTMA, mockTelegramEnv } from '@telegram-apps/sdk-react';
 
 export default function InitTelegram({ children }: PropsWithChildren) {
+  const [ready, setReady] = useState(false);
+
   useEffect(() => {
-    isTMA('complete').then((res) => {
-      if (res) {
-        init();
-      } else {
+    const setup = async () => {
+      const isInTelegram = await isTMA('complete');
+
+      if (!isInTelegram) {
         mockTelegramEnv({
           launchParams: {
             tgWebAppThemeParams: themeParams,
@@ -48,11 +50,16 @@ export default function InitTelegram({ children }: PropsWithChildren) {
             }
           },
         });
-
-        init();
       }
-    });
+
+      await init(); // wait for proper init
+      setReady(true); // now it's safe to render children
+    };
+
+    setup();
   }, []);
+  if (!ready) return null; // or a loading spinner if you'd like
+
   return <>{children}</>;
 }
 
