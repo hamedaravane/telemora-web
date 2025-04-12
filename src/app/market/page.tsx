@@ -24,7 +24,7 @@ export default function MarketPage() {
     );
   }
 
-  if (error || !data) return <ErrorPage />;
+  if (error || !data) return <ErrorPage error={error ?? new Error('Error fetching market data')} />;
 
   return (
     <AppLayout>
