@@ -5,10 +5,10 @@ import { retrieveLaunchParams } from '@telegram-apps/sdk-react';
 import { useClientOnce } from '@/hooks/useClientOnce';
 import { useDidMount } from '@/hooks/useDidMount';
 import { init } from '@/core/init';
-import { Spinner } from '@heroui/react';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import ErrorPage from '@/components/shared/errorPage';
 import { ensureTelegramMock } from '@/hooks/ensureTelegramMock';
+import SplashScreen from '@/components/shared/splash-screen';
 
 export default function InitTelegram({ children }: PropsWithChildren) {
   const isDev = process.env.NODE_ENV === 'development';
@@ -33,7 +33,7 @@ export default function InitTelegram({ children }: PropsWithChildren) {
   });
 
   if (!didMount) {
-    return <Spinner label="Initializing..." />;
+    return <SplashScreen />;
   }
 
   return <ErrorBoundary fallback={ErrorPage}>{children}</ErrorBoundary>;
