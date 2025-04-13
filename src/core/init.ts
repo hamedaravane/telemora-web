@@ -3,8 +3,8 @@ import {
   initData,
   miniApp,
   mountBackButton,
-  mountMiniAppSync,
-  mountThemeParamsSync,
+  mountMiniApp,
+  mountThemeParams,
   setDebug,
   themeParams,
   viewport,
@@ -16,8 +16,8 @@ export function init(debug: boolean): void {
   initSDK();
 
   mountBackButton();
-  mountMiniAppSync();
-  mountThemeParamsSync();
+  mountMiniApp();
+  mountThemeParams();
   initData.restore();
   void viewport
     .mount()
