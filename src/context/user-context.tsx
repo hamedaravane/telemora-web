@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext } from 'react';
+import React, { createContext, PropsWithChildren, useContext } from 'react';
 import { UserPrivateProfile } from '@/libs/users/types';
 import { initDataRaw, useSignal } from '@telegram-apps/sdk-react';
 import { useTelegramAuth } from '@/libs/users/users-api';
@@ -9,7 +9,7 @@ import ErrorPage from '@/components/shared/errorPage';
 
 const UserContext = createContext<UserPrivateProfile | null>(null);
 
-export function UserProvider({ children }: { children: React.ReactNode }) {
+export function UserProvider({ children }: PropsWithChildren) {
   const initDataStr = useSignal(initDataRaw);
   console.log('initDataStr', initDataStr);
 
