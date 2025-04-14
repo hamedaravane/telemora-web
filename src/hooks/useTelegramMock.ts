@@ -1,11 +1,15 @@
+'use client';
+
 import { isTMA, mockTelegramEnv, retrieveRawLaunchParams } from '@telegram-apps/sdk-react';
 import { useClientOnce } from '@/hooks/useClientOnce';
 import { mockLaunchParams } from '@/libs/common/mocks';
 
 export function UseTelegramMock(enable: boolean): void {
   useClientOnce(() => {
-    if (!enable || typeof window === 'undefined') return;
-    if (sessionStorage.getItem('env-mocked') || isTMA()) return;
+    if (!enable) return;
+    if (isTMA()) return;
+    const isSsr = typeof window === 'undefined';
+    if (isSsr) return;
 
     try {
       mockTelegramEnv({ launchParams: retrieveRawLaunchParams() });
@@ -18,6 +22,5 @@ export function UseTelegramMock(enable: boolean): void {
     }
   });
 
-  sessionStorage.setItem('env-mocked', '1');
   console.warn('🧪 Telegram environment mocked');
 }
