@@ -1,7 +1,7 @@
 'use client';
 
-import { PropsWithChildren, useMemo } from 'react';
-import { retrieveLaunchParams } from '@telegram-apps/sdk-react';
+import { type PropsWithChildren } from 'react';
+import { useLaunchParams } from '@telegram-apps/sdk-react';
 import { useClientOnce } from '@/hooks/useClientOnce';
 import { useDidMount } from '@/hooks/useDidMount';
 import { init } from '@/core/init';
@@ -17,14 +17,7 @@ export default function InitTelegram({ children }: PropsWithChildren) {
 
   const didMount = useDidMount();
 
-  const launchParams = useMemo(() => {
-    if (typeof window === 'undefined') return undefined;
-    try {
-      return retrieveLaunchParams();
-    } catch {
-      return undefined;
-    }
-  }, []);
+  const launchParams = useLaunchParams();
 
   const debug = isDev || launchParams?.startParam === 'debug';
 
