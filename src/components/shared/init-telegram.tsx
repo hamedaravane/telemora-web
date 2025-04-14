@@ -7,13 +7,13 @@ import { useDidMount } from '@/hooks/useDidMount';
 import { init } from '@/core/init';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
 import ErrorPage from '@/components/shared/errorPage';
-import { ensureTelegramMock } from '@/hooks/ensureTelegramMock';
+import { UseTelegramMock } from '@/hooks/useTelegramMock';
 import SplashScreen from '@/components/shared/splash-screen';
 
 export default function InitTelegram({ children }: PropsWithChildren) {
   const isDev = process.env.NODE_ENV === 'development';
 
-  ensureTelegramMock(isDev);
+  UseTelegramMock(isDev);
 
   const didMount = useDidMount();
 
