@@ -1,7 +1,7 @@
 'use client';
 
 import AppLayout from '@/components/shared/app-layout';
-import { useUser } from '@/context/user-context';
+import { useUser } from '@/context/userContext';
 import { Button, Divider, Skeleton } from '@heroui/react';
 import Image from 'next/image';
 import { UserPrivateProfile } from '@/libs/users/types';

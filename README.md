@@ -53,7 +53,7 @@ product management, order processing, and payment handling.
 ### Authentication
 
 - Telegram login using `@twa-dev/sdk`
-- User context (`/context/user-context.tsx`)
+- User context (`/context/userContext.tsx`)
 - Profile management
 
 ### Marketplace (Stores & Products)

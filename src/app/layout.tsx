@@ -2,7 +2,7 @@ import type { PropsWithChildren } from 'react';
 import type { Metadata } from 'next';
 import './globals.css';
 import '@telegram-apps/telegram-ui/dist/styles.css';
-import { AppProviders } from '@/components/shared/app-providers';
+import { AppProvider } from '@/providers/AppProvider';
 
 export const metadata: Metadata = {
   title: 'Telemora',
@@ -18,7 +18,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-        <AppProviders>{children}</AppProviders>
+        <AppProvider>{children}</AppProvider>
       </body>
     </html>
   );

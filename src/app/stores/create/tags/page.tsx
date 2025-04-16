@@ -6,7 +6,7 @@ import { Button, Input } from '@heroui/react';
 
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
-import { useStoreCreation } from '@/context/store-creation-context';
+import { useStoreCreation } from '@/context/storeCreationContext';
 import { Tag } from '@/components/shared/tag';
 
 const TAG_SUGGESTIONS = [

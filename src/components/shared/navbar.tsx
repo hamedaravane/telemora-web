@@ -1,5 +1,5 @@
 import { Avatar, Navbar, NavbarBrand, NavbarContent, NavbarItem } from '@heroui/react';
-import { useUser } from '@/context/user-context';
+import { useUser } from '@/context/userContext';
 
 const CustomNavbar = () => {
   const user = useUser();

@@ -4,7 +4,7 @@ import React from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Accordion, AccordionItem, Button, Chip, Spinner, Tooltip } from '@heroui/react';
 import Image from 'next/image';
-import { useUser } from '@/context/user-context';
+import { useUser } from '@/context/userContext';
 import AppLayout from '@/components/shared/app-layout';
 import { FaPlus } from 'react-icons/fa6';
 import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';

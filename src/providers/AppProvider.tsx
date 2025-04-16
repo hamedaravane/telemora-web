@@ -1,12 +1,12 @@
 'use client';
 
 import { PropsWithChildren } from 'react';
-import { UserProvider } from '@/context/user-context';
-import { QueryContext } from '@/context/query-context';
-import TonConnectClientProvider from '@/components/shared/TonConnectClientProvider';
+import { UserProvider } from '@/context/userContext';
+import { QueryContext } from '@/context/queryContext';
+import TonConnectClientProvider from '@/providers/TonConnectClientProvider';
 import InitTelegram from '@/components/shared/init-telegram';
 
-export function AppProviders({ children }: PropsWithChildren) {
+export function AppProvider({ children }: PropsWithChildren) {
   return (
     <>
       <InitTelegram>

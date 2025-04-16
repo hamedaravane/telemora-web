@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button, Input, Select, SelectItem, Skeleton } from '@heroui/react';
 import { locationManager, useSignal } from '@telegram-apps/sdk-react';
 
-import { useStoreCreation } from '@/context/store-creation-context';
+import { useStoreCreation } from '@/context/storeCreationContext';
 
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';

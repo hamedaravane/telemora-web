@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Input, Spinner } from '@heroui/react';
-import { useStoreCreation } from '@/context/store-creation-context';
+import { useStoreCreation } from '@/context/storeCreationContext';
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
 
