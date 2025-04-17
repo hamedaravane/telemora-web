@@ -8,9 +8,6 @@ export const metadata: Metadata = {
   title: 'Telemora',
   description: 'Telegram mini app',
   applicationName: 'Telemora',
-  appleWebApp: {
-    title: 'Telemora',
-  },
   manifest: '/manifest.json',
 };
 

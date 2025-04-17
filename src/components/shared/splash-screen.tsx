@@ -8,6 +8,7 @@ export default function SplashScreen() {
       <Image
         src="/icon-logo.svg"
         alt="icon logo"
+        priority
         className="animate-pulse w-32 aspect-square object-fill"
         width={236}
         height={379}

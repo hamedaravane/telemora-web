@@ -11,6 +11,7 @@ import {
 } from '@telegram-apps/sdk-react';
 
 export function init(debug: boolean): void {
+  if (typeof window === 'undefined') return;
   setDebug(debug);
 
   initSDK();

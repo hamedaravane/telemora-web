@@ -4,7 +4,11 @@ import { PropsWithChildren } from 'react';
 import { UserProvider } from '@/context/userContext';
 import { QueryContext } from '@/context/queryContext';
 import TonConnectClientProvider from '@/providers/TonConnectClientProvider';
-import InitTelegram from '@/components/shared/init-telegram';
+import dynamic from 'next/dynamic';
+
+const InitTelegram = dynamic(() => import('@/components/shared/init-telegram'), {
+  ssr: false,
+});
 
 export function AppProvider({ children }: PropsWithChildren) {
   return (
