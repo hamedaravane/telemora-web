@@ -34,7 +34,7 @@ export default function ProductDetailsPage() {
   return (
     <AppLayout>
       <main className="space-y-6 px-2 py-4">
-        {product.image?.length > 0 && (
+        {product.image?.length ? (
           <ScrollShadow orientation="horizontal" className="flex gap-x-4 overflow-x-auto pb-2">
             {product.image.map((img, index) => (
               <Image
@@ -47,7 +47,7 @@ export default function ProductDetailsPage() {
               />
             ))}
           </ScrollShadow>
-        )}
+        ) : null}
 
         <div>
           <User
