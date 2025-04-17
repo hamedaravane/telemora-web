@@ -12,8 +12,6 @@ export function UseTelegramMock(enable: boolean): void {
     try {
       mockTelegramEnv({ launchParams: retrieveRawLaunchParams() });
     } catch (e) {
-      console.warn('Failed to retrieve launch params', e);
-
       mockTelegramEnv({
         launchParams: mockLaunchParams,
       });
