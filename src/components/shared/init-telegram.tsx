@@ -6,13 +6,11 @@ import { useClientOnce } from '@/hooks/useClientOnce';
 import { useDidMount } from '@/hooks/useDidMount';
 import { init } from '@/core/init';
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
-import ErrorPage from '@/components/shared/errorPage';
 import { UseTelegramMock } from '@/hooks/useTelegramMock';
 import SplashScreen from '@/components/shared/splash-screen';
+import { isDev } from '@/utils';
 
 export default function InitTelegram({ children }: PropsWithChildren) {
-  const isDev = process.env.NODE_ENV === 'development';
-
   UseTelegramMock(isDev);
 
   const didMount = useDidMount();
@@ -29,5 +27,21 @@ export default function InitTelegram({ children }: PropsWithChildren) {
     return <SplashScreen />;
   }
 
-  return <ErrorBoundary fallback={ErrorPage}>{children}</ErrorBoundary>;
+  return <ErrorBoundary fallback={TelegramErrorPage}>{children}</ErrorBoundary>;
+}
+
+function TelegramErrorPage({
+  error,
+  reset,
+}: {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}) {
+  console.warn(error);
+  return (
+    <main>
+      <pre>it seems you do not use telegram env</pre>
+      <button onClick={reset}></button>
+    </main>
+  );
 }

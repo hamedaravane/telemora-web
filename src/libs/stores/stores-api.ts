@@ -9,6 +9,8 @@ import {
 } from '@/libs/stores/types';
 import httpClient from '@/libs/common/http-client';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { isDev } from '@/utils';
+import { generateMockStoreDetail, generateMockStoreSummaries } from '@/libs/stores/mocks';
 
 async function getMyStores() {
   return httpClient.get<StoreSummary[]>('/stores/my');
@@ -56,57 +58,62 @@ export async function uploadStoreLogo(data: CreateStoreLogoDto) {
 export function useMyStores() {
   return useQuery<StoreSummary[]>({
     queryKey: ['stores', 'my'],
-    queryFn: getMyStores,
+    queryFn: isDev ? generateMockStoreSummaries : getMyStores,
   });
 }
 
 export function useStoreDetails(storeId: number) {
   return useQuery<StoreDetail>({
     queryKey: ['stores', storeId],
-    queryFn: () => getStoreDetails(storeId),
+    queryFn: () => (isDev ? generateMockStoreDetail() : getStoreDetails(storeId)),
   });
 }
 
 export function useDiscoverStores() {
   return useQuery<StoreSummary[]>({
     queryKey: ['stores', 'discover'],
-    queryFn: discoverStores,
+    queryFn: isDev ? generateMockStoreSummaries : discoverStores,
   });
 }
 
 export function useFeaturedStores() {
   return useQuery<StoreSummary[]>({
     queryKey: ['stores', 'featured'],
-    queryFn: getFeaturedStores,
+    queryFn: isDev ? generateMockStoreSummaries : getFeaturedStores,
   });
 }
 
 export function useCreateBasicInfo() {
   return useMutation({
-    mutationFn: (data: CreateStoreBasicDto) => createBasicInfo(data),
+    mutationFn: (data: CreateStoreBasicDto) =>
+      isDev ? generateMockStoreDetail() : createBasicInfo(data),
   });
 }
 
 export function useUpdateStoreLocation() {
   return useMutation({
-    mutationFn: (data: CreateAddressDto) => updateStoreLocation(data),
+    mutationFn: (data: CreateAddressDto) =>
+      isDev ? generateMockStoreDetail() : updateStoreLocation(data),
   });
 }
 
 export function useSelectStoreTags() {
   return useMutation({
-    mutationFn: (data: CreateStoreTagsDto) => selectStoreTags(data),
+    mutationFn: (data: CreateStoreTagsDto) =>
+      isDev ? generateMockStoreDetail() : selectStoreTags(data),
   });
 }
 
 export function useSetStoreWorkingHours() {
   return useMutation({
-    mutationFn: (data: CreateStoreWorkingHoursDto) => setStoreWorkingHours(data),
+    mutationFn: (data: CreateStoreWorkingHoursDto) =>
+      isDev ? generateMockStoreDetail() : setStoreWorkingHours(data),
   });
 }
 
 export function useUploadStoreLogo() {
   return useMutation({
-    mutationFn: (data: CreateStoreLogoDto) => uploadStoreLogo(data),
+    mutationFn: (data: CreateStoreLogoDto) =>
+      isDev ? generateMockStoreDetail() : uploadStoreLogo(data),
   });
 }

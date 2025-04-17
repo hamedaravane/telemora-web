@@ -1,6 +1,8 @@
 import { UpdateContactLocationDto, UpdateProfileDto, UserPrivateProfile } from '@/libs/users/types';
 import httpClient from '@/libs/common/http-client';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { isDev } from '@/utils';
+import { generateMockUserPrivateProfile } from '@/libs/users/mocks';
 
 async function sendTelegramInitData(initData: string) {
   return httpClient.post<UserPrivateProfile>(`/users/init-data`, { initData });
@@ -21,7 +23,7 @@ async function updateContactLocation(telegramId: number | string, data: UpdateCo
 export function useTelegramAuth(initData?: string) {
   return useQuery({
     queryKey: ['me', initData!],
-    queryFn: () => sendTelegramInitData(initData!),
+    queryFn: () => (isDev ? generateMockUserPrivateProfile() : sendTelegramInitData(initData!)),
     enabled: !!initData,
     staleTime: 1000 * 60 * 5,
     retry: false,
@@ -43,7 +45,7 @@ export function useUpdateLanguage() {
     }: {
       telegramId: number | string;
       languageCode: string;
-    }) => updateLanguage(telegramId, languageCode),
+    }) => (isDev ? generateMockUserPrivateProfile() : updateLanguage(telegramId, languageCode)),
   });
 }
 
@@ -55,6 +57,6 @@ export function useUpdateContactLocation() {
     }: {
       telegramId: number | string;
       data: UpdateContactLocationDto;
-    }) => updateContactLocation(telegramId, data),
+    }) => (isDev ? generateMockUserPrivateProfile() : updateContactLocation(telegramId, data)),
   });
 }

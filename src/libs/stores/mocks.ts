@@ -2,9 +2,9 @@ import { faker } from '@faker-js/faker';
 import { StoreDetail, StorePreview, StoreSummary } from './types';
 import { generateMockAddress } from '@/libs/location/mocks';
 import { generateMockUserSummary } from '@/libs/users/mocks';
-import { generateMockProductPreview } from '@/libs/products/mocks';
+import { generateMockProductPreviews } from '@/libs/products/mocks';
 
-export function generateMockStorePreview(): StorePreview {
+export async function generateMockStorePreview(): Promise<StorePreview> {
   return {
     id: faker.number.int(),
     name: faker.company.name(),
@@ -18,22 +18,20 @@ export function generateMockStorePreview(): StorePreview {
   };
 }
 
-export function generateMockStoreSummary(): StoreSummary {
+export async function generateMockStoreSummary(): Promise<StoreSummary> {
   return {
-    ...generateMockStorePreview(),
+    ...(await generateMockStorePreview()),
     address: generateMockAddress(),
     description: faker.lorem.paragraph(),
     tags: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => faker.lorem.word()),
   };
 }
 
-export function generateMockStoreDetail(): StoreDetail {
+export async function generateMockStoreDetail(): Promise<StoreDetail> {
   return {
-    ...generateMockStoreSummary(),
-    owner: generateMockUserSummary(),
-    products: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, (_, index) =>
-      generateMockProductPreview(index),
-    ),
+    ...(await generateMockStoreSummary()),
+    owner: await generateMockUserSummary(),
+    products: await generateMockProductPreviews(),
     contactNumber: faker.phone.number(),
     email: faker.internet.email(),
     socialMediaLinks: {
@@ -46,4 +44,12 @@ export function generateMockStoreDetail(): StoreDetail {
     },
     createdAt: faker.date.past(),
   };
+}
+
+export async function generateMockStoreSummaries(): Promise<StoreSummary[]> {
+  return Promise.all(Array.from({ length: 5 }, () => generateMockStoreSummary()));
+}
+
+export async function generateMockStorePreviews(): Promise<StorePreview[]> {
+  return Promise.all(Array.from({ length: 5 }, () => generateMockStorePreview()));
 }

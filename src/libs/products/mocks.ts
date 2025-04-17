@@ -11,7 +11,7 @@ import {
 import { generateMockStorePreview } from '@/libs/stores/mocks';
 import { generateMockReviewPreview } from '@/libs/reviews/mocks';
 
-export function generateMockProductPreview(id: number): ProductPreview {
+export async function generateMockProductPreview(id: number): Promise<ProductPreview> {
   return {
     id,
     name: faker.commerce.productName(),
@@ -27,18 +27,18 @@ export function generateMockProductPreview(id: number): ProductPreview {
   };
 }
 
-export function generateMockProductSummary(id: number): ProductSummary {
+export async function generateMockProductSummary(id: number): Promise<ProductSummary> {
   return {
-    ...generateMockProductPreview(id),
+    ...(await generateMockProductPreview(id)),
     productType: faker.helpers.arrayElement(Object.values(ProductType)),
-    store: generateMockStorePreview(),
+    store: await generateMockStorePreview(),
   };
 }
 
-export function generateMockProductDetail(id: number): ProductDetail {
+export async function generateMockProductDetail(id: number): Promise<ProductDetail> {
   const productType = faker.helpers.arrayElement(Object.values(ProductType));
   return {
-    ...generateMockProductSummary(id),
+    ...(await generateMockProductSummary(id)),
     description: faker.commerce.productDescription(),
     attributes: Array.from(
       { length: 3 },
@@ -79,7 +79,7 @@ export function generateMockProductDetail(id: number): ProductDetail {
 
 let categoryIdCounter = 1;
 
-export function generateMockCategoryTree(count: number = 8): ProductCategoryNode[] {
+export async function generateMockCategoryTree(count: number = 8): Promise<ProductCategoryNode[]> {
   const tree: ProductCategoryNode[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -124,4 +124,8 @@ export function generateMockCategoryTree(count: number = 8): ProductCategoryNode
   }
 
   return tree;
+}
+
+export async function generateMockProductPreviews(): Promise<ProductPreview[]> {
+  return Promise.all(Array.from({ length: 10 }, (_, i) => generateMockProductPreview(i)));
 }

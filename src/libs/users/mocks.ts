@@ -4,7 +4,7 @@ import { generateMockAddress } from '@/libs/location/mocks';
 import { generateMockStorePreview } from '@/libs/stores/mocks';
 import { generateMockOrderSummary } from '@/libs/orders/mocks';
 
-export function generateMockUserPublicPreview(): UserPublicPreview {
+export async function generateMockUserPublicPreview(): Promise<UserPublicPreview> {
   return {
     id: faker.number.int(),
     username: faker.internet.username(),
@@ -15,9 +15,9 @@ export function generateMockUserPublicPreview(): UserPublicPreview {
   };
 }
 
-export function generateMockUserSummary(): UserSummary {
+export async function generateMockUserSummary(): Promise<UserSummary> {
   return {
-    ...generateMockUserPublicPreview(),
+    ...(await generateMockUserPublicPreview()),
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     role: faker.helpers.arrayElement(Object.values(UserRole)),
@@ -25,9 +25,9 @@ export function generateMockUserSummary(): UserSummary {
   };
 }
 
-export function generateMockUserPrivateProfile(): UserPrivateProfile {
+export async function generateMockUserPrivateProfile(): Promise<UserPrivateProfile> {
   return {
-    ...generateMockUserSummary(),
+    ...(await generateMockUserSummary()),
     telegramId: faker.string.alphanumeric(),
     phoneNumber: faker.phone.number(),
     email: faker.internet.email(),

@@ -6,6 +6,7 @@ import { mockLaunchParams } from '@/libs/common/mocks';
 
 export function UseTelegramMock(enable: boolean): void {
   useClientOnce(() => {
+    if (typeof window === 'undefined') return;
     if (!enable) return;
 
     try {
