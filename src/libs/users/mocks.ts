@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { UserPrivateProfile, UserPublicPreview, UserRole, UserSummary } from './types';
 import { generateMockAddress } from '@/libs/location/mocks';
-import { generateMockStorePreview } from '@/libs/stores/mocks';
+import { generateMockStorePreviews } from '@/libs/stores/mocks';
 import { generateMockOrderSummary } from '@/libs/orders/mocks';
 
 export async function generateMockUserPublicPreview(): Promise<UserPublicPreview> {
@@ -32,11 +32,7 @@ export async function generateMockUserPrivateProfile(): Promise<UserPrivateProfi
     phoneNumber: faker.phone.number(),
     email: faker.internet.email(),
     walletAddress: faker.finance.ethereumAddress(),
-    stores: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () =>
-      generateMockStorePreview(),
-    ),
-    orders: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () =>
-      generateMockOrderSummary(),
-    ),
+    stores: await generateMockStorePreviews(),
+    orders: await Promise.all(Array.from({ length: 5 }, generateMockOrderSummary)),
   };
 }

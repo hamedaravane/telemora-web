@@ -3,7 +3,7 @@ import { PaymentDetail, PaymentStatus, PaymentSummary } from './types';
 import { generateMockOrderSummary } from '@/libs/orders/mocks';
 import { generateMockUserSummary } from '@/libs/users/mocks';
 
-export function generateMockPaymentSummary(): PaymentSummary {
+export async function generateMockPaymentSummary(): Promise<PaymentSummary> {
   return {
     id: faker.string.uuid(),
     status: faker.helpers.arrayElement(['PENDING', 'COMPLETED', 'FAILED']) as PaymentStatus,
@@ -13,14 +13,14 @@ export function generateMockPaymentSummary(): PaymentSummary {
   };
 }
 
-export function generateMockPaymentDetail(): PaymentDetail {
+export async function generateMockPaymentDetail(): Promise<PaymentDetail> {
   return {
-    ...generateMockPaymentSummary(),
+    ...(await generateMockPaymentSummary()),
     gasFee: faker.finance.amount(),
     commission: faker.finance.amount(),
     fromWalletAddress: faker.finance.ethereumAddress(),
     toWalletAddress: faker.finance.ethereumAddress(),
-    order: generateMockOrderSummary(),
-    user: generateMockUserSummary(),
+    order: await generateMockOrderSummary(),
+    user: await generateMockUserSummary(),
   };
 }

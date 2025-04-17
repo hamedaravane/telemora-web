@@ -72,7 +72,7 @@ export async function generateMockProductDetail(id: number): Promise<ProductDeta
     ],
     stock: faker.number.int({ min: 0, max: 100 }),
     downloadLink: productType === 'digital' ? faker.internet.url() : undefined,
-    reviews: [generateMockReviewPreview(id), generateMockReviewPreview(id + 1)],
+    reviews: [await generateMockReviewPreview(id), await generateMockReviewPreview(id + 1)],
     createdAt: faker.date.past(),
   };
 }

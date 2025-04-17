@@ -35,7 +35,7 @@ export async function generateMockOrderDetail(): Promise<OrderDetail> {
       deliveryEstimate: faker.date.future(),
       shippedAt: faker.date.past(),
     },
-    payment: generateMockPaymentSummary(),
+    payment: await generateMockPaymentSummary(),
     buyer: await generateMockUserSummary(),
   };
 }
