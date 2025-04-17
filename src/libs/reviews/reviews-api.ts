@@ -9,6 +9,13 @@ import {
 } from '@/libs/reviews/types';
 import httpClient from '@/libs/common/http-client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { isDev } from '@/utils';
+import {
+  generateMockReviewDetail,
+  generateMockReviewPreviews,
+  generateMockReviewReplyPreview,
+  generateMockReviewReportPreview,
+} from '@/libs/reviews/mocks';
 
 async function createReview(productId: number, data: CreateReviewDto) {
   return httpClient.post<ReviewDetail>(`/reviews/${productId}`, data);
@@ -37,14 +44,14 @@ async function deleteReviews(id: string | number) {
 export function useProductReviews(productId: number) {
   return useQuery<ReviewPreview[]>({
     queryKey: ['reviews', 'product', productId],
-    queryFn: () => getProductReviews(productId),
+    queryFn: () => (isDev ? generateMockReviewPreviews() : getProductReviews(productId)),
   });
 }
 
 export function useReviewDetail(id: string | number) {
   return useQuery<ReviewDetail>({
     queryKey: ['reviews', 'detail', id],
-    queryFn: () => getReviewsById(id),
+    queryFn: () => (isDev ? generateMockReviewDetail() : getReviewsById(id)),
   });
 }
 
@@ -52,7 +59,8 @@ export function useCreateReview(productId: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateReviewDto) => createReview(productId, data),
+    mutationFn: (data: CreateReviewDto) =>
+      isDev ? generateMockReviewDetail() : createReview(productId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reviews', 'product', productId] });
     },
@@ -61,13 +69,15 @@ export function useCreateReview(productId: number) {
 
 export function useReplyToReview(reviewId: number) {
   return useMutation({
-    mutationFn: (data: CreateReviewReplyDto) => replyToReview(reviewId, data),
+    mutationFn: (data: CreateReviewReplyDto) =>
+      isDev ? generateMockReviewReplyPreview() : replyToReview(reviewId, data),
   });
 }
 
 export function useReportReview(reviewId: number) {
   return useMutation({
-    mutationFn: (data: CreateReviewReportDto) => reportReview(reviewId, data),
+    mutationFn: (data: CreateReviewReportDto) =>
+      isDev ? generateMockReviewReportPreview() : reportReview(reviewId, data),
   });
 }
 

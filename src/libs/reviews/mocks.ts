@@ -1,5 +1,11 @@
 import { faker } from '@faker-js/faker';
-import { ReportReason, ReviewPreview, ReviewReplyPreview, ReviewReportPreview } from './types';
+import {
+  ReportReason,
+  ReviewDetail,
+  ReviewPreview,
+  ReviewReplyPreview,
+  ReviewReportPreview,
+} from './types';
 import { generateMockUserPublicPreview } from '@/libs/users/mocks';
 
 export async function generateMockReviewPreview(productId: number): Promise<ReviewPreview> {
@@ -10,6 +16,17 @@ export async function generateMockReviewPreview(productId: number): Promise<Revi
     productId,
     buyer: await generateMockUserPublicPreview(),
     createdAt: faker.date.recent(),
+  };
+}
+
+export async function generateMockReviewDetail(): Promise<ReviewDetail> {
+  return {
+    ...(await generateMockReviewPreview(1)),
+    images: [],
+    isFlagged: false,
+    replies: [await generateMockReviewReplyPreview()],
+    reports: [await generateMockReviewReportPreview()],
+    videos: [],
   };
 }
 
@@ -30,4 +47,10 @@ export async function generateMockReviewReportPreview(): Promise<ReviewReportPre
     comment: faker.lorem.sentence(),
     reportedAt: faker.date.recent(),
   };
+}
+
+export async function generateMockReviewPreviews(): Promise<ReviewPreview[]> {
+  return Promise.all(
+    Array.from({ length: 5 }, () => generateMockReviewPreview(faker.number.int())),
+  );
 }

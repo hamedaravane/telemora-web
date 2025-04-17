@@ -6,6 +6,8 @@ import {
 } from '@/libs/products/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import httpClient from '@/libs/common/http-client';
+import { isDev } from '@/utils';
+import { generateMockProductDetail, generateMockProductPreviews } from '@/libs/products/mocks';
 
 async function getStoreProducts(storeId: number) {
   return httpClient.get<ProductPreview[]>(`/stores/${storeId}/products`);
@@ -30,7 +32,7 @@ async function deleteProduct(storeId: number, productId: number) {
 export function useStoreProducts(storeId: number) {
   return useQuery({
     queryKey: ['store-products', storeId],
-    queryFn: () => getStoreProducts(storeId),
+    queryFn: () => (isDev ? generateMockProductPreviews() : getStoreProducts(storeId)),
     enabled: !!storeId,
   });
 }
@@ -38,7 +40,7 @@ export function useStoreProducts(storeId: number) {
 export function useProductDetails(storeId: number, productId: number) {
   return useQuery({
     queryKey: ['product-details', storeId, productId],
-    queryFn: () => getProductDetails(storeId, productId),
+    queryFn: () => (isDev ? generateMockProductDetail(1) : getProductDetails(storeId, productId)),
     enabled: !!storeId && !!productId,
   });
 }
@@ -47,7 +49,8 @@ export function useCreateProduct(storeId: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateProductDto) => createProduct(storeId, data),
+    mutationFn: (data: CreateProductDto) =>
+      isDev ? generateMockProductDetail(1) : createProduct(storeId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['store-products', storeId] });
     },
@@ -58,7 +61,8 @@ export function useUpdateProduct(storeId: number, productId: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: UpdateProductDto) => updateProduct(storeId, productId, data),
+    mutationFn: (data: UpdateProductDto) =>
+      isDev ? generateMockProductDetail(1) : updateProduct(storeId, productId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['product-details', storeId, productId] });
       queryClient.invalidateQueries({ queryKey: ['store-products', storeId] });
