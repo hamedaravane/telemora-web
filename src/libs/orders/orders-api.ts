@@ -7,6 +7,8 @@ import {
 } from '@/libs/orders/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import httpClient from '@/libs/common/http-client';
+import { isDev } from '@/utils';
+import { generateMockOrderDetail, generateMockOrderSummaries } from '@/libs/orders/mocks';
 
 async function getMyOrders() {
   return httpClient.get<OrderSummary[]>('orders');
@@ -31,14 +33,14 @@ async function addShipment(id: number, data: CreateOrderShipmentDto) {
 export function useMyOrders() {
   return useQuery<OrderSummary[]>({
     queryKey: ['orders'],
-    queryFn: getMyOrders,
+    queryFn: isDev ? generateMockOrderSummaries : getMyOrders,
   });
 }
 
 export function useOrderDetails(id: number) {
   return useQuery<OrderDetail>({
     queryKey: ['order-detail', id],
-    queryFn: () => getOrderDetails(id),
+    queryFn: () => (isDev ? generateMockOrderDetail() : getOrderDetails(id)),
     enabled: !!id,
   });
 }
@@ -47,7 +49,7 @@ export function useCreateOrder() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateOrderDto) => createOrder(data),
+    mutationFn: (data: CreateOrderDto) => (isDev ? generateMockOrderDetail() : createOrder(data)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
     },
@@ -58,7 +60,8 @@ export function useUpdateOrder(id: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: UpdateOrderDto) => updateOrder(id, data),
+    mutationFn: (data: UpdateOrderDto) =>
+      isDev ? generateMockOrderDetail() : updateOrder(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['order-detail', id] });
       queryClient.invalidateQueries({ queryKey: ['orders'] });
@@ -70,7 +73,8 @@ export function useAddShipment(id: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateOrderShipmentDto) => addShipment(id, data),
+    mutationFn: (data: CreateOrderShipmentDto) =>
+      isDev ? generateMockOrderDetail() : addShipment(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['order-detail', id] });
     },

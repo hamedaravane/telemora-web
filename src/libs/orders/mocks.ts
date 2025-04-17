@@ -27,7 +27,7 @@ export async function generateMockOrderSummary(): Promise<OrderSummary> {
 export async function generateMockOrderDetail(): Promise<OrderDetail> {
   return {
     ...(await generateMockOrderSummary()),
-    items: await Promise.all(Array.from({ length: 2 }, () => generateMockOrderItemPreview())),
+    items: await generateMockOrderItemPreviews(),
     shipment: {
       id: faker.number.int(),
       trackingNumber: faker.string.uuid(),
@@ -38,4 +38,12 @@ export async function generateMockOrderDetail(): Promise<OrderDetail> {
     payment: await generateMockPaymentSummary(),
     buyer: await generateMockUserSummary(),
   };
+}
+
+export async function generateMockOrderSummaries(): Promise<OrderSummary[]> {
+  return Promise.all(Array.from({ length: 3 }, () => generateMockOrderSummary()));
+}
+
+export async function generateMockOrderItemPreviews(): Promise<OrderItemPreview[]> {
+  return Promise.all(Array.from({ length: 3 }, () => generateMockOrderItemPreview()));
 }
