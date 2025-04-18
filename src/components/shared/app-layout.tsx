@@ -5,14 +5,10 @@ import CustomNavbar from './navbar';
 import BottomNavigation from './bottom-navigation';
 
 export default function AppLayout({ children }: PropsWithChildren) {
-  /* TODO: AppLayout double scroll – body has its own scroll and you add another .overflow-y-scroll;
-      on iOS WebView this can trap the user.
-      Consider letting the body scroll and reserve space for the fixed bottom bar. */
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <CustomNavbar />
-      <div className="overflow-y-scroll px-4">{children}</div>
-      <div className="h-24"></div>
+      <main className="flex-1 px-4 pb-24">{children}</main>
       <BottomNavigation />
     </div>
   );
