@@ -41,6 +41,9 @@ export default function CreateStoreLocation() {
       await locationManager.mount();
       const location = await locationManager.requestLocation();
 
+      /* TODO: The event‑handler detectLocation calls useNearestLocation inside an async function.
+          useNearestLocation itself wraps useQuery,
+          so calling it conditionally / after user interaction throws “Invalid hook call” */
       const { data: nearest } = useNearestLocation(location.latitude, location.longitude);
 
       updateStoreData({

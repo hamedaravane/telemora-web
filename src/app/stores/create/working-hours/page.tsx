@@ -43,6 +43,7 @@ export default function CreateStoreWorkingHours() {
     }));
   };
 
+  /* TODO: always returns {open:'', close:''} – regardless of previous state. Switch UI flickers but hours never persist */
   const toggleDay = (day: string) => {
     setWorkingHours((prev) => {
       const isClosed = !prev[day].open && !prev[day].close;
@@ -62,7 +63,7 @@ export default function CreateStoreWorkingHours() {
   };
 
   const handleBack = () => {
-    router.push('/stores/create/category-selection');
+    router.push('/stores/create/tags');
   };
 
   return (

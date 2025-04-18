@@ -23,6 +23,7 @@ export default function StoreDetailsPage() {
   const isOwner = user && store && store.owner.id === user.id;
 
   const handleShare = () => {
+    /*  TODO: navigator.clipboard.writeText fails on browsers without “secure context” */
     navigator.clipboard.writeText(window.location.href);
   };
 

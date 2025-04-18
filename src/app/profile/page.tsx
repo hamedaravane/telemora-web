@@ -10,7 +10,6 @@ import OrderSummaryCard from '@/components/orders/summary-card';
 import { FaGear } from 'react-icons/fa6';
 import { FaPen } from 'react-icons/fa';
 import { PageHeader } from '@/components/shared/page-header';
-import ErrorPage from '@/components/shared/errorPage';
 import React from 'react';
 
 export default function ProfilePage() {
@@ -54,8 +53,6 @@ export default function ProfilePage() {
       </AppLayout>
     );
   }
-
-  if (!user) return <ErrorPage />;
 
   return (
     <AppLayout>

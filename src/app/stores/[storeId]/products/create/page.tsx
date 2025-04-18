@@ -127,6 +127,9 @@ export default function CreateProductPage() {
           <img src={previewUrl} alt="Preview" className="w-full rounded-xl border mt-2" />
         )}
 
+        {/* TODO: The <Select> that shows productType is not registered with react-hook-form and lacks onSelectionChange
+              watch('productType') always returns the default,
+              so the UI can switch to “Digital” but the submitted payload remains “physical”*/}
         <Select label="Product Type" selectedKeys={new Set([productType])}>
           {Object.entries(ProductType).map(([key, value]) => (
             <SelectItem key={key}>{value}</SelectItem>

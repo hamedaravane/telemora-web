@@ -4,7 +4,10 @@ import React, { PropsWithChildren } from 'react';
 import CustomNavbar from './navbar';
 import BottomNavigation from './bottom-navigation';
 
-const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
+export default function AppLayout({ children }: PropsWithChildren) {
+  /* TODO: AppLayout double scroll – body has its own scroll and you add another .overflow-y-scroll;
+      on iOS WebView this can trap the user.
+      Consider letting the body scroll and reserve space for the fixed bottom bar. */
   return (
     <div className="min-h-screen">
       <CustomNavbar />
@@ -13,6 +16,4 @@ const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
       <BottomNavigation />
     </div>
   );
-};
-
-export default AppLayout;
+}
