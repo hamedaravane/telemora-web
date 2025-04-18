@@ -12,6 +12,7 @@ import StarRating from '@/components/shared/star-rating';
 import ProductPreviewCard from '@/components/products/preview-card';
 import { useStoreDetails } from '@/libs/stores/stores-api';
 import ErrorPage from '@/components/shared/errorPage';
+import toast from 'react-hot-toast';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams();
@@ -22,9 +23,19 @@ export default function StoreDetailsPage() {
 
   const isOwner = user && store && store.owner.id === user.id;
 
-  const handleShare = () => {
-    /*  TODO: navigator.clipboard.writeText fails on browsers without “secure context” */
-    navigator.clipboard.writeText(window.location.href);
+  const handleShare = async () => {
+    try {
+      if (!navigator.clipboard) {
+        toast.error('Clipboard not supported in this environment.');
+        return;
+      }
+
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success('Link copied to clipboard!');
+    } catch (err) {
+      console.error('Clipboard write failed', err);
+      toast.error('Failed to copy the link. Please copy manually.');
+    }
   };
 
   const handleEdit = () => router.push(`/stores/${store?.id}/edit`);
