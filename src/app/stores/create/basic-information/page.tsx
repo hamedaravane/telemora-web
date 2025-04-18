@@ -61,8 +61,9 @@ export default function CreateStoreBasicInformation() {
         placeholder="e.g. We sell the best gadgets in town!"
         maxLength={200}
       />
-      {/* TODO: Renders {storeData.description.length} while description can be undefined. First render throws “Cannot read property ‘length’ of undefined” */}
-      <p className="text-sm text-gray-500 my-2">{storeData.description.length}/200 characters</p>
+      <p className="text-sm text-gray-500 my-2">
+        {storeData.description?.length ?? 0}/200 characters
+      </p>
 
       <div className="mt-6 flex gap-x-2 justify-between">
         <Button
