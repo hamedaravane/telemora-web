@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Input, Select, SelectItem, Skeleton } from '@heroui/react';
 import { locationManager, useSignal } from '@telegram-apps/sdk-react';
@@ -33,6 +33,25 @@ export default function CreateStoreLocation() {
   const [isDetecting, setIsDetecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [coords, setCoords] = useState<{ lat?: number; lng?: number } | null>(null);
+  const { data: nearest, isFetching: nearestLoading } = useNearestLocation(
+    coords?.lat,
+    coords?.lng,
+  );
+
+  useEffect(() => {
+    if (!nearest || !coords) return;
+
+    updateStoreData({
+      countryId: nearest.country.id,
+      stateId: nearest.state?.id,
+      cityId: nearest.city?.id,
+      postalCode: nearest.city?.postalCode,
+      latitude: coords.lat,
+      longitude: coords.lng,
+    });
+  }, [nearest, coords, updateStoreData]);
+
   const detectLocation = async () => {
     setIsDetecting(true);
     setError(null);
@@ -40,20 +59,7 @@ export default function CreateStoreLocation() {
     try {
       await locationManager.mount();
       const location = await locationManager.requestLocation();
-
-      /* TODO: The event‑handler detectLocation calls useNearestLocation inside an async function.
-          useNearestLocation itself wraps useQuery,
-          so calling it conditionally / after user interaction throws “Invalid hook call” */
-      const { data: nearest } = useNearestLocation(location.latitude, location.longitude);
-
-      updateStoreData({
-        countryId: nearest?.country.id,
-        stateId: nearest?.state?.id,
-        cityId: nearest?.city?.id,
-        postalCode: nearest?.city?.postalCode,
-        latitude: location.latitude,
-        longitude: location.longitude,
-      });
+      setCoords({ lat: location.latitude, lng: location.longitude });
     } catch (err) {
       console.error('Location detection failed:', err);
       if (!isAccessGranted) {
@@ -83,7 +89,7 @@ export default function CreateStoreLocation() {
           size="sm"
           variant="flat"
           onPress={detectLocation}
-          isDisabled={!isSupported || isDetecting}
+          isDisabled={!isSupported || isDetecting || nearestLoading}
         >
           <FaLocationDot />
           {isDetecting ? 'Detecting…' : 'Use Telegram Location'}
@@ -185,7 +191,7 @@ export default function CreateStoreLocation() {
         <Button variant="flat" onPress={handleNext}>
           Skip
         </Button>
-        <Button fullWidth onPress={handleNext}>
+        <Button fullWidth disabled={nearestLoading} onPress={handleNext}>
           Next
         </Button>
       </div>
