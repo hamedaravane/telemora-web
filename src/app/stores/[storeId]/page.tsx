@@ -71,7 +71,7 @@ export default function StoreDetailsPage() {
           )}
           <div>
             <h1 className="text-xl font-bold">{store.name}</h1>
-            <div>{store.tags?.map((tag, index) => <Chip key={index}>{tag}</Chip>)}</div>
+            <div>{store.tags?.map((tag) => <Chip key={tag}>{tag}</Chip>)}</div>
             <StarRating rating={store.reputation} />
           </div>
         </div>

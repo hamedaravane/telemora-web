@@ -6,6 +6,7 @@ import { Button, Spinner } from '@heroui/react';
 import Image from 'next/image';
 import { useStoreCreation } from '@/context/storeCreationContext';
 import AppLayout from '@/components/shared/app-layout';
+import toast from 'react-hot-toast';
 
 export default function CreateStoreLogoUpload() {
   const { storeData, updateStoreData, submitStore } = useStoreCreation();
@@ -27,7 +28,7 @@ export default function CreateStoreLogoUpload() {
 
         img.onload = () => {
           if (img.width < MIN_IMAGE_RESOLUTION || img.height < MIN_IMAGE_RESOLUTION) {
-            alert('Image resolution is too low. Please upload a higher-quality image.');
+            toast.error('Image resolution is too low. Please upload a higher-quality image.');
             resolve(null);
             return;
           }
@@ -77,12 +78,12 @@ export default function CreateStoreLogoUpload() {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      alert('Please upload a valid image file.');
+      toast.error('Please upload a valid image file.');
       return;
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      alert('File size is too large. Please upload an image under 5MB.');
+      toast.error('File size is too large. Please upload an image under 5MB.');
       return;
     }
 
@@ -94,9 +95,11 @@ export default function CreateStoreLogoUpload() {
 
     if (processedFile) {
       updateStoreData({ logoFile: processedFile });
+      /* TODO: URL.createObjectURL() in Logo upload never calls URL.revokeObjectURL
+          Repeated uploads leak blobs and crash low‑memory Android web‑views */
       setPreviewUrl(URL.createObjectURL(processedFile));
     } else {
-      alert('Failed to process the image. Try again.');
+      toast.error('Failed to process the image. Try again.');
     }
   };
 

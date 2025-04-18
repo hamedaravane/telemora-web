@@ -29,6 +29,7 @@ export function useCountries() {
   });
 }
 
+/* TODO: Hooks like useStatesByCountry(countryId) pass undefined to the query key, which still fires a request */
 export function useStatesByCountry(countryId?: number) {
   return useQuery<CanonicalLocation[]>({
     queryKey: ['states', countryId],
