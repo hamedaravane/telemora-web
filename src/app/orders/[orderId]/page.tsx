@@ -2,21 +2,22 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { Button, Card, CardBody, CardFooter, Chip, Spinner } from '@heroui/react';
+import { Button, Card, CardBody, CardFooter, Spinner } from '@heroui/react';
 import { useOrderDetails } from '@/libs/orders/orders-api';
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
 import ErrorPage from '@/components/shared/errorPage';
-import { PaymentStatus } from '@/libs/payments/types';
 import OrderItemPreviewCard from '@/components/orders/order-item-preview';
 import { formatDate, formatRelative } from '@/utils/date';
 import Price from '@/components/shared/price';
+import { OrderStatusChip } from '@/components/orders/order-status-chip';
+import { PaymentStatusChip } from '@/components/payments/payment-status-chip';
 
 export default function OrderDetailsPage() {
-  const { id } = useParams<{ id: string }>();
+  const { orderId } = useParams<{ orderId: string }>();
   const router = useRouter();
 
-  const { data: order, isLoading, error } = useOrderDetails(Number(id));
+  const { data: order, isLoading, error } = useOrderDetails(Number(orderId));
 
   if (isLoading) {
     return (
@@ -34,8 +35,6 @@ export default function OrderDetailsPage() {
     order.status === OrderStatus.PENDING && order.payment?.status !== PaymentStatus.COMPLETED;*/
   const isPendingPayment = true;
 
-  const handleGoToPayment = () => router.push(`/orders/${order.id}/payment`);
-
   return (
     <AppLayout>
       <PageHeader
@@ -43,29 +42,21 @@ export default function OrderDetailsPage() {
         subtitle={`Placed on ${formatDate(order.createdAt)}`}
       />
 
-      {/* Order Status & Payment */}
       <div className="flex items-center justify-between mb-4">
-        <Chip color="primary" variant="flat">
-          Status: {order.status.toUpperCase()}
-        </Chip>
+        <OrderStatusChip status={order.status} />
 
-        {order.payment && (
-          <Chip
-            color={order.payment.status === PaymentStatus.COMPLETED ? 'success' : 'warning'}
-            variant="flat"
-          >
-            Payment: {order.payment.status.toUpperCase()}
-          </Chip>
-        )}
+        {order.payment && <PaymentStatusChip status={order.payment.status} />}
       </div>
 
       {isPendingPayment && (
         <Card>
           <CardBody>
-            <p>This order is pending payment. Complete it to avoid cancellation.</p>
+            <p className="text-sm">
+              This order is pending payment. Complete it to avoid cancellation.
+            </p>
           </CardBody>
           <CardFooter>
-            <Button fullWidth variant="shadow" color="primary" onPress={handleGoToPayment}>
+            <Button fullWidth color="primary">
               Complete Payment
             </Button>
           </CardFooter>

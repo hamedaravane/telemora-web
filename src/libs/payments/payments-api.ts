@@ -1,6 +1,8 @@
 import { CreatePaymentDto, PaymentDetail, PaymentSummary } from '@/libs/payments/types';
 import httpClient from '@/libs/common/http-client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { isDev } from '@/utils';
+import { generateMockPaymentDetail } from '@/libs/payments/mocks';
 
 export async function getPayments() {
   return httpClient.get<PaymentSummary[]>('/payments');
@@ -24,7 +26,7 @@ export function usePayments() {
 export function usePaymentDetails(id: number) {
   return useQuery({
     queryKey: ['payment-detail', id],
-    queryFn: () => getPaymentDetails(id),
+    queryFn: () => (isDev ? generateMockPaymentDetail() : getPaymentDetails(id)),
     enabled: !!id,
   });
 }
