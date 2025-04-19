@@ -10,6 +10,7 @@ import ErrorPage from '@/components/shared/errorPage';
 import { PaymentStatus } from '@/libs/payments/types';
 import OrderItemPreviewCard from '@/components/orders/order-item-preview';
 import { formatDate, formatRelative } from '@/utils/date';
+import Price from '@/components/shared/price';
 
 export default function OrderDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -105,7 +106,7 @@ export default function OrderDetailsPage() {
       <div className="mb-12">
         <h2 className="text-lg font-semibold mb-2">Summary</h2>
         <div className="text-sm text-gray-600 space-y-1">
-          <p>Total Amount: {order.totalAmount} TON</p>
+          <p>Total Amount: {<Price amount={order.totalAmount} />}</p>
           <p>Delivery Date: {formatDate(order.deliveryDate)}</p>
           <p className="text-sm text-gray-500">
             Estimated Delivery {formatRelative(order.shipment?.deliveryEstimate ?? '-')}
