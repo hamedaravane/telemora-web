@@ -1,18 +1,28 @@
 import React from 'react';
 import { OrderItemPreview } from '@/libs/orders/types';
-import ProductPreviewCard from '@/components/products/preview-card';
 import Price from '@/components/shared/price';
+import { Card, CardBody, Chip } from '@heroui/react';
+import Image from 'next/image';
 
 export default function OrderItemPreviewCard({ orderItem }: { orderItem: OrderItemPreview }) {
   return (
-    <div className="border rounded-lg p-3 flex justify-between items-center">
-      <ProductPreviewCard product={orderItem.product} />
-      <div className="text-sm text-end">
-        <p>Qty: {orderItem.quantity}</p>
-        <p>
-          Total: <Price amount={orderItem.totalPrice} />
-        </p>
-      </div>
-    </div>
+    <Card>
+      <CardBody className="flex flex-row justify-between text-sm">
+        <div className="flex gap-x-4">
+          <Image
+            src={orderItem.product.image[0].url}
+            alt={orderItem.product.name}
+            width={64}
+            height={64}
+            className="aspect-square rounded"
+          />
+          <div className="space-y-4">
+            <strong>{orderItem.product.name}</strong>
+            <Price amount={orderItem.totalPrice} />
+          </div>
+        </div>
+        <Chip size="sm">x{orderItem.quantity}</Chip>
+      </CardBody>
+    </Card>
   );
 }

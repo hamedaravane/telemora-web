@@ -39,9 +39,9 @@ export default function OrdersPage() {
           <Button onPress={goToMarket}>Go to Marketplace</Button>
         </div>
       ) : (
-        <div className="space-y-4 pb-10">
+        <div className="flex flex-col gap-y-2 pb-10">
           {orders.map((order) => (
-            <OrderSummaryCard key={order.id} order={order} />
+            <OrderSummaryCard key={order.id} order={order} href={`/orders/${order.id}`} />
           ))}
         </div>
       )}
