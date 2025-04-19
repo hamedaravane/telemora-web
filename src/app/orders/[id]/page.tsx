@@ -1,82 +1,118 @@
-/**
- * Order Details Page Component
- *
- * This file is responsible for implementing the **Order Details Page**, where users
- * review their orders and proceed with the **payment process**. This is a **business-critical page**,
- * as this is where we **generate revenue** through **sales commissions**.
- *
- * ## Purpose
- * The primary goal of this page is to **encourage users to complete their payment**
- * while providing clear information about the order's status.
- *
- * ## Order Data Structure
- * ```ts
- * export interface Order {
- *   id: number;
- *   buyer: User;
- *   stores: Store;
- *   status: OrderStatus;
- *   items: OrderItem[];
- *   shipment: OrderShipment;
- *   payment: Payment;
- *   totalAmount: number;
- *   deliveryDate: Date;
- *   createdAt: Date;
- *   updatedAt: Date;
- * }
- *
- * export interface Payment {
- *   id: string;
- *   paymentId: string;
- *   order: Order;
- *   user: User;
- *   amount: string;
- *   status: PaymentStatus;
- *   transactionHash: string;
- *   fromWalletAddress: string;
- *   toWalletAddress: string;
- *   gasFee: string;
- *   commission: string;
- * }
- * ```
- *
- * ## Payment Flow
- * - If an order **has not been paid**, display a **prominent "Pay Now" button**.
- * - The user is redirected to **Ton Wallet** to approve the transaction.
- * - The payment request is sent to the server:
- *
- * ```ts
- * export interface CreatePaymentDto {
- *   orderId?: string;
- *   amount: string;
- *   fromWalletAddress?: string;
- *   toWalletAddress?: string;
- *   transactionHash?: string;
- *   gasFee?: string;
- *   commission?: string;
- * }
- * ```
- * - The server verifies the payment, updates the order, and confirms the transaction.
- *
- * ## Order Status Tracking
- * - Display **color-coded status badges** for order processing.
- * - If the order **is being shipped**, show:
- *   - **Courier service name** & **tracking number**.
- *   - **Estimated delivery date**.
- *   - A clickable **tracking link**.
- *
- * ## UI/UX Guidelines
- * - Use **HeroUI components** for status indicators, buttons, and modals.
- * - Implement **TailwindCSS** for custom UI elements.
- * - Ensure **mobile responsiveness** with a clean checkout experience.
- * - Provide **real-time updates** on payment and order processing.
- *
- * ## Additional Enhancements
- * - **Push Notifications:** Alert users if payment is pending for too long.
- * - **Progress Tracker:** Display a visual timeline of order status.
- * - **Auto-refreshing Status:** Fetch updated payment status dynamically.
- *
- * TODO: Implement a seamless checkout page that ensures users complete their payment efficiently.
- */
+'use client';
 
-export default function OrderDetailsPage() {}
+import { useParams, useRouter } from 'next/navigation';
+import React from 'react';
+import { Button, Chip, Spinner } from '@heroui/react';
+import { useOrderDetails } from '@/libs/orders/orders-api';
+import AppLayout from '@/components/shared/app-layout';
+import { PageHeader } from '@/components/shared/page-header';
+import ErrorPage from '@/components/shared/errorPage';
+import { OrderStatus } from '@/libs/orders/types';
+import { PaymentStatus } from '@/libs/payments/types';
+import OrderItemPreviewCard from '@/components/orders/order-item-preview';
+import { formatDate, formatRelative } from '@/utils/date';
+
+export default function OrderDetailsPage() {
+  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
+
+  const { data: order, isLoading, error } = useOrderDetails(Number(id));
+
+  if (isLoading) {
+    return (
+      <AppLayout>
+        <div className="h-screen flex items-center justify-center">
+          <Spinner label="Loading order..." />
+        </div>
+      </AppLayout>
+    );
+  }
+
+  if (error || !order) return <ErrorPage />;
+
+  const isPendingPayment =
+    order.status === OrderStatus.PENDING && order.payment?.status !== PaymentStatus.COMPLETED;
+
+  const handleGoToPayment = () => router.push(`/orders/${order.id}/payment`);
+
+  return (
+    <AppLayout>
+      <PageHeader
+        title={`Order #${order.id}`}
+        subtitle={`Placed on ${formatDate(order.createdAt)}`}
+      />
+
+      {/* Order Status & Payment */}
+      <div className="flex items-center justify-between mb-4">
+        <Chip color="primary" variant="flat">
+          Status: {order.status.toUpperCase()}
+        </Chip>
+
+        {order.payment && (
+          <Chip
+            color={order.payment.status === PaymentStatus.COMPLETED ? 'success' : 'warning'}
+            variant="flat"
+          >
+            Payment: {order.payment.status.toUpperCase()}
+          </Chip>
+        )}
+      </div>
+
+      {/* ⚠️ CTA to Pay */}
+      {isPendingPayment && (
+        <div className="bg-yellow-100 border border-yellow-300 p-4 rounded-xl mb-6 text-sm">
+          <p className="mb-2">This order is pending payment. Complete it to avoid cancellation.</p>
+          <Button fullWidth onPress={handleGoToPayment}>
+            Complete Payment
+          </Button>
+        </div>
+      )}
+
+      {/* Items */}
+      <div className="space-y-4 mb-6">
+        <h2 className="text-lg font-semibold">Items</h2>
+        {order.items.map((item) => (
+          <OrderItemPreviewCard orderItem={item} key={item.product.id} />
+        ))}
+      </div>
+
+      {/* Shipping Info */}
+      {order.shipment && (
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold mb-2">Shipment</h2>
+          <div className="text-sm text-gray-600 space-y-1">
+            <p>Carrier: {order.shipment.courierService}</p>
+            <p>Tracking #: {order.shipment.trackingNumber}</p>
+            <p>Estimated Delivery: {formatDate(order.shipment.deliveryEstimate)}</p>
+            {order.shipment.carrierTrackingUrl && (
+              <a
+                href={order.shipment.carrierTrackingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline text-sm"
+              >
+                Track your shipment
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Order Summary */}
+      <div className="mb-12">
+        <h2 className="text-lg font-semibold mb-2">Summary</h2>
+        <div className="text-sm text-gray-600 space-y-1">
+          <p>Total Amount: {order.totalAmount} TON</p>
+          <p>Delivery Date: {formatDate(order.deliveryDate)}</p>
+          <p className="text-sm text-gray-500">
+            Estimated Delivery {formatRelative(order.shipment?.deliveryEstimate ?? '-')}
+          </p>
+        </div>
+      </div>
+
+      <Button variant="bordered" fullWidth onPress={() => router.push('/orders')}>
+        Back to Orders
+      </Button>
+    </AppLayout>
+  );
+}
