@@ -2,12 +2,11 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { Button, Chip, Spinner } from '@heroui/react';
+import { Button, Card, CardBody, CardFooter, Chip, Spinner } from '@heroui/react';
 import { useOrderDetails } from '@/libs/orders/orders-api';
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
 import ErrorPage from '@/components/shared/errorPage';
-import { OrderStatus } from '@/libs/orders/types';
 import { PaymentStatus } from '@/libs/payments/types';
 import OrderItemPreviewCard from '@/components/orders/order-item-preview';
 import { formatDate, formatRelative } from '@/utils/date';
@@ -30,8 +29,9 @@ export default function OrderDetailsPage() {
 
   if (error || !order) return <ErrorPage />;
 
-  const isPendingPayment =
-    order.status === OrderStatus.PENDING && order.payment?.status !== PaymentStatus.COMPLETED;
+  /*const isPendingPayment =
+    order.status === OrderStatus.PENDING && order.payment?.status !== PaymentStatus.COMPLETED;*/
+  const isPendingPayment = true;
 
   const handleGoToPayment = () => router.push(`/orders/${order.id}/payment`);
 
@@ -60,16 +60,20 @@ export default function OrderDetailsPage() {
 
       {/* ⚠️ CTA to Pay */}
       {isPendingPayment && (
-        <div className="bg-yellow-100 border border-yellow-300 p-4 rounded-xl mb-6 text-sm">
-          <p className="mb-2">This order is pending payment. Complete it to avoid cancellation.</p>
-          <Button fullWidth onPress={handleGoToPayment}>
-            Complete Payment
-          </Button>
-        </div>
+        <Card>
+          <CardBody>
+            <p>This order is pending payment. Complete it to avoid cancellation.</p>
+          </CardBody>
+          <CardFooter>
+            <Button fullWidth variant="shadow" color="primary" onPress={handleGoToPayment}>
+              Complete Payment
+            </Button>
+          </CardFooter>
+        </Card>
       )}
 
       {/* Items */}
-      <div className="space-y-4 mb-6">
+      <div className="space-y-4 my-6">
         <h2 className="text-lg font-semibold">Items</h2>
         {order.items.map((item) => (
           <OrderItemPreviewCard orderItem={item} key={item.product.id} />
