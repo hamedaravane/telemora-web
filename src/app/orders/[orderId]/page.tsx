@@ -12,6 +12,7 @@ import { formatDate, formatRelative } from '@/utils/date';
 import Price from '@/components/shared/price';
 import { OrderStatusChip } from '@/components/orders/order-status-chip';
 import { PaymentStatusChip } from '@/components/payments/payment-status-chip';
+import { TonPaymentButton } from '@/components/payments/ton-payment-button';
 
 export default function OrderDetailsPage() {
   const { orderId } = useParams<{ orderId: string }>();
@@ -56,9 +57,7 @@ export default function OrderDetailsPage() {
             </p>
           </CardBody>
           <CardFooter>
-            <Button fullWidth color="primary">
-              Complete Payment
-            </Button>
+            <TonPaymentButton amountTon={order.totalAmount} toAddress="" />
           </CardFooter>
         </Card>
       )}
