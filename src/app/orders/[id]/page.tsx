@@ -58,7 +58,6 @@ export default function OrderDetailsPage() {
         )}
       </div>
 
-      {/* ⚠️ CTA to Pay */}
       {isPendingPayment && (
         <Card>
           <CardBody>
