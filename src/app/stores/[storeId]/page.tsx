@@ -15,12 +15,10 @@ import ErrorPage from '@/components/shared/errorPage';
 import toast from 'react-hot-toast';
 
 export default function StoreDetailsPage() {
-  const { storeId } = useParams();
+  const { storeId } = useParams<{ storeId: string }>();
   const router = useRouter();
   const user = useUser();
-
-  const { data: store, isLoading, error } = useStoreDetails(+storeId);
-
+  const { data: store, isLoading, error } = useStoreDetails(storeId);
   const isOwner = user && store && store.owner.id === user.id;
 
   const handleShare = async () => {
