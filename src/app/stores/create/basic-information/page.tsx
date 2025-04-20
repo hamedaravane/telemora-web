@@ -11,7 +11,7 @@ import { TonConnectButton, useTonAddress } from '@tonconnect/ui-react';
 export default function CreateStoreBasicInformation() {
   const { storeData, updateStoreData } = useStoreCreation();
   const router = useRouter();
-  const [errors, setErrors] = useState<{ name?: string }>({});
+  const [errors, setErrors] = useState<{ name?: string; wallet?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const rawAddress = useTonAddress(false);
 
@@ -23,9 +23,9 @@ export default function CreateStoreBasicInformation() {
   }, [rawAddress, updateStoreData]);
 
   const validateForm = () => {
-    const newErrors: { name?: string } = {};
+    const newErrors: typeof errors = {};
     if (!storeData.name.trim()) newErrors.name = 'Store Name is required.';
-    if (!rawAddress) newErrors.name = 'Please connect your wallet.';
+    if (!rawAddress) newErrors.wallet = 'Please connect your TON wallet.';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -72,6 +72,7 @@ export default function CreateStoreBasicInformation() {
       </p>
 
       <TonConnectButton />
+      {errors.wallet && <p className="text-sm text-red-500 mt-2">{errors.wallet}</p>}
 
       <div className="mt-6 flex gap-x-2 justify-between">
         <Button
