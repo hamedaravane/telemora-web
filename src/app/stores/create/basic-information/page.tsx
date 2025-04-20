@@ -17,7 +17,10 @@ export default function CreateStoreBasicInformation() {
 
   useEffect(() => {
     document.getElementById('store-name')?.focus();
-  }, []);
+    updateStoreData({
+      walletAddress: rawAddress,
+    });
+  }, [rawAddress, updateStoreData]);
 
   const validateForm = () => {
     const newErrors: { name?: string } = {};
