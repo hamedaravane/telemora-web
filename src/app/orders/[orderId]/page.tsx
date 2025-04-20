@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { Button, Card, CardBody, CardFooter, Spinner } from '@heroui/react';
+import { Button, Card, CardBody, CardFooter, Divider, Spinner } from '@heroui/react';
 import { useOrderDetails } from '@/libs/orders/orders-api';
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
@@ -13,6 +13,7 @@ import Price from '@/components/shared/price';
 import { OrderStatusChip } from '@/components/orders/order-status-chip';
 import { PaymentStatusChip } from '@/components/payments/payment-status-chip';
 import { TonPaymentButton } from '@/components/payments/ton-payment-button';
+import { OrderShipmentCard } from '@/components/orders/order-shipment-card';
 
 export default function OrderDetailsPage() {
   const { orderId } = useParams<{ orderId: string }>();
@@ -63,43 +64,33 @@ export default function OrderDetailsPage() {
         </Card>
       )}
 
+      <Divider className="my-4" />
+
       {/* Items */}
-      <div className="space-y-4 my-6">
+      <div className="space-y-4">
         <h2 className="text-lg font-semibold">Items</h2>
         {order.items.map((item) => (
           <OrderItemPreviewCard orderItem={item} key={item.product.id} />
         ))}
       </div>
 
+      <Divider className="my-4" />
+
       {/* Shipping Info */}
-      {order.shipment && (
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">Shipment</h2>
-          <div className="text-sm text-gray-600 space-y-1">
-            <p>Carrier: {order.shipment.courierService}</p>
-            <p>Tracking #: {order.shipment.trackingNumber}</p>
-            <p>Estimated Delivery: {formatDate(order.shipment.deliveryEstimate)}</p>
-            {order.shipment.carrierTrackingUrl && (
-              <a
-                href={order.shipment.carrierTrackingUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 underline text-sm"
-              >
-                Track your shipment
-              </a>
-            )}
-          </div>
-        </div>
-      )}
+      {order.shipment && <OrderShipmentCard shipment={order.shipment} />}
+
+      <Divider className="my-4" />
 
       {/* Order Summary */}
       <div className="mb-12">
         <h2 className="text-lg font-semibold mb-2">Summary</h2>
-        <div className="text-sm text-gray-600 space-y-1">
-          <p>Total Amount: {<Price amount={order.totalAmount} />}</p>
+        <div className="text-sm space-y-1">
+          <div className="flex gap-x-2">
+            <span>Total Amount: </span>
+            <Price amount={order.totalAmount} />
+          </div>
           <p>Delivery Date: {formatDate(order.deliveryDate)}</p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm">
             Estimated Delivery {formatRelative(order.shipment?.deliveryEstimate ?? '-')}
           </p>
         </div>
