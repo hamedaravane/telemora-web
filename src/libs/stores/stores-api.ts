@@ -16,7 +16,7 @@ async function getMyStores() {
   return httpClient.get<StoreSummary[]>('/stores/my');
 }
 
-async function getStoreDetails(storeId: number) {
+async function getStoreDetails(storeId: string) {
   return httpClient.get<StoreDetail>(`/stores/${storeId}`);
 }
 
@@ -62,7 +62,7 @@ export function useMyStores() {
   });
 }
 
-export function useStoreDetails(storeId: number) {
+export function useStoreDetails(storeId: string) {
   return useQuery<StoreDetail>({
     queryKey: ['stores', storeId],
     queryFn: () => (isDev ? generateMockStoreDetail() : getStoreDetails(storeId)),
