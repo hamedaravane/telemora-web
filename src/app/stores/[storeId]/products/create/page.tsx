@@ -2,7 +2,7 @@
 
 import { Button, Input, Select, SelectItem, Textarea } from '@heroui/react';
 import React, { useState } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FaPlus, FaTrash } from 'react-icons/fa6';
@@ -127,14 +127,28 @@ export default function CreateProductPage() {
           <img src={previewUrl} alt="Preview" className="w-full rounded-xl border mt-2" />
         )}
 
-        {/* TODO: The <Select> that shows productType is not registered with react-hook-form and lacks onSelectionChange
-              watch('productType') always returns the default,
-              so the UI can switch to “Digital” but the submitted payload remains “physical”*/}
-        <Select label="Product Type" selectedKeys={new Set([productType])}>
-          {Object.entries(ProductType).map(([key, value]) => (
-            <SelectItem key={key}>{value}</SelectItem>
-          ))}
-        </Select>
+        <Controller
+          name="productType"
+          control={control}
+          render={({ field }) => (
+            <Select
+              label="Product Type"
+              selectedKeys={new Set([field.value])}
+              onSelectionChange={(keys) => {
+                const selected = Array.from(keys)[0] as ProductType;
+                field.onChange(selected);
+              }}
+              isInvalid={!!errors.productType}
+              errorMessage={errors.productType?.message}
+            >
+              {Object.entries(ProductType).map(([key, value]) => (
+                <SelectItem key={value} aria-label={key}>
+                  {value}
+                </SelectItem>
+              ))}
+            </Select>
+          )}
+        />
 
         {productType === 'physical' && (
           <Input
