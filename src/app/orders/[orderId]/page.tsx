@@ -57,7 +57,8 @@ export default function OrderDetailsPage() {
             </p>
           </CardBody>
           <CardFooter>
-            <TonPaymentButton amountTon={order.totalAmount} toAddress="" />
+            {/* TODO: I should figure out how and from where should provide seller address */}
+            <TonPaymentButton amountTon={order.totalAmount} sellerAddress="TODO" />
           </CardFooter>
         </Card>
       )}
