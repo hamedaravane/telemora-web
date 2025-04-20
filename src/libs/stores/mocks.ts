@@ -15,6 +15,7 @@ export async function generateMockStorePreview(): Promise<StorePreview> {
     },
     reputation: faker.number.float({ min: 1, max: 5, fractionDigits: 1 }),
     isActive: true,
+    walletAddress: faker.finance.litecoinAddress(),
   };
 }
 
