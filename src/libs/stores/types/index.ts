@@ -10,6 +10,7 @@ export interface StorePreview {
   logo?: Media;
   reputation: number;
   isActive: boolean;
+  walletAddress: string;
 }
 
 export interface StoreSummary extends StorePreview {
@@ -33,6 +34,7 @@ export interface CreateStoreBasicDto {
   description: string;
   contactNumber?: string;
   email?: string;
+  walletAddress: string;
 }
 
 export interface CreateAddressDto {

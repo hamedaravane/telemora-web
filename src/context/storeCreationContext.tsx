@@ -36,6 +36,7 @@ const defaultStoreData: StoreCreationState = {
   description: '',
   contactNumber: '',
   email: '',
+  walletAddress: '',
   countryId: 0,
   stateId: undefined,
   cityId: undefined,
@@ -72,6 +73,7 @@ export const StoreCreationProvider = ({ children }: { children: React.ReactNode 
         description: storeData.description,
         contactNumber: storeData.contactNumber,
         email: storeData.email,
+        walletAddress: storeData.walletAddress,
       });
 
       if (storeData.countryId && storeData.streetLine1) {
