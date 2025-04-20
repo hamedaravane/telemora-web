@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { Button, Card, CardBody, CardFooter, Divider, Spinner } from '@heroui/react';
+import { Alert, Button, Card, CardBody, CardFooter, Divider, Spinner } from '@heroui/react';
 import { useOrderDetails } from '@/libs/orders/orders-api';
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
@@ -14,6 +14,8 @@ import { OrderStatusChip } from '@/components/orders/order-status-chip';
 import { PaymentStatusChip } from '@/components/payments/payment-status-chip';
 import { TonPaymentButton } from '@/components/payments/ton-payment-button';
 import { OrderShipmentCard } from '@/components/orders/order-shipment-card';
+import { PaymentStatus } from '@/libs/payments/types';
+import { OrderStatus } from '@/libs/orders/types';
 
 export default function OrderDetailsPage() {
   const { orderId } = useParams<{ orderId: string }>();
@@ -33,9 +35,8 @@ export default function OrderDetailsPage() {
 
   if (error || !order) return <ErrorPage />;
 
-  /*const isPendingPayment =
-    order.status === OrderStatus.PENDING && order.payment?.status !== PaymentStatus.COMPLETED;*/
-  const isPendingPayment = true;
+  const isPendingPayment =
+    order.status === OrderStatus.PENDING && order.payment?.status !== PaymentStatus.COMPLETED;
 
   return (
     <AppLayout>
@@ -53,9 +54,10 @@ export default function OrderDetailsPage() {
       {isPendingPayment && (
         <Card>
           <CardBody>
-            <p className="text-sm">
-              This order is pending payment. Complete it to avoid cancellation.
-            </p>
+            <Alert
+              color="warning"
+              description="This order is pending payment. Complete it to avoid cancellation."
+            />
           </CardBody>
           <CardFooter>
             {/* TODO: I should figure out how and from where should provide seller address */}
