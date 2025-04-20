@@ -6,14 +6,14 @@ import { Button, Input, Spinner } from '@heroui/react';
 import { useStoreCreation } from '@/context/storeCreationContext';
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
-import { TonConnectButton, useTonWallet } from '@tonconnect/ui-react';
+import { TonConnectButton, useTonAddress } from '@tonconnect/ui-react';
 
 export default function CreateStoreBasicInformation() {
   const { storeData, updateStoreData } = useStoreCreation();
   const router = useRouter();
   const [errors, setErrors] = useState<{ name?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
-  const wallet = useTonWallet();
+  const rawAddress = useTonAddress(false);
 
   useEffect(() => {
     document.getElementById('store-name')?.focus();
@@ -22,7 +22,7 @@ export default function CreateStoreBasicInformation() {
   const validateForm = () => {
     const newErrors: { name?: string } = {};
     if (!storeData.name.trim()) newErrors.name = 'Store Name is required.';
-    if (!wallet?.account.address) newErrors.name = 'Please connect your wallet.';
+    if (!rawAddress) newErrors.name = 'Please connect your wallet.';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
