@@ -8,6 +8,7 @@ import {
   CreateStoreLogoDto,
   CreateStoreTagsDto,
   CreateStoreWorkingHoursDto,
+  WorkingHour,
 } from '@/libs/stores/types';
 import {
   createBasicInfo,
@@ -46,7 +47,7 @@ const defaultStoreData: StoreCreationState = {
   latitude: undefined,
   longitude: undefined,
   tags: [],
-  workingHours: {},
+  workingHours: {} as Record<string, WorkingHour>,
   logoFile: undefined,
 };
 
