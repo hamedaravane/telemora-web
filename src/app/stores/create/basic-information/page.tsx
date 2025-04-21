@@ -14,13 +14,14 @@ export default function CreateStoreBasicInformation() {
   const [errors, setErrors] = useState<{ name?: string; wallet?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const rawAddress = useTonAddress(false);
+  const userFriendlyAddress = useTonAddress();
 
   useEffect(() => {
     document.getElementById('store-name')?.focus();
-    updateStoreData({
-      walletAddress: rawAddress,
-    });
-  }, [rawAddress, updateStoreData]);
+    if (rawAddress && rawAddress !== storeData.walletAddress) {
+      updateStoreData({ walletAddress: rawAddress });
+    }
+  }, [rawAddress, storeData.walletAddress, updateStoreData]);
 
   const validateForm = () => {
     const newErrors: typeof errors = {};
@@ -73,6 +74,9 @@ export default function CreateStoreBasicInformation() {
 
       <TonConnectButton />
       {errors.wallet && <p className="text-sm text-red-500 mt-2">{errors.wallet}</p>}
+      {userFriendlyAddress && (
+        <p className="text-sm text-green-600 mt-2">Connected wallet: {userFriendlyAddress}</p>
+      )}
 
       <div className="mt-6 flex gap-x-2 justify-between">
         <Button
