@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { environment } from '@environments';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: environment.apiUrl,
   headers: {
     'Content-Type': 'application/json',
   },
