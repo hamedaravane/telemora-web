@@ -64,4 +64,6 @@ The API base URL is set via the `NEXT_PUBLIC_API_URL` environment variable.
 
 ## License
 
-This project is licensed under the **MIT License**.
+**This is NOT open source.**  
+All rights to this code are reserved by Hamed Arghavan.  
+This repository is shared for collaboration purposes only. Unauthorized use or reproduction is strictly prohibited.
