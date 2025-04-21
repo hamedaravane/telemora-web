@@ -11,6 +11,15 @@ product management, order processing, and payment handling.
 
 ---
 
+### Required Environment Variables
+
+| Variable                             | Example Value              | Description                         |
+|--------------------------------------|----------------------------|-------------------------------------|
+| `NEXT_PUBLIC_API_URL`                | `https://api.telemora.com` | Base URL for API requests           |
+| `NEXT_PUBLIC_TELEMORA_ADDRESS`       | `EQabc...`                 | TON wallet for marketplace treasury |
+| `NEXT_PUBLIC_SMART_CONTRACT_ADDRESS` | `EQdef...`                 | TON smart contract payment address  |
+| `NEXT_PUBLIC_COMMISSION_PERCENTAGE`  | `2.5`                      | Platform fee as a percentage        |
+
 ## Features
 
 - **User Authentication** via Telegram
