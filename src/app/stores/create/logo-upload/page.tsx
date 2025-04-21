@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Spinner } from '@heroui/react';
 import Image from 'next/image';
@@ -73,6 +73,7 @@ export default function CreateStoreLogoUpload() {
   };
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
     const file = event.target.files?.[0];
 
     if (!file) return;
@@ -102,6 +103,12 @@ export default function CreateStoreLogoUpload() {
       toast.error('Failed to process the image. Try again.');
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
   const handleRemoveImage = () => {
     updateStoreData({ logoFile: undefined });
