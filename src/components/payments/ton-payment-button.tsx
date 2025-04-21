@@ -5,6 +5,7 @@ import { Button } from '@heroui/react';
 import toast from 'react-hot-toast';
 import { useCreatePayment } from '@/libs/payments/payments-api';
 import { buildMarketplaceTransaction } from '@/libs/payments/utils';
+import { environment } from '@environments';
 
 interface TonPaymentButtonProps {
   amountTon: number;
@@ -17,9 +18,9 @@ export function TonPaymentButton({ amountTon, sellerAddress, orderId }: TonPayme
   const wallet = useTonWallet();
   const userAddress = useTonAddress(false);
   const { mutateAsync: createPayment } = useCreatePayment();
-  const marketplaceAddress = process.env.TELEMORA_ADDRESS || 'EQyyyy...';
-  const smartContractAddress = process.env.SMART_CONTRACT_ADDRESS || 'EQzzzz...';
-  const commissionPercent = process.env.COMMISSION_PERCENTAGE || '2.5';
+  const marketplaceAddress = environment.apiUrl;
+  const smartContractAddress = environment.smartContractAddress;
+  const commissionPercent = environment.commissionPercent;
 
   const handlePay = async () => {
     if (!wallet) {
