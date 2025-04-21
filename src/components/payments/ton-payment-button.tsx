@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useCreatePayment } from '@/libs/payments/payments-api';
 import { buildMarketplaceTransaction } from '@/libs/payments/utils';
 import { environment } from '@environments';
+import { Cell } from '@ton/core';
 
 interface TonPaymentButtonProps {
   amountTon: number;
@@ -41,12 +42,14 @@ export function TonPaymentButton({ amountTon, sellerAddress, orderId }: TonPayme
       });
       const { boc } = await tonConnectUI.sendTransaction(transactionRequest);
 
+      const hash = Cell.fromBoc(Buffer.from(boc, 'base64'))[0].hash().toString('hex');
+
       await createPayment({
         orderId,
         amount: nanoAmount,
         fromWalletAddress: userAddress,
         toWalletAddress: sellerAddress,
-        boc,
+        transactionHash: hash,
       });
 
       toast.success('Payment sent & saved!');

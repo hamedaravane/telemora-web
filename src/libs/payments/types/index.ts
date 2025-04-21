@@ -31,7 +31,7 @@ export interface CreatePaymentDto {
   amount: string;
   fromWalletAddress?: string;
   toWalletAddress?: string;
-  boc: string;
+  transactionHash: string;
 }
 
 export class UpdatePaymentDto {
