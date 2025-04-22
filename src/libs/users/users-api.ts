@@ -5,7 +5,7 @@ import { isDev } from '@/utils';
 import { generateMockUserPrivateProfile } from '@/libs/users/mocks';
 
 async function sendTelegramInitData(initData: string) {
-  return httpClient.post<UserPrivateProfile>(`/users/init-data`, { initData });
+  return httpClient.post<UserPrivateProfile>(`/users/telegram-auth`, { initData });
 }
 
 async function updateProfile(telegramId: number | string, data: UpdateProfileDto) {
