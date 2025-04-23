@@ -4,8 +4,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { isDev } from '@/utils';
 import { generateMockUserPrivateProfile } from '@/libs/users/mocks';
 
-async function sendTelegramInitData(initData: string) {
-  return httpClient.post<UserPrivateProfile>(`/users/telegram-auth`, { initData });
+async function sendTelegramInitData() {
+  return httpClient.get<UserPrivateProfile>('/users/login');
 }
 
 async function updateProfile(telegramId: number | string, data: UpdateProfileDto) {
@@ -20,11 +20,10 @@ async function updateContactLocation(telegramId: number | string, data: UpdateCo
   return httpClient.patch<UserPrivateProfile>(`/users/contact-location/${telegramId}`, data);
 }
 
-export function useTelegramAuth(initData?: string) {
+export function useTelegramAuth() {
   return useQuery({
-    queryKey: ['me', initData!],
-    queryFn: () => (isDev ? generateMockUserPrivateProfile() : sendTelegramInitData(initData!)),
-    enabled: !!initData,
+    queryKey: ['me'],
+    queryFn: () => (isDev ? generateMockUserPrivateProfile() : sendTelegramInitData()),
     staleTime: 1000 * 60 * 5,
     retry: false,
   });
