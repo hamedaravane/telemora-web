@@ -11,6 +11,7 @@ const UserContext = createContext<UserPrivateProfile | null>(null);
 
 export function UserProvider({ children }: PropsWithChildren) {
   const initData = retrieveRawLaunchParams();
+  localStorage.setItem('telegram-init-data', initData);
   const { data: user, isLoading, isError, refetch } = useTelegramAuth(initData);
 
   if (isLoading) {
