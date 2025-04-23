@@ -6,6 +6,7 @@ import {
   CreateStoreWorkingHoursDto,
   StoreDetail,
   StoreSummary,
+  UpdateStoreDto,
 } from '@/libs/stores/types';
 import httpClient from '@/libs/common/http-client';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -32,24 +33,28 @@ export async function createBasicInfo(data: CreateStoreBasicDto) {
   return httpClient.post<StoreDetail>('/stores/create/basic', data);
 }
 
-export async function updateStoreLocation(data: CreateAddressDto) {
-  return httpClient.post<StoreDetail>('/stores/create/location', data);
+export async function updateStoreAddress(storeId: string, data: CreateAddressDto) {
+  return httpClient.patch<StoreDetail>(`/stores/${storeId}/address`, data);
 }
 
-export async function selectStoreTags(data: CreateStoreTagsDto) {
-  return httpClient.post<StoreDetail>('/stores/create/tags', data);
+export async function selectStoreTags(storeId: string, data: CreateStoreTagsDto) {
+  return httpClient.patch<StoreDetail>(`/stores/${storeId}/tags`, data);
 }
 
-export async function setStoreWorkingHours(data: CreateStoreWorkingHoursDto) {
-  return httpClient.post<StoreDetail>('/stores/create/working_hour', data);
+export async function setStoreWorkingHours(storeId: string, data: CreateStoreWorkingHoursDto) {
+  return httpClient.patch<StoreDetail>(`/stores/${storeId}/working_hours`, data);
 }
 
-export async function uploadStoreLogo(data: CreateStoreLogoDto) {
+export async function updateStore(storeId: string, data: UpdateStoreDto): Promise<StoreDetail> {
+  return httpClient.patch<StoreDetail>(`/stores/${storeId}`, data);
+}
+
+export async function uploadStoreLogo(storeId: string, data: CreateStoreLogoDto) {
   const formData = new FormData();
   if (data.logoFile) {
     const fileBlob = new Blob([data.logoFile], { type: 'image/*' });
     formData.append('logo', fileBlob);
-    return httpClient.post<StoreDetail>('/stores/create/logo', formData, {
+    return httpClient.post<StoreDetail>(`/stores/${storeId}/logo`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   } else throw new Error('No file provided');
@@ -90,30 +95,30 @@ export function useCreateBasicInfo() {
   });
 }
 
-export function useUpdateStoreLocation() {
+export function useUpdateStoreLocation(storeId: string) {
   return useMutation({
     mutationFn: (data: CreateAddressDto) =>
-      isDev ? generateMockStoreDetail() : updateStoreLocation(data),
+      isDev ? generateMockStoreDetail() : updateStoreAddress(storeId, data),
   });
 }
 
-export function useSelectStoreTags() {
+export function useSelectStoreTags(storeId: string) {
   return useMutation({
     mutationFn: (data: CreateStoreTagsDto) =>
-      isDev ? generateMockStoreDetail() : selectStoreTags(data),
+      isDev ? generateMockStoreDetail() : selectStoreTags(storeId, data),
   });
 }
 
-export function useSetStoreWorkingHours() {
+export function useSetStoreWorkingHours(storeId: string) {
   return useMutation({
     mutationFn: (data: CreateStoreWorkingHoursDto) =>
-      isDev ? generateMockStoreDetail() : setStoreWorkingHours(data),
+      isDev ? generateMockStoreDetail() : setStoreWorkingHours(storeId, data),
   });
 }
 
-export function useUploadStoreLogo() {
+export function useUploadStoreLogo(storeId: string) {
   return useMutation({
     mutationFn: (data: CreateStoreLogoDto) =>
-      isDev ? generateMockStoreDetail() : uploadStoreLogo(data),
+      isDev ? generateMockStoreDetail() : uploadStoreLogo(storeId, data),
   });
 }

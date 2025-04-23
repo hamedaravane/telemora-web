@@ -14,7 +14,7 @@ import {
   createBasicInfo,
   selectStoreTags,
   setStoreWorkingHours,
-  updateStoreLocation,
+  updateStoreAddress,
   uploadStoreLogo,
 } from '@/libs/stores/stores-api';
 
@@ -78,7 +78,7 @@ export const StoreCreationProvider = ({ children }: { children: React.ReactNode 
       });
 
       if (storeData.countryId && storeData.streetLine1) {
-        await updateStoreLocation({
+        await updateStoreAddress({
           countryId: storeData.countryId,
           stateId: storeData.stateId,
           cityId: storeData.cityId,

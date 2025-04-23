@@ -64,3 +64,7 @@ export interface CreateStoreWorkingHoursDto {
 export interface CreateStoreLogoDto {
   logoFile?: File;
 }
+
+export type UpdateStoreDto = Partial<
+  CreateStoreBasicDto | CreateAddressDto | CreateStoreTagsDto | CreateStoreWorkingHoursDto
+>;
