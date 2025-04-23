@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { retrieveRawInitData } from '@telegram-apps/sdk-react';
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -9,9 +10,9 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
-    const telegramInitData = localStorage.getItem('telegram-init-data');
-    if (telegramInitData) {
-      config.headers['x-telegram-init-data'] = telegramInitData;
+    const rawInitData = retrieveRawInitData();
+    if (rawInitData) {
+      config.headers['Authorization'] = `tma ${rawInitData}`;
     }
   }
   return config;
