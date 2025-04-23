@@ -2,7 +2,6 @@
 
 import React, { createContext, type PropsWithChildren, useContext } from 'react';
 import { UserPrivateProfile } from '@/libs/users/types';
-import { retrieveRawInitData } from '@telegram-apps/sdk-react';
 import { useTelegramAuth } from '@/libs/users/users-api';
 import ErrorPage from '@/components/shared/errorPage';
 import SplashScreen from '@/components/shared/splash-screen';
@@ -10,9 +9,7 @@ import SplashScreen from '@/components/shared/splash-screen';
 const UserContext = createContext<UserPrivateProfile | null>(null);
 
 export function UserProvider({ children }: PropsWithChildren) {
-  const initData = retrieveRawInitData();
-  localStorage.setItem('telegram-init-data', initData!);
-  const { data: user, isLoading, isError, refetch } = useTelegramAuth(initData);
+  const { data: user, isLoading, isError, refetch } = useTelegramAuth();
 
   if (isLoading) {
     return <SplashScreen />;
