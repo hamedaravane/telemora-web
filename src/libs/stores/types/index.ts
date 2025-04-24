@@ -2,6 +2,7 @@ import { UserSummary } from '@/libs/users/types';
 import { Media } from '../../common/types';
 import { Address } from '@/libs/location/types';
 import { ProductPreview } from '@/libs/products/types';
+import { z } from 'zod';
 
 export interface StorePreview {
   id: number | string;
@@ -29,13 +30,15 @@ export interface StoreDetail extends StoreSummary {
   createdAt: Date;
 }
 
-export interface CreateStoreBasicDto {
-  name: string;
-  description: string;
-  contactNumber?: string;
-  email?: string;
-  walletAddress: string;
-}
+export const createStoreBasicSchema = z.object({
+  name: z.string().min(2, 'Store name is required'),
+  description: z.string().optional(),
+  contactNumber: z.string().optional(),
+  email: z.string().email('Invalid email address').optional(),
+  walletAddress: z.string().min(10, 'Wallet address is required'),
+});
+
+export type CreateStoreBasicDto = z.infer<typeof createStoreBasicSchema>;
 
 export interface CreateAddressDto {
   countryId: number;

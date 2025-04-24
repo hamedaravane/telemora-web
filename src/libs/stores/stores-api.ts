@@ -88,10 +88,9 @@ export function useFeaturedStores() {
   });
 }
 
-export function useCreateBasicInfo() {
-  return useMutation({
-    mutationFn: (data: CreateStoreBasicDto) =>
-      isDev ? generateMockStoreDetail() : createBasicInfo(data),
+export function useCreateStoreBasicInfo() {
+  return useMutation<StoreDetail, Error, CreateStoreBasicDto>({
+    mutationFn: (data) => createBasicInfo(data),
   });
 }
 

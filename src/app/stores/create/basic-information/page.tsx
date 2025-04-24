@@ -1,102 +1,90 @@
 'use client';
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Input, Spinner } from '@heroui/react';
-import { useStoreCreation } from '@/context/storeCreationContext';
+import { Button, Form, Input, Progress, Textarea } from '@heroui/react';
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
-import { TonConnectButton, useTonAddress } from '@tonconnect/ui-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useCreateStoreBasicInfo } from '@/libs/stores/stores-api';
+import { CreateStoreBasicDto, createStoreBasicSchema } from '@/libs/stores/types';
 
 export default function CreateStoreBasicInformation() {
-  const { storeData, updateStoreData } = useStoreCreation();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<CreateStoreBasicDto>({
+    resolver: zodResolver(createStoreBasicSchema),
+    defaultValues: {
+      name: '',
+      description: '',
+      contactNumber: '',
+      email: '',
+      walletAddress: '',
+    },
+  });
+  const { mutateAsync, isPending, error } = useCreateStoreBasicInfo();
   const router = useRouter();
-  const [errors, setErrors] = useState<{ name?: string; wallet?: string }>({});
-  const [isLoading, setIsLoading] = useState(false);
-  const rawAddress = useTonAddress(false);
-  const userFriendlyAddress = useTonAddress();
 
-  useEffect(() => {
-    document.getElementById('store-name')?.focus();
-    if (rawAddress && rawAddress !== storeData.walletAddress) {
-      updateStoreData({ walletAddress: rawAddress });
+  const onSubmit = async (formData: CreateStoreBasicDto) => {
+    try {
+      const result = await mutateAsync(formData);
+      console.log('Store created:', result);
+      router.push(`/stores/${result.id}/address`);
+    } catch (err) {
+      console.error('Create store error:', err);
+      // show error toast or message
     }
-  }, [rawAddress, storeData.walletAddress, updateStoreData]);
-
-  const validateForm = () => {
-    const newErrors: typeof errors = {};
-    if (!storeData.name.trim()) newErrors.name = 'Store Name is required.';
-    if (!rawAddress) newErrors.wallet = 'Please connect your TON wallet.';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleNext = () => {
-    if (!validateForm()) return;
-    setIsLoading(true);
-    router.push('/stores/create/location');
   };
 
   return (
     <AppLayout>
-      <div className="text-sm text-gray-500 mb-4" aria-live="polite">
-        Step 1 of 5
-      </div>
-
-      <PageHeader
-        title="Basic Information"
-        subtitle="Your store's name and description will be visible to customers. Choose a name that reflects your brand."
-      />
-
-      <Input
-        id="store-name"
-        label="Store Name"
-        value={storeData.name}
-        onChange={(e) => updateStoreData({ name: e.target.value })}
-        placeholder="e.g. John's Electronics"
-        errorMessage={errors.name}
-        aria-describedby="store-name-helper"
-      />
-      <p id="store-name-helper" className="text-sm text-gray-500 my-2">
-        Pick a name that represents your store.
-      </p>
-
-      <Input
-        label="Description (Optional)"
-        value={storeData.description}
-        onChange={(e) => updateStoreData({ description: e.target.value })}
-        placeholder="e.g. We sell the best gadgets in town!"
-        maxLength={200}
-      />
-      <p className="text-sm text-gray-500 my-2">
-        {storeData.description?.length ?? 0}/200 characters
-      </p>
-
-      <TonConnectButton />
-      {errors.wallet && <p className="text-sm text-red-500 mt-2">{errors.wallet}</p>}
-      {userFriendlyAddress && (
-        <p className="text-sm text-green-600 mt-2">Connected wallet: {userFriendlyAddress}</p>
-      )}
-
-      <div className="mt-6 flex gap-x-2 justify-between">
-        <Button
-          variant="bordered"
-          onPress={() => router.back()}
-          className="w-1/3"
-          aria-label="Go back to previous step"
-        >
-          Back
-        </Button>
-        <Button
-          onPress={handleNext}
-          className="w-2/3 transition-transform transform active:scale-95"
-          disabled={isLoading}
-          aria-busy={isLoading}
-          aria-label="Proceed to next step"
-        >
-          {isLoading ? <Spinner size="sm" /> : 'Next'}
-        </Button>
-      </div>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Progress label="Step 1 of 5" maxValue={5} aria-label="Step 1 of 5" size="sm" value={1} />
+        <PageHeader
+          title="Basic Information"
+          subtitle="Your store's name and description will be visible to customers. Choose a name that reflects your brand."
+        />
+        <Input
+          label="Store Name"
+          {...register('name')}
+          isInvalid={!!errors.name}
+          errorMessage={errors.name?.message}
+        />
+        <Textarea
+          label="Description"
+          {...register('description')}
+          isInvalid={!!errors.description}
+          errorMessage={errors.description?.message}
+        />
+        <Input
+          label="Contact Number"
+          {...register('contactNumber')}
+          isInvalid={!!errors.contactNumber}
+          errorMessage={errors.contactNumber?.message}
+        />
+        <Input
+          label="Email"
+          {...register('email')}
+          isInvalid={!!errors.email}
+          errorMessage={errors.email?.message}
+        />
+        <div className="flex justify-between">
+          <Button
+            type="submit"
+            color="primary"
+            isDisabled={isSubmitting || isPending}
+            isLoading={isSubmitting || isPending}
+          />
+          <Button
+            type="button"
+            color="default"
+            isDisabled={isSubmitting || isPending}
+            isLoading={isSubmitting || isPending}
+          />
+        </div>
+      </Form>
     </AppLayout>
   );
 }
