@@ -53,7 +53,7 @@ export interface CreateOrderDto {
   shippingAddress?: string;
 }
 
-export interface CreateOrderItemDto {
+interface CreateOrderItemDto {
   productId: number;
   quantity: number;
 }

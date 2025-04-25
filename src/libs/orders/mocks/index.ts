@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { OrderDetail, OrderItemPreview, OrderStatus, OrderSummary } from './types';
+import { OrderDetail, OrderItemPreview, OrderStatus, OrderSummary } from '../types';
 import { generateMockStorePreview } from '@/libs/stores/mocks';
 import { generateMockProductPreview } from '@/libs/products/mocks';
 import { generateMockPaymentSummary } from '@/libs/payments/mocks';

@@ -3,7 +3,7 @@
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
 import { Alert, Button, Card, CardBody, CardFooter, Divider, Spinner } from '@heroui/react';
-import { useOrderDetails } from '@/libs/orders/orders-api';
+import { useOrderDetails } from '@/libs/orders/hooks';
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
 import ErrorPage from '@/components/shared/errorPage';
