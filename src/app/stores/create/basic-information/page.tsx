@@ -6,8 +6,9 @@ import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCreateStoreBasicInfo } from '@/libs/stores/stores-api';
-import { CreateStoreBasicDto, createStoreBasicSchema } from '@/libs/stores/types';
+import { useSubmitStoreBasicInfoMutation } from '@/libs/stores/stores-api';
+import { CreateStoreBasicDto, storeBasicFormSchema } from '@/libs/stores/types';
+import toast from 'react-hot-toast';
 
 export default function CreateStoreBasicInformation() {
   const {
@@ -15,7 +16,7 @@ export default function CreateStoreBasicInformation() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<CreateStoreBasicDto>({
-    resolver: zodResolver(createStoreBasicSchema),
+    resolver: zodResolver(storeBasicFormSchema),
     defaultValues: {
       name: '',
       description: '',
@@ -24,17 +25,18 @@ export default function CreateStoreBasicInformation() {
       walletAddress: '',
     },
   });
-  const { mutateAsync, isPending, error } = useCreateStoreBasicInfo();
+  const { mutateAsync, isPending } = useSubmitStoreBasicInfoMutation();
   const router = useRouter();
 
   const onSubmit = async (formData: CreateStoreBasicDto) => {
     try {
       const result = await mutateAsync(formData);
       console.log('Store created:', result);
-      router.push(`/stores/${result.id}/address`);
+      toast.success('Store created successfully!');
+      router.push(`/stores/create/${result.id}/location`);
     } catch (err) {
       console.error('Create store error:', err);
-      // show error toast or message
+      toast.error('Failed to create store');
     }
   };
 
@@ -76,13 +78,18 @@ export default function CreateStoreBasicInformation() {
             color="primary"
             isDisabled={isSubmitting || isPending}
             isLoading={isSubmitting || isPending}
-          />
+          >
+            {isSubmitting || isPending ? 'Creating...' : 'Next'}
+          </Button>
+
           <Button
             type="button"
             color="default"
-            isDisabled={isSubmitting || isPending}
-            isLoading={isSubmitting || isPending}
-          />
+            disabled={isSubmitting || isPending}
+            onPress={() => router.back()}
+          >
+            Back
+          </Button>
         </div>
       </Form>
     </AppLayout>

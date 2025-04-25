@@ -10,7 +10,7 @@ import { FaPlus } from 'react-icons/fa6';
 import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
 import StarRating from '@/components/shared/star-rating';
 import ProductPreviewCard from '@/components/products/preview-card';
-import { useStoreDetails } from '@/libs/stores/stores-api';
+import { useStoreDetailsQuery } from '@/libs/stores/stores-api';
 import ErrorPage from '@/components/shared/errorPage';
 import toast from 'react-hot-toast';
 
@@ -18,7 +18,7 @@ export default function StoreDetailsPage() {
   const { storeId } = useParams<{ storeId: string }>();
   const router = useRouter();
   const user = useUser();
-  const { data: store, isLoading, error } = useStoreDetails(storeId);
+  const { data: store, isLoading, error } = useStoreDetailsQuery(storeId);
   const isOwner = user && store && store.owner.id === user.id;
 
   const handleShare = async () => {

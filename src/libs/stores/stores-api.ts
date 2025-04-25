@@ -13,43 +13,46 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { isDev } from '@/utils';
 import { generateMockStoreDetail, generateMockStoreSummaries } from '@/libs/stores/mocks';
 
-async function getMyStores() {
+async function fetchUserStores() {
   return httpClient.get<StoreSummary[]>('/stores/my');
 }
 
-async function getStoreDetails(storeId: string) {
+async function fetchStoreDetails(storeId: string) {
   return httpClient.get<StoreDetail>(`/stores/${storeId}`);
 }
 
-async function discoverStores() {
+async function fetchDiscoverableStores() {
   return httpClient.get<StoreSummary[]>('/stores/discover');
 }
 
-async function getFeaturedStores() {
+async function fetchFeaturedStores() {
   return httpClient.get<StoreSummary[]>('/stores/featured');
 }
 
-export async function createBasicInfo(data: CreateStoreBasicDto) {
+export async function submitStoreBasicInfo(data: CreateStoreBasicDto) {
   return httpClient.post<StoreDetail>('/stores/create/basic', data);
 }
 
-export async function updateStoreAddress(storeId: string, data: CreateAddressDto) {
+export async function submitStoreAddressUpdate(storeId: string, data: CreateAddressDto) {
   return httpClient.patch<StoreDetail>(`/stores/${storeId}/address`, data);
 }
 
-export async function selectStoreTags(storeId: string, data: CreateStoreTagsDto) {
+export async function submitStoreTagsSelection(storeId: string, data: CreateStoreTagsDto) {
   return httpClient.patch<StoreDetail>(`/stores/${storeId}/tags`, data);
 }
 
-export async function setStoreWorkingHours(storeId: string, data: CreateStoreWorkingHoursDto) {
+export async function submitStoreWorkingHours(storeId: string, data: CreateStoreWorkingHoursDto) {
   return httpClient.patch<StoreDetail>(`/stores/${storeId}/working_hours`, data);
 }
 
-export async function updateStore(storeId: string, data: UpdateStoreDto): Promise<StoreDetail> {
+export async function submitStoreUpdate(
+  storeId: string,
+  data: UpdateStoreDto,
+): Promise<StoreDetail> {
   return httpClient.patch<StoreDetail>(`/stores/${storeId}`, data);
 }
 
-export async function uploadStoreLogo(storeId: string, data: CreateStoreLogoDto) {
+export async function submitStoreLogoUpload(storeId: string, data: CreateStoreLogoDto) {
   const formData = new FormData();
   if (data.logoFile) {
     const fileBlob = new Blob([data.logoFile], { type: 'image/*' });
@@ -60,64 +63,64 @@ export async function uploadStoreLogo(storeId: string, data: CreateStoreLogoDto)
   } else throw new Error('No file provided');
 }
 
-export function useMyStores() {
+export function useUserStoresQuery() {
   return useQuery<StoreSummary[]>({
     queryKey: ['stores', 'my'],
-    queryFn: isDev ? generateMockStoreSummaries : getMyStores,
+    queryFn: isDev ? generateMockStoreSummaries : fetchUserStores,
   });
 }
 
-export function useStoreDetails(storeId: string) {
+export function useStoreDetailsQuery(storeId: string) {
   return useQuery<StoreDetail>({
     queryKey: ['stores', storeId],
-    queryFn: () => (isDev ? generateMockStoreDetail() : getStoreDetails(storeId)),
+    queryFn: () => (isDev ? generateMockStoreDetail() : fetchStoreDetails(storeId)),
   });
 }
 
-export function useDiscoverStores() {
+export function useDiscoverableStoresQuery() {
   return useQuery<StoreSummary[]>({
     queryKey: ['stores', 'discover'],
-    queryFn: isDev ? generateMockStoreSummaries : discoverStores,
+    queryFn: isDev ? generateMockStoreSummaries : fetchDiscoverableStores,
   });
 }
 
-export function useFeaturedStores() {
+export function useFeaturedStoresQuery() {
   return useQuery<StoreSummary[]>({
     queryKey: ['stores', 'featured'],
-    queryFn: isDev ? generateMockStoreSummaries : getFeaturedStores,
+    queryFn: isDev ? generateMockStoreSummaries : fetchFeaturedStores,
   });
 }
 
-export function useCreateStoreBasicInfo() {
+export function useSubmitStoreBasicInfoMutation() {
   return useMutation<StoreDetail, Error, CreateStoreBasicDto>({
-    mutationFn: (data) => createBasicInfo(data),
+    mutationFn: (data) => submitStoreBasicInfo(data),
   });
 }
 
-export function useUpdateStoreLocation(storeId: string) {
+export function useSubmitStoreAddressMutation(storeId: string) {
   return useMutation({
     mutationFn: (data: CreateAddressDto) =>
-      isDev ? generateMockStoreDetail() : updateStoreAddress(storeId, data),
+      isDev ? generateMockStoreDetail() : submitStoreAddressUpdate(storeId, data),
   });
 }
 
-export function useSelectStoreTags(storeId: string) {
+export function useSubmitStoreTagsMutation(storeId: string) {
   return useMutation({
     mutationFn: (data: CreateStoreTagsDto) =>
-      isDev ? generateMockStoreDetail() : selectStoreTags(storeId, data),
+      isDev ? generateMockStoreDetail() : submitStoreTagsSelection(storeId, data),
   });
 }
 
-export function useSetStoreWorkingHours(storeId: string) {
+export function useSubmitStoreWorkingHoursMutation(storeId: string) {
   return useMutation({
     mutationFn: (data: CreateStoreWorkingHoursDto) =>
-      isDev ? generateMockStoreDetail() : setStoreWorkingHours(storeId, data),
+      isDev ? generateMockStoreDetail() : submitStoreWorkingHours(storeId, data),
   });
 }
 
-export function useUploadStoreLogo(storeId: string) {
+export function useSubmitStoreLogoMutation(storeId: string) {
   return useMutation({
     mutationFn: (data: CreateStoreLogoDto) =>
-      isDev ? generateMockStoreDetail() : uploadStoreLogo(storeId, data),
+      isDev ? generateMockStoreDetail() : submitStoreLogoUpload(storeId, data),
   });
 }

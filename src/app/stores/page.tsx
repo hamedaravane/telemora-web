@@ -6,12 +6,12 @@ import { Button, Spinner } from '@heroui/react';
 import AppLayout from '@/components/shared/app-layout';
 import StoreSummaryCard from '@/components/stores/summary-card';
 import { PageHeader } from '@/components/shared/page-header';
-import { useMyStores } from '@/libs/stores/stores-api';
+import { useUserStoresQuery } from '@/libs/stores/stores-api';
 import ErrorPage from '@/components/shared/errorPage';
 
 export default function StoreListPage() {
   const router = useRouter();
-  const { data: stores, error, isLoading } = useMyStores();
+  const { data: stores, error, isLoading } = useUserStoresQuery();
 
   const handleCreateStore = () => router.push('/stores/create/basic-information');
   const handleOpenStore = (id: number) => router.push(`/stores/${id}`);
