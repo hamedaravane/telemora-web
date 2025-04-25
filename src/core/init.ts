@@ -5,7 +5,6 @@ import {
   mountBackButton,
   mountMiniAppSync,
   mountThemeParamsSync,
-  requestFullscreen,
   setDebug,
   themeParams,
   viewport,
@@ -20,7 +19,6 @@ export function init(debug: boolean): void {
   mountBackButton();
   mountMiniAppSync();
   mountThemeParamsSync();
-  requestFullscreen();
   initData.restore();
   void viewport
     .mount()

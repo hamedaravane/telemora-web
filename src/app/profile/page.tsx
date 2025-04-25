@@ -2,15 +2,12 @@
 
 import AppLayout from '@/components/shared/app-layout';
 import { useUser } from '@/context/userContext';
-import { Button, Divider, Skeleton } from '@heroui/react';
-import Image from 'next/image';
-import { UserPrivateProfile } from '@/libs/users/types';
+import { Divider, Skeleton } from '@heroui/react';
 import { StorePreviewCard } from '@/components/stores/preview-card';
 import OrderSummaryCard from '@/components/orders/summary-card';
-import { FaGear } from 'react-icons/fa6';
-import { FaPen } from 'react-icons/fa';
 import { PageHeader } from '@/components/shared/page-header';
 import React from 'react';
+import ProfileCard from '@/components/users/profile-card';
 
 export default function ProfilePage() {
   const user = useUser();
@@ -82,37 +79,5 @@ export default function ProfilePage() {
         )}
       </main>
     </AppLayout>
-  );
-}
-
-function ProfileCard({ user }: { user: UserPrivateProfile }) {
-  return (
-    <div className="space-y-2">
-      <div className="text-center">
-        <Image
-          src={user.photo?.url ?? '/default-profile.png'}
-          alt="user photo"
-          width={128}
-          height={128}
-          className="rounded-full object-cover w-32 aspect-square inline-block"
-        />
-        <div className="mt-4">
-          <h2 className="font-semibold text-lg">
-            {user.firstName} {user.lastName}
-          </h2>
-          {user.username && <p className="text-gray-500 lowercase text-sm">@{user.username}</p>}
-        </div>
-      </div>
-      <div className="flex space-x-2">
-        <Button fullWidth size="sm" variant="flat">
-          <FaPen />
-          Edit Profile
-        </Button>
-        <Button fullWidth size="sm" variant="flat">
-          <FaGear />
-          Preferences
-        </Button>
-      </div>
-    </div>
   );
 }

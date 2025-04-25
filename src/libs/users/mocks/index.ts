@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { UserPrivateProfile, UserPublicPreview, UserRole, UserSummary } from './types';
+import { UserPrivateProfile, UserPublicPreview, UserRole, UserSummary } from '../types';
 import { generateMockAddress } from '@/libs/location/mocks';
 import { generateMockStorePreviews } from '@/libs/stores/mocks';
 import { generateMockOrderSummary } from '@/libs/orders/mocks';
