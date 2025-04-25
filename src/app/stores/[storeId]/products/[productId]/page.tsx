@@ -5,7 +5,7 @@ import { Button, Divider, ScrollShadow, Skeleton } from '@heroui/react';
 import AppLayout from '@/components/shared/app-layout';
 import Price from '@/components/shared/price';
 import Image from 'next/image';
-import ReviewPreviewCard from '@/components/reviews/preview';
+import ReviewPreviewCard from '@/components/reviews/preview-card';
 import { PageHeader } from '@/components/shared/page-header';
 import { User } from '@heroui/user';
 import StarRating from '@/components/shared/star-rating';
