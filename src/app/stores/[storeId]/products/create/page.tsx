@@ -3,43 +3,14 @@
 import { Button, Input, Select, SelectItem, Textarea } from '@heroui/react';
 import React, { useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FaPlus, FaTrash } from 'react-icons/fa6';
 import AppLayout from '@/components/shared/app-layout';
 import toast from 'react-hot-toast';
 import { useParams, useRouter } from 'next/navigation';
 import { ProductType } from '@/libs/products/types';
-import { useCreateProduct } from '@/libs/products/products-api';
-
-const schema = z.object({
-  name: z.string().min(2, 'Name is required'),
-  price: z.number({ invalid_type_error: 'Price must be a number' }).positive(),
-  description: z.string().optional(),
-  imageUrl: z.string().url('Must be a valid URL'),
-  productType: z.nativeEnum(ProductType),
-  stock: z.number().optional(),
-  downloadLink: z.string().url().optional(),
-  attributes: z
-    .array(
-      z.object({
-        attributeName: z.string().min(1),
-        attributeValue: z.string().min(1),
-      }),
-    )
-    .optional(),
-  variants: z
-    .array(
-      z.object({
-        variantName: z.string().min(1),
-        variantValue: z.string().min(1),
-        additionalPrice: z.number().optional(),
-      }),
-    )
-    .optional(),
-});
-
-type FormSchema = z.infer<typeof schema>;
+import { useCreateProductMutation } from '@/libs/products/hooks';
+import { CreateProductFormData, createProductSchema } from '@/libs/products/schemas';
 
 export default function CreateProductPage() {
   const { storeId } = useParams();
@@ -49,8 +20,8 @@ export default function CreateProductPage() {
     control,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<FormSchema>({
-    resolver: zodResolver(schema),
+  } = useForm<CreateProductFormData>({
+    resolver: zodResolver(createProductSchema),
     defaultValues: {
       productType: ProductType.PHYSICAL,
       attributes: [],
@@ -73,12 +44,12 @@ export default function CreateProductPage() {
     remove: removeVariant,
   } = useFieldArray({ control, name: 'variants' });
 
-  const { mutateAsync: createProduct } = useCreateProduct(+storeId);
+  const { mutateAsync } = useCreateProductMutation(+storeId);
   const router = useRouter();
 
-  const onSubmit = async (data: FormSchema) => {
+  const onSubmit = async (data: CreateProductFormData) => {
     try {
-      const result = await createProduct(data);
+      const result = await mutateAsync(data);
       toast.success('Product created successfully!');
       router.push(`/stores/${result.store.id}`);
     } catch (error) {

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { OrderStatus } from '@/libs/orders/types';
 
 export const createOrderItemSchema = z.object({
   productId: z.number().int().positive(),
@@ -8,7 +9,7 @@ export const createOrderItemSchema = z.object({
 export const createOrderSchema = z.object({
   buyerId: z.number().int().positive(),
   items: z.array(createOrderItemSchema).min(1, 'At least one product is required'),
-  status: z.enum(['PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'CANCELLED']).optional(),
+  status: z.nativeEnum(OrderStatus).optional(),
   shippingAddress: z.string().min(5, 'Shipping address is too short').optional(),
 });
 
@@ -19,7 +20,7 @@ export const createOrderShipmentSchema = z.object({
 });
 
 export const updateOrderSchema = z.object({
-  status: z.enum(['PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'CANCELLED']).optional(),
+  status: z.nativeEnum(OrderStatus).optional(),
   shippingAddress: z.string().optional(),
   items: z.array(createOrderItemSchema).optional(),
 });

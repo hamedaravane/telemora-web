@@ -9,7 +9,7 @@ import ReviewPreviewCard from '@/components/reviews/preview-card';
 import { PageHeader } from '@/components/shared/page-header';
 import { User } from '@heroui/user';
 import StarRating from '@/components/shared/star-rating';
-import { useProductDetails } from '@/libs/products/products-api';
+import { useProductDetails } from '@/libs/products/hooks';
 import ErrorPage from '@/components/shared/errorPage';
 
 export default function ProductDetailsPage() {
@@ -29,7 +29,7 @@ export default function ProductDetailsPage() {
     );
   }
 
-  if (error || !product) return <ErrorPage />;
+  if (error || !product) return <ErrorPage reset={refetch} />;
 
   return (
     <AppLayout>

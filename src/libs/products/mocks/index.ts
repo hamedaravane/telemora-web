@@ -7,7 +7,7 @@ import {
   ProductSummary,
   ProductType,
   ProductVariant,
-} from './types';
+} from '../types';
 import { generateMockStorePreview } from '@/libs/stores/mocks';
 import { generateMockReviewPreview } from '@/libs/reviews/mocks';
 
