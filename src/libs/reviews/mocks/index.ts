@@ -5,7 +5,7 @@ import {
   ReviewPreview,
   ReviewReplyPreview,
   ReviewReportPreview,
-} from './types';
+} from '../types';
 import { generateMockUserPublicPreview } from '@/libs/users/mocks';
 
 export async function generateMockReviewPreview(productId: number): Promise<ReviewPreview> {
