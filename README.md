@@ -74,7 +74,7 @@ The API base URL is set via the `NEXT_PUBLIC_API_URL` environment variable.
 
 1. Clone the repository
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/hamedaravane/telemora-web.git
    cd telemora-web
    ```
 
@@ -103,28 +103,6 @@ The API base URL is set via the `NEXT_PUBLIC_API_URL` environment variable.
    ```bash
    npm start
    ```
-
-## 👥 Contributing
-
-While this is a proprietary project, we appreciate any contributions, regardless of their scope.
-
-1. **Branch Naming**
-   - Feature: `feature/your-feature-name`
-   - Bugfix: `bugfix/issue-description`
-   - Hotfix: `hotfix/urgent-fix-description`
-  
-2. **Commit Guidelines**
-   - Use clear, descriptive commit messages
-   - Reference issue numbers when applicable
-   - Keep commits focused and atomic
-
-3. **Code Standards**
-   - Follow the existing code style and conventions
-   - Write clear comments and documentation
-   - Ensure all tests pass before submitting PR
-
-4. **Pull Request Process**
-   - Provide detailed PR descriptions
 
 ## 📄 License
 
