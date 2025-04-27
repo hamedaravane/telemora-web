@@ -33,7 +33,9 @@ export default function OrderDetailsPage() {
     );
   }
 
-  if (error || !order) return <ErrorPage />;
+  if (error || !order) return <ErrorPage error={new Error('Invalid Order')} />;
+  if (!orderId || isNaN(Number(orderId)))
+    return <ErrorPage error={new Error('Invalid order ID')} />;
 
   const isPendingPayment =
     order.status === OrderStatus.PENDING && order.payment?.status !== PaymentStatus.COMPLETED;
