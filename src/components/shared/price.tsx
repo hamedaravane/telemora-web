@@ -27,13 +27,20 @@ interface PriceProps {
   precision?: number;
 }
 
-const Price: React.FC<PriceProps> = ({ amount, fontSize = 14, precision = 5 }) => (
-  <div className="flex items-center">
-    <CurrencySymbol />
-    <span className="ms-2" style={{ fontSize }}>
-      {amount.toFixed(precision)}
-    </span>
-  </div>
-);
+const Price: React.FC<PriceProps> = ({ amount, fontSize = 14, precision = 5 }) => {
+  const formattedAmount = amount.toLocaleString('en-US', {
+    minimumFractionDigits: amount >= 1 ? 0 : Math.min(precision, 5),
+    maximumFractionDigits: Math.min(precision, 5),
+  });
+
+  return (
+    <div className="flex items-center">
+      <CurrencySymbol />
+      <span className="ms-2" style={{ fontSize }}>
+        {formattedAmount}
+      </span>
+    </div>
+  );
+};
 
 export default React.memo(Price);
