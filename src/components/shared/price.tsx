@@ -25,13 +25,14 @@ interface PriceProps {
   amount: number;
   fontSize?: number;
   precision?: number;
+  localCurrencyCode?: string;
 }
 
-const Price: React.FC<PriceProps> = ({ amount, fontSize = 14, precision = 5 }) => (
+const Price: React.FC<PriceProps> = ({ amount, fontSize = 14, precision = 5 ,localCurrencyCode='TON'}) => (
   <div className="flex items-center">
     <CurrencySymbol />
     <span className="ms-2" style={{ fontSize }}>
-      {amount.toFixed(precision)}
+     {amount.toFixed(precision)} {localCurrencyCode} 
     </span>
   </div>
 );

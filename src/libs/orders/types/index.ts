@@ -1,7 +1,7 @@
 import { ProductPreview } from '@/libs/products/types';
 import { StorePreview } from '@/libs/stores/types';
 import { PaymentSummary } from '@/libs/payments/types';
-import { UserSummary } from '@/libs/users/types';
+import { CurrencyInfo, UserSummary } from '@/libs/users/types';
 
 export enum OrderStatus {
   PENDING = 'pending',
@@ -18,12 +18,14 @@ export interface OrderItemPreview {
   product: ProductPreview;
   quantity: number;
   totalPrice: number;
+  currencyInfo: CurrencyInfo;
 }
 
 export interface OrderSummary {
   id: number | string;
   status: OrderStatus;
   totalAmount: number;
+  currencyInfo: CurrencyInfo;
   store: StorePreview;
   deliveryDate: Date;
   createdAt: Date;

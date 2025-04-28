@@ -11,6 +11,7 @@ import ProfileCard from '@/components/users/profile-card';
 
 export default function ProfilePage() {
   const user = useUser();
+  console.log(user)
 
   if (!user) {
     return (
@@ -72,7 +73,7 @@ export default function ProfilePage() {
             <PageHeader title="Recent Orders" />
             <div className="space-y-4">
               {user.orders.map((order) => (
-                <OrderSummaryCard key={order.id} order={order} />
+                <OrderSummaryCard key={order.id} order={order} currencyInfo={user.currencyInfo}/>
               ))}
             </div>
           </section>

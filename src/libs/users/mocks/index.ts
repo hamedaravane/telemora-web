@@ -34,5 +34,10 @@ export async function generateMockUserPrivateProfile(): Promise<UserPrivateProfi
     walletAddress: faker.finance.ethereumAddress(),
     stores: await generateMockStorePreviews(),
     orders: await Promise.all(Array.from({ length: 5 }, generateMockOrderSummary)),
+    currencyInfo: {
+      tonToUsdRate: faker.finance.amount({min:0.1,max:10,dec:2}),
+      localCurrencyToUsdRate: faker.finance.amount({min:0.1, max:100, dec:2}),
+      localCurrencyCode: faker.finance.currencyCode(),
+    }
   };
 }

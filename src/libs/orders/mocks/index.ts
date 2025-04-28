@@ -10,6 +10,11 @@ export async function generateMockOrderItemPreview(): Promise<OrderItemPreview> 
     product: await generateMockProductPreview(faker.number.int()),
     quantity: faker.number.int({ min: 1, max: 5 }),
     totalPrice: Number(faker.commerce.price({ min: 10, max: 300 })),
+    currencyInfo: {
+      tonToUsdRate: faker.finance.amount({min:0.1,max:10,dec:2}),
+      localCurrencyToUsdRate: faker.finance.amount({min:0.1, max:100, dec:2}),
+      localCurrencyCode: faker.finance.currencyCode(),
+    }
   };
 }
 
@@ -18,6 +23,11 @@ export async function generateMockOrderSummary(): Promise<OrderSummary> {
     id: faker.number.int(),
     status: faker.helpers.enumValue(OrderStatus),
     totalAmount: Number(faker.commerce.price({ min: 50, max: 500 })),
+    currencyInfo: {
+      tonToUsdRate: faker.finance.amount({min:0.1,max:10,dec:2}),
+      localCurrencyToUsdRate: faker.finance.amount({min:0.1, max:100, dec:2}),
+      localCurrencyCode: faker.finance.currencyCode(),
+    },
     store: await generateMockStorePreview(),
     deliveryDate: faker.date.soon(),
     createdAt: faker.date.past(),
