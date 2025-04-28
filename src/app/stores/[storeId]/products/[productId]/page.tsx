@@ -60,6 +60,7 @@ export default function ProductDetailsPage() {
         <div>
           <h1 className="text-lg font-bold">{product.name}</h1>
           <Price fontSize={16} amount={product.price} />
+          <Price fontSize={16} amount={product.price} />
         </div>
 
         <Button fullWidth size="lg" className="mt-4">

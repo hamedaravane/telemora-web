@@ -6,7 +6,7 @@ import {
 } from '@/libs/orders/schemas';
 import { OrderDetail, OrderSummary } from '@/libs/orders/types';
 import { isDev } from '@/utils';
-import { generateMockOrderDetail, generateMockOrderSummaries } from '@/libs/orders/mocks';
+import { generateMockOrderDetail, generateMockOrderSummariesWithUser } from '@/libs/orders/mocks';
 import {
   addShipment,
   createOrder,
@@ -14,11 +14,23 @@ import {
   getOrderDetails,
   updateOrder,
 } from '@/libs/orders/api';
+import { UserPrivateProfile } from '@/libs/users/types';
+import { generateMockUserPrivateProfile } from '@/libs/users/mocks';
 
 export function useMyOrders() {
-  return useQuery<OrderSummary[]>({
+  return useQuery<{
+    orders: OrderSummary[];
+    userProfile: UserPrivateProfile;
+  }>({
     queryKey: ['orders'],
-    queryFn: isDev ? generateMockOrderSummaries : getMyOrders,
+    queryFn: async () => {
+      if (isDev) {
+        return generateMockOrderSummariesWithUser();
+      }
+      const orders = await getMyOrders();
+      const userProfile = await generateMockUserPrivateProfile();
+      return { orders, userProfile };
+    },
   });
 }
 

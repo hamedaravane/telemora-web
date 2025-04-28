@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { UserPrivateProfile, UserPublicPreview, UserRole, UserSummary } from '../types';
+import { CurrencyInfo, UserPrivateProfile, UserPublicPreview, UserRole, UserSummary } from '../types';
 import { generateMockAddress } from '@/libs/location/mocks';
 import { generateMockStorePreviews } from '@/libs/stores/mocks';
 import { generateMockOrderSummary } from '@/libs/orders/mocks';
@@ -25,6 +25,14 @@ export async function generateMockUserSummary(): Promise<UserSummary> {
   };
 }
 
+export async function generateMockCurrencyInfo(): Promise<CurrencyInfo>{
+  return {
+    tonToUsdRate: faker.finance.amount({min:0.1,max:10,dec:2}),
+    localCurrencyToUsdRate: faker.finance.amount({min:0.1, max:100, dec:2}),
+    localCurrencyCode: faker.finance.currencyCode(),
+  }
+}
+
 export async function generateMockUserPrivateProfile(): Promise<UserPrivateProfile> {
   return {
     ...(await generateMockUserSummary()),
@@ -34,10 +42,7 @@ export async function generateMockUserPrivateProfile(): Promise<UserPrivateProfi
     walletAddress: faker.finance.ethereumAddress(),
     stores: await generateMockStorePreviews(),
     orders: await Promise.all(Array.from({ length: 5 }, generateMockOrderSummary)),
-    currencyInfo: {
-      tonToUsdRate: faker.finance.amount({min:0.1,max:10,dec:2}),
-      localCurrencyToUsdRate: faker.finance.amount({min:0.1, max:100, dec:2}),
-      localCurrencyCode: faker.finance.currencyCode(),
-    }
+    currencyInfo: await generateMockCurrencyInfo()
   };
 }
+

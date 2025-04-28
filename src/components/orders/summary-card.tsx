@@ -17,7 +17,7 @@ interface OrderSummaryCardProps {
 export default function OrderSummaryCard({ order, currencyInfo, href, className }: OrderSummaryCardProps) {
   console.log(currencyInfo)
   const { id, status, totalAmount, store, deliveryDate, createdAt } = order;
-  const tonPriceInLocalCurrency = totalAmount * Number(currencyInfo.tonToUsdRate) / Number(currencyInfo.localCurrencyToUsdRate)
+  const tonPriceInLocalCurrency = Number(currencyInfo.tonToUsdRate) / Number(currencyInfo.localCurrencyToUsdRate)
 
   const cardContent = (
     <Card className={`w-full ${className}`}>

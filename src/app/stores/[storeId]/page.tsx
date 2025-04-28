@@ -141,8 +141,8 @@ export default function StoreDetailsPage() {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          {store.products.slice(0, 4).map((product) => (
-            <ProductPreviewCard key={product.id} product={product} />
+          {user && store.products.slice(0, 4).map((product) => (
+            <ProductPreviewCard key={product.id} product={product} currencyInfo={user?.currencyInfo}/>
           ))}
         </div>
 
