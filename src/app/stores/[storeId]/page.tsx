@@ -22,17 +22,29 @@ export default function StoreDetailsPage() {
   const isOwner = user && store && store.owner.id === user.id;
 
   const handleShare = async () => {
+    const url = window.location.href;
     try {
-      if (!navigator.clipboard) {
-        toast.error('Clipboard not supported in this environment.');
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        toast.success('Link copied to clipboard!');
         return;
       }
 
-      await navigator.clipboard.writeText(window.location.href);
+      // Fallback: Create a temporary input element
+      const tempInput = document.createElement('input');
+      tempInput.style.position = 'absolute';
+      tempInput.style.left = '-9999px';
+      tempInput.value = url;
+      document.body.appendChild(tempInput);
+
+      // Select and copy the text
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
       toast.success('Link copied to clipboard!');
     } catch (err) {
-      console.error('Clipboard write failed', err);
-      toast.error('Failed to copy the link. Please copy manually.');
+      console.error('Clipboard operation failed', err);
+      toast.error(`Unable to copy link. The store URL is: ${url}`);
     }
   };
 
