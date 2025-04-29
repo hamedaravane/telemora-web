@@ -28,13 +28,19 @@ interface PriceProps {
   localCurrencyCode?: string;
 }
 
-const Price: React.FC<PriceProps> = ({ amount, fontSize = 14, precision = 5 ,localCurrencyCode='TON'}) => (
-  <div className="flex items-center">
+const Price: React.FC<PriceProps> = ({ amount, fontSize = 14, precision = 5 ,localCurrencyCode='TON'}) => {
+  const formattedAmount = amount.toLocaleString('en-US', {
+    minimumFractionDigits: amount >= 1 ? 0 : Math.min(precision, 5),
+    maximumFractionDigits: Math.min(precision, 5),
+  });
+  return (
+    <div className="flex items-center">
     <CurrencySymbol />
     <span className="ms-2" style={{ fontSize }}>
-     {amount.toFixed(precision)} {localCurrencyCode} 
+      {formattedAmount} {localCurrencyCode} 
     </span>
-  </div>
-);
+    </div>
+  )
+};
 
 export default React.memo(Price);
