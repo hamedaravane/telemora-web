@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@heroui/react';
 
 interface Props {
@@ -14,18 +15,27 @@ interface Props {
  *  Treat it as controlled (selected = isSelected) or make it fully uncontrolled and drop the prop
  */
 export const Tag = ({ label, onClick, isSelected = false }: Props) => {
-  const [selected, setSelected] = useState<boolean>(isSelected);
+  // const [selected, setSelected] = useState<boolean>(isSelected);
   return (
+    // <Button
+    //   size="sm"
+    //   color={selected ? 'primary' : 'secondary'}
+    //   variant="solid"
+    //   onPress={() => {
+    //     setSelected(!selected);
+    //     if (onClick) {
+    //       onClick();
+    //     }
+    //   }}
+    //   className="rounded-full"
+    // >
+    //   {label}
+    // </Button>
     <Button
       size="sm"
-      color={selected ? 'primary' : 'secondary'}
+      color={isSelected ? 'primary' : 'secondary'}
       variant="solid"
-      onPress={() => {
-        setSelected(!selected);
-        if (onClick) {
-          onClick();
-        }
-      }}
+      onPress={onClick}
       className="rounded-full"
     >
       {label}
