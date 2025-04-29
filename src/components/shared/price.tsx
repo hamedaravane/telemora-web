@@ -28,7 +28,7 @@ interface PriceProps {
   localCurrencyCode?: string;
 }
 
-const Price: React.FC<PriceProps> = ({ amount, fontSize = 14, precision = 5 ,localCurrencyCode='TON'}) => {
+const Price: React.FC<PriceProps> = ({ amount, fontSize = 14, precision = 5 ,localCurrencyCode='USD'}) => {
   const formattedAmount = amount.toLocaleString('en-US', {
     minimumFractionDigits: amount >= 1 ? 0 : Math.min(precision, 5),
     maximumFractionDigits: Math.min(precision, 5),

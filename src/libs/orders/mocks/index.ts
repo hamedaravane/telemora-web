@@ -3,8 +3,7 @@ import { OrderDetail, OrderItemPreview, OrderStatus, OrderSummary } from '../typ
 import { generateMockStorePreview } from '@/libs/stores/mocks';
 import { generateMockProductPreview } from '@/libs/products/mocks';
 import { generateMockPaymentSummary } from '@/libs/payments/mocks';
-import { generateMockUserSummary,generateMockUserPrivateProfile } from '@/libs/users/mocks';
-import { UserPrivateProfile } from '@/libs/users/types';
+import { generateMockUserSummary } from '@/libs/users/mocks';
 
 export async function generateMockOrderItemPreview(): Promise<OrderItemPreview> {
   return {
@@ -41,19 +40,8 @@ export async function generateMockOrderDetail(): Promise<OrderDetail> {
   };
 }
 
-export async function generateMockOrderSummariesWithUser(): Promise<{
-  userProfile: UserPrivateProfile;
-  orders: OrderSummary[];
-}> {
-  const userProfile = await generateMockUserPrivateProfile();
-  const orders = await Promise.all(
-    Array.from({ length: 3 }, () => generateMockOrderSummary())
-  );
-
-  return {
-    userProfile,
-    orders,
-  };
+export async function generateMockOrderSummaries(): Promise<OrderSummary[]> {
+  return Promise.all(Array.from({ length: 3 }, () => generateMockOrderSummary()));
 }
 
 export async function generateMockOrderItemPreviews(): Promise<OrderItemPreview[]> {

@@ -6,6 +6,7 @@ import { Card, CardBody, CardHeader, Chip } from '@heroui/react';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import Price from '@/components/shared/price';
+import Decimal from 'decimal.js';
 
 interface OrderSummaryCardProps {
   order: OrderSummary;
@@ -15,9 +16,10 @@ interface OrderSummaryCardProps {
 }
 
 export default function OrderSummaryCard({ order, currencyInfo, href, className }: OrderSummaryCardProps) {
-  console.log(currencyInfo)
   const { id, status, totalAmount, store, deliveryDate, createdAt } = order;
-  const tonPriceInLocalCurrency = Number(currencyInfo.tonToUsdRate) / Number(currencyInfo.localCurrencyToUsdRate)
+  const tonPriceInLocalCurrency = new Decimal(currencyInfo?.tonToUsdRate || 0)
+    .dividedBy(new Decimal(currencyInfo?.localCurrencyToUsdRate || 0))
+    .toNumber();
 
   const cardContent = (
     <Card className={`w-full ${className}`}>

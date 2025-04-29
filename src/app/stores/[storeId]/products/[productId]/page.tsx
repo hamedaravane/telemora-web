@@ -11,10 +11,18 @@ import { User } from '@heroui/user';
 import StarRating from '@/components/shared/star-rating';
 import { useProductDetails } from '@/libs/products/hooks';
 import ErrorPage from '@/components/shared/errorPage';
+import { useUser } from '@/context/userContext';
+import Decimal from 'decimal.js';
 
 export default function ProductDetailsPage() {
   const { storeId, productId } = useParams();
+  const user = useUser();
+  const currencyInfo = user?.currencyInfo;
   const { data: product, isLoading, error, refetch } = useProductDetails(+storeId, +productId);
+
+  const tonPriceInLocalCurrency = new Decimal(currencyInfo?.tonToUsdRate || 0)
+  .dividedBy(new Decimal(currencyInfo?.localCurrencyToUsdRate || 0))
+  .toNumber();
 
   if (isLoading) {
     return (
@@ -60,7 +68,7 @@ export default function ProductDetailsPage() {
         <div>
           <h1 className="text-lg font-bold">{product.name}</h1>
           <Price fontSize={16} amount={product.price} />
-          <Price fontSize={16} amount={product.price} />
+          <Price fontSize={16} amount={tonPriceInLocalCurrency} localCurrencyCode={currencyInfo?.localCurrencyCode} />
         </div>
 
         <Button fullWidth size="lg" className="mt-4">

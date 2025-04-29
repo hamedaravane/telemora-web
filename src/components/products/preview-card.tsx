@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Price from '@/components/shared/price';
 import { Card, CardBody, CardFooter } from '@heroui/react';
 import { CurrencyInfo } from '@/libs/users/types';
+import Decimal from 'decimal.js';
 
 interface ProductPreviewCard{
   product: ProductPreview,
@@ -13,7 +14,10 @@ interface ProductPreviewCard{
 }
 
 export default function ProductPreviewCard({ product, currencyInfo }: ProductPreviewCard) {
-  const tonPriceInLocalCurrency = Number(currencyInfo.tonToUsdRate)/Number(currencyInfo.localCurrencyToUsdRate)
+ 
+  const tonPriceInLocalCurrency = new Decimal(currencyInfo?.tonToUsdRate || 0)
+    .dividedBy(new Decimal(currencyInfo?.localCurrencyToUsdRate || 0))
+    .toNumber();
   return (
     <Link href={`/stores/${product.storeId}/products/${product.id}`}>
       <Card>

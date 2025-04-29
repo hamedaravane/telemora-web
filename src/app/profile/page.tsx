@@ -11,7 +11,6 @@ import ProfileCard from '@/components/users/profile-card';
 
 export default function ProfilePage() {
   const user = useUser();
-  console.log(user)
 
   if (!user) {
     return (

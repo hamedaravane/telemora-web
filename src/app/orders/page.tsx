@@ -9,18 +9,13 @@ import OrderSummaryCard from '@/components/orders/summary-card';
 import { PageHeader } from '@/components/shared/page-header';
 import { useMyOrders } from '@/libs/orders/hooks';
 import ErrorPage from '@/components/shared/errorPage';
-import { OrderSummary } from '@/libs/orders/types';
-import { UserPrivateProfile } from '@/libs/users/types';
+import { useUser } from '@/context/userContext';
+
 
 export default function OrdersPage() {
   const router = useRouter();
-  const { data, error, isLoading } = useMyOrders();
-  let orders: OrderSummary[] = [];
-  let userProfile: UserPrivateProfile;
-
-  if (!isLoading && data) {
-    ({ orders, userProfile } = data);
-  }
+  const { data: orders, error, isLoading } = useMyOrders();
+  const user = useUser();
 
   const goToMarket = () => router.push('/market');
 
@@ -48,8 +43,8 @@ export default function OrdersPage() {
         </div>
       ) : (
         <div className="flex flex-col gap-y-2 pb-10">
-          {orders.map((order) => (
-            <OrderSummaryCard key={order.id} currencyInfo={userProfile.currencyInfo} order={order} href={`/orders/${order.id}`} />
+          {user && orders.map((order) => (
+            <OrderSummaryCard key={order.id} currencyInfo={user?.currencyInfo} order={order} href={`/orders/${order.id}`} />
           ))}
         </div>
       )}
