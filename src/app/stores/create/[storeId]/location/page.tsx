@@ -17,7 +17,7 @@ import {
   useCountries,
   useNearestLocation,
   useStatesByCountry,
-} from '@/libs/location/location-api';
+} from '@/libs/location/hooks';
 
 export default function CreateStoreLocation() {
   const { storeId } = useParams<{ storeId: string }>();

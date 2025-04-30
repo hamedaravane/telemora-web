@@ -4,10 +4,9 @@ import {
   CreateStoreLogoDto,
   CreateStoreTagsDto,
   CreateStoreWorkingHoursDto,
-  StoreDetail,
-  StoreSummary,
   UpdateStoreDto,
-} from '@/libs/stores/types';
+} from '@/libs/stores/schemas';
+import { StoreDetail, StoreSummary } from '@/libs/stores/types';
 import httpClient from '@/libs/common/http-client';
 import { isDev } from '@/utils';
 import { generateMockStoreDetail, generateMockStoreSummaries } from '@/libs/stores/mocks';
