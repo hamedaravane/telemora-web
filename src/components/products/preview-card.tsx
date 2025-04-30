@@ -17,7 +17,7 @@ export default function ProductPreviewCard({ product }: { product: ProductPrevie
             priority={true}
             fill
             sizes="(min-width: 640px) 32vw, 100vw"
-            className="relative object-cover h-32 w-32"
+            className="relative object-cover"
           />
         </CardBody>
         <CardFooter className="block space-y-2">
