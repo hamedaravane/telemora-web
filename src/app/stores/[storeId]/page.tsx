@@ -10,7 +10,7 @@ import { FaPlus } from 'react-icons/fa6';
 import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
 import StarRating from '@/components/shared/star-rating';
 import ProductPreviewCard from '@/components/products/preview-card';
-import { useStoreDetailsQuery } from '@/libs/stores/stores-api';
+import { useStoreDetailsQuery } from '@/libs/stores/hooks';
 import ErrorPage from '@/components/shared/errorPage';
 import { copyToClipboard } from '@/utils/clipboard';
 

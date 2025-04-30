@@ -6,8 +6,8 @@ import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSubmitStoreBasicInfoMutation } from '@/libs/stores/stores-api';
-import { CreateStoreBasicDto, storeBasicFormSchema } from '@/libs/stores/types';
+import { useSubmitStoreBasicInfoMutation } from '@/libs/stores/hooks';
+import { CreateStoreBasicDto, storeBasicFormSchema } from '@/libs/stores/schemas';
 import toast from 'react-hot-toast';
 
 export default function CreateStoreBasicInformation() {

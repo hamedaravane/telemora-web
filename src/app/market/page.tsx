@@ -4,7 +4,7 @@ import React from 'react';
 import AppLayout from '@/components/shared/app-layout';
 import { ScrollShadow, Skeleton } from '@heroui/react';
 import { StorePreviewCard } from '@/components/stores/preview-card';
-import { useDiscoverableStoresQuery, useFeaturedStoresQuery } from '@/libs/stores/stores-api';
+import { useDiscoverableStoresQuery, useFeaturedStoresQuery } from '@/libs/stores/api';
 
 export default function MarketPage() {
   const { data: discoverStores, isLoading: isDiscoverStoresLoading } = useDiscoverableStoresQuery();

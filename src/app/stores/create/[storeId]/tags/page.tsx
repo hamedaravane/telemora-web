@@ -10,9 +10,9 @@ import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
 import { Tag } from '@/components/shared/tag';
 
-import { CreateStoreTagsDto, storeTagsFormSchema } from '@/libs/stores/types';
+import { CreateStoreTagsDto, storeTagsFormSchema } from '@/libs/stores/schemas';
 import toast from 'react-hot-toast';
-import { useSubmitStoreTagsMutation } from '@/libs/stores/stores-api';
+import { useSubmitStoreTagsMutation } from '@/libs/stores/hooks';
 
 const TAG_SUGGESTIONS = [
   'Clothing',
