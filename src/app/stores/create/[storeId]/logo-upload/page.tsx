@@ -9,8 +9,8 @@ import Image from 'next/image';
 import toast from 'react-hot-toast';
 
 import AppLayout from '@/components/shared/app-layout';
-import { useSubmitStoreLogoMutation } from '@/libs/stores/stores-api';
-import { CreateStoreLogoDto, storeLogoFormSchema } from '@/libs/stores/types';
+import { useSubmitStoreLogoMutation } from '@/libs/stores/hooks';
+import { CreateStoreLogoDto, storeLogoFormSchema } from '@/libs/stores/schemas';
 import { PageHeader } from '@/components/shared/page-header';
 
 export default function CreateStoreLogoUpload() {

@@ -10,9 +10,9 @@ import { FaPlus } from 'react-icons/fa6';
 import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
 import StarRating from '@/components/shared/star-rating';
 import ProductPreviewCard from '@/components/products/preview-card';
-import { useStoreDetailsQuery } from '@/libs/stores/stores-api';
+import { useStoreDetailsQuery } from '@/libs/stores/hooks';
 import ErrorPage from '@/components/shared/errorPage';
-import toast from 'react-hot-toast';
+import { copyToClipboard } from '@/utils/clipboard';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams<{ storeId: string }>();
@@ -21,32 +21,7 @@ export default function StoreDetailsPage() {
   const { data: store, isLoading, error } = useStoreDetailsQuery(storeId);
   const isOwner = user && store && store.owner.id === user.id;
 
-  const handleShare = async () => {
-    const url = window.location.href;
-    try {
-      if (navigator.clipboard) {
-        await navigator.clipboard.writeText(url);
-        toast.success('Link copied to clipboard!');
-        return;
-      }
-
-      // Fallback: Create a temporary input element
-      const tempInput = document.createElement('input');
-      tempInput.style.position = 'absolute';
-      tempInput.style.left = '-9999px';
-      tempInput.value = url;
-      document.body.appendChild(tempInput);
-
-      // Select and copy the text
-      tempInput.select();
-      document.execCommand('copy');
-      document.body.removeChild(tempInput);
-      toast.success('Link copied to clipboard!');
-    } catch (err) {
-      console.error('Clipboard operation failed', err);
-      toast.error(`Unable to copy link. The store URL is: ${url}`);
-    }
-  };
+  const handleShare = () => copyToClipboard(window.location.href);
 
   const handleEdit = () => router.push(`/stores/${store?.id}/edit`);
   const handleAddProduct = () => router.push(`/stores/${store?.id}/products/new`);

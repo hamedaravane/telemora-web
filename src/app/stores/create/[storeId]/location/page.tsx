@@ -9,15 +9,15 @@ import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CreateAddressDto, storeAddressFormSchema } from '@/libs/stores/types';
-import { useSubmitStoreAddressMutation } from '@/libs/stores/stores-api';
+import { CreateAddressDto, storeAddressFormSchema } from '@/libs/stores/schemas';
+import { useSubmitStoreAddressMutation } from '@/libs/stores/hooks';
 import toast from 'react-hot-toast';
 import {
   useCitiesByState,
   useCountries,
   useNearestLocation,
   useStatesByCountry,
-} from '@/libs/location/location-api';
+} from '@/libs/location/hooks';
 
 export default function CreateStoreLocation() {
   const { storeId } = useParams<{ storeId: string }>();

@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
-import { Address, CanonicalLocation } from './types';
+import { Address, CanonicalLocation } from '../types';
 
-export function generateMockCanonicalLocation(type: CanonicalLocation['type']): CanonicalLocation {
+function generateMockCanonicalLocation(type: CanonicalLocation['type']): CanonicalLocation {
   return {
     id: faker.number.int(),
     name:

@@ -9,10 +9,10 @@ import { Button, Form, Input, Progress, Switch } from '@heroui/react';
 import AppLayout from '@/components/shared/app-layout';
 import { PageHeader } from '@/components/shared/page-header';
 
-import { CreateStoreWorkingHoursDto, storeWorkingHoursFormSchema } from '@/libs/stores/types';
+import { CreateStoreWorkingHoursDto, storeWorkingHoursFormSchema } from '@/libs/stores/schemas';
 
 import toast from 'react-hot-toast';
-import { useSubmitStoreWorkingHoursMutation } from '@/libs/stores/stores-api';
+import { useSubmitStoreWorkingHoursMutation } from '@/libs/stores/hooks';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 

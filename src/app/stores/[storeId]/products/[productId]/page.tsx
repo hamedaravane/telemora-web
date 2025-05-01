@@ -81,7 +81,7 @@ export default function ProductDetailsPage() {
 
         {product.stock !== undefined && <p className=" ">In Stock: {product.stock}</p>}
 
-        {product.attributes && product.attributes.length > 0 && (
+        {Array.isArray(product.attributes) && product.attributes.length > 0 && (
           <div>
             <h3 className="font-semibold mb-2">Attributes</h3>
             <ul className="text-sm text-neutral-400 list-disc list-inside">
@@ -94,9 +94,9 @@ export default function ProductDetailsPage() {
           </div>
         )}
 
-        {product.variants && product.variants.length > 0 && (
+        {Array.isArray(product.variants) && product.variants.length > 0 && (
           <div>
-            <h3 className="font-semibold   mb-2">Variants</h3>
+            <h3 className="font-semibold mb-2">Variants</h3>
             <ul className="text-sm text-neutral-400 list-disc list-inside">
               {product.variants.map((variant, i) => (
                 <li key={i}>
