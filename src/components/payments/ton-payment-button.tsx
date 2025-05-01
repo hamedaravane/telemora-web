@@ -3,7 +3,7 @@
 import { useTonAddress, useTonConnectUI, useTonWallet } from '@tonconnect/ui-react';
 import { Button } from '@heroui/react';
 import toast from 'react-hot-toast';
-import { useCreatePayment } from '@/libs/payments/payments-api';
+import { useCreatePayment } from '@/libs/payments/hooks';
 import { buildMarketplaceTransaction } from '@/libs/payments/utils';
 import { environment } from '@environments';
 import { Cell } from '@ton/core';

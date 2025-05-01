@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { PaymentDetail, PaymentStatus, PaymentSummary } from './types';
+import { PaymentDetail, PaymentStatus, PaymentSummary } from '../types';
 import { generateMockOrderSummary } from '@/libs/orders/mocks';
 import { generateMockUserSummary } from '@/libs/users/mocks';
 
@@ -11,6 +11,10 @@ export async function generateMockPaymentSummary(): Promise<PaymentSummary> {
     transactionHash: faker.string.hexadecimal({ length: 64 }),
     createdAt: faker.date.past(),
   };
+}
+
+export async function generateMockPaymentSummaries(): Promise<PaymentSummary[]> {
+  return Promise.all(Array.from({length: 5}, () => generateMockPaymentSummary()))
 }
 
 export async function generateMockPaymentDetail(): Promise<PaymentDetail> {
