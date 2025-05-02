@@ -1,8 +1,8 @@
 'use client';
 
-import { Button, Input, Select, SelectItem, Textarea } from '@heroui/react';
+import { Button, Input, Textarea } from '@heroui/react';
 import React, { useState } from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FaPlus, FaTrash } from 'react-icons/fa6';
 import AppLayout from '@/components/shared/app-layout';
@@ -11,6 +11,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { ProductType } from '@/libs/products/types';
 import { useCreateProductMutation } from '@/libs/products/hooks';
 import { CreateProductFormData, createProductSchema } from '@/libs/products/schemas';
+import { PageHeader } from '@/components/shared/page-header';
+import { ProductTypeSelector } from '@/components/products/product-type-selector';
 
 export default function CreateProductPage() {
   const { storeId } = useParams();
@@ -61,7 +63,7 @@ export default function CreateProductPage() {
   return (
     <AppLayout>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-20">
-        <h1 className="text-2xl font-bold">Create New Product</h1>
+        <PageHeader title="Create New Product" />
 
         <Input
           label="Product Name"
@@ -98,28 +100,7 @@ export default function CreateProductPage() {
           <img src={previewUrl} alt="Preview" className="w-full rounded-xl border mt-2" />
         )}
 
-        <Controller
-          name="productType"
-          control={control}
-          render={({ field }) => (
-            <Select
-              label="Product Type"
-              selectedKeys={new Set([field.value])}
-              onSelectionChange={(keys) => {
-                const selected = Array.from(keys)[0] as ProductType;
-                field.onChange(selected);
-              }}
-              isInvalid={!!errors.productType}
-              errorMessage={errors.productType?.message}
-            >
-              {Object.entries(ProductType).map(([key, value]) => (
-                <SelectItem key={value} aria-label={key}>
-                  {value}
-                </SelectItem>
-              ))}
-            </Select>
-          )}
-        />
+        <ProductTypeSelector name="productType" control={control} errors={errors} />
 
         {productType === 'physical' && (
           <Input
