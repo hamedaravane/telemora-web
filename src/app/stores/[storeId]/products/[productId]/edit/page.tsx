@@ -8,10 +8,11 @@ import AppLayout from '@/components/shared/app-layout';
 import { Button, Form, Input, Textarea } from '@heroui/react';
 import { useProductDetails, useUpdateProductMutation } from '@/libs/products/hooks';
 import { PageHeader } from '@/components/shared/page-header';
-import { FaPlus, FaTrash } from 'react-icons/fa6';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { ProductTypeSelector } from '@/components/products/product-type-selector';
+import { ProductAttributeFields } from '@/components/products/product-attributes-field';
+import { ProductVariantFields } from '@/components/products/product-variants-field';
 
 export default function EditProductPage() {
   const { storeId, productId } = useParams<{ storeId: string; productId: string }>();
@@ -126,62 +127,21 @@ export default function EditProductPage() {
           />
         )}
 
-        {/* Attributes */}
-        <section>
-          <h2 className="font-semibold mb-2">Attributes</h2>
-          {attributeFields.map((field, index) => (
-            <div key={field.id} className="flex items-center gap-2 mb-2">
-              <Input {...register(`attributes.${index}.attributeName`)} placeholder="Name" />
-              <Input {...register(`attributes.${index}.attributeValue`)} placeholder="Value" />
-              <Button variant="light" size="sm" onPress={() => removeAttribute(index)}>
-                <FaTrash />
-              </Button>
-            </div>
-          ))}
-          <Button
-            variant="ghost"
-            size="sm"
-            startContent={<FaPlus />}
-            onPress={() => appendAttribute({ attributeName: '', attributeValue: '' })}
-          >
-            Add Attribute
-          </Button>
-        </section>
+        <ProductAttributeFields
+          fields={attributeFields}
+          register={register}
+          append={appendAttribute}
+          remove={removeAttribute}
+          name="attributes"
+        />
 
-        {/* Variants */}
-        <section>
-          <h2 className="font-semibold mb-2">Variants</h2>
-          {variantFields.map((field, index) => (
-            <div key={field.id} className="flex items-center gap-2 mb-2">
-              <Input {...register(`variants.${index}.variantName`)} placeholder="Name" />
-              <Input {...register(`variants.${index}.variantValue`)} placeholder="Value" />
-              <Input
-                {...register(`variants.${index}.additionalPrice`, {
-                  valueAsNumber: true,
-                })}
-                placeholder="Extra Price"
-                type="number"
-              />
-              <Button variant="light" size="sm" onPress={() => removeVariant(index)}>
-                <FaTrash />
-              </Button>
-            </div>
-          ))}
-          <Button
-            variant="ghost"
-            size="sm"
-            startContent={<FaPlus />}
-            onPress={() =>
-              appendVariant({
-                variantName: '',
-                variantValue: '',
-                additionalPrice: 0,
-              })
-            }
-          >
-            Add Variant
-          </Button>
-        </section>
+        <ProductVariantFields
+          fields={variantFields}
+          register={register}
+          append={appendVariant}
+          remove={removeVariant}
+          name="variants"
+        />
 
         <Button
           type="submit"
