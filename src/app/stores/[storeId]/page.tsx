@@ -131,13 +131,7 @@ export default function StoreDetailsPage() {
           {user &&
             store.products
               .slice(0, 4)
-              .map((product) => (
-                <ProductPreviewCard
-                  key={product.id}
-                  product={product}
-                  currencyInfo={user?.currencyInfo}
-                />
-              ))}
+              .map((product) => <ProductPreviewCard key={product.id} product={product} />)}
         </div>
 
         {isOwner && (

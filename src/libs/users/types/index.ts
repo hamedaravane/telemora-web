@@ -23,7 +23,7 @@ export interface UserSummary extends UserPublicPreview {
   address: Address;
 }
 
-export interface CurrencyInfo{
+export interface CurrencyInfo {
   tonToUsdRate: string;
   localCurrencyToUsdRate: string;
   localCurrencyCode: string;
@@ -55,4 +55,3 @@ export interface UpdateProfileDto {
   firstName?: string;
   lastName?: string;
 }
-

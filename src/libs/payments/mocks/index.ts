@@ -14,7 +14,7 @@ export async function generateMockPaymentSummary(): Promise<PaymentSummary> {
 }
 
 export async function generateMockPaymentSummaries(): Promise<PaymentSummary[]> {
-  return Promise.all(Array.from({length: 5}, () => generateMockPaymentSummary()))
+  return Promise.all(Array.from({ length: 5 }, () => generateMockPaymentSummary()));
 }
 
 export async function generateMockPaymentDetail(): Promise<PaymentDetail> {

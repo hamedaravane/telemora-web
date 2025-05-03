@@ -9,13 +9,13 @@ import { PageHeader } from '@/libs/common/components/page-header';
 import ErrorPage from '@/libs/common/components/errorPage';
 import OrderItemPreviewCard from '@/libs/orders/components/order-item-preview';
 import { formatDate, formatRelative } from '@/utils/date';
-import Price from '@/libs/common/components/price';
 import { OrderStatusChip } from '@/libs/orders/components/order-status-chip';
 import { PaymentStatusChip } from '@/libs/payments/components/payment-status-chip';
 import { TonPaymentButton } from '@/libs/payments/components/ton-payment-button';
 import { OrderShipmentCard } from '@/libs/orders/components/order-shipment-card';
 import { PaymentStatus } from '@/libs/payments/types';
 import { OrderStatus } from '@/libs/orders/types';
+import PriceComponent from '@/libs/common/components/PriceComponent';
 
 export default function OrderDetailsPage() {
   const { orderId } = useParams<{ orderId: string }>();
@@ -93,7 +93,7 @@ export default function OrderDetailsPage() {
         <div className="text-sm space-y-1">
           <div className="flex gap-x-2">
             <span>Total Amount: </span>
-            <Price amount={order.totalAmount} />
+            <PriceComponent amount={order.totalAmount} />
           </div>
           <p>Delivery Date: {formatDate(order.deliveryDate)}</p>
           <p className="text-sm">

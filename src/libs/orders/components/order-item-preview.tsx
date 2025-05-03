@@ -1,8 +1,8 @@
 import React from 'react';
 import { OrderItemPreview } from '@/libs/orders/types';
-import Price from '@/libs/common/components/price';
 import { Card, CardBody, Chip } from '@heroui/react';
 import Image from 'next/image';
+import PriceComponent from '@/libs/common/components/PriceComponent';
 
 export default function OrderItemPreviewCard({ orderItem }: { orderItem: OrderItemPreview }) {
   return (
@@ -18,7 +18,7 @@ export default function OrderItemPreviewCard({ orderItem }: { orderItem: OrderIt
           />
           <div className="space-y-4">
             <strong>{orderItem.product.name}</strong>
-            <Price amount={orderItem.totalPrice} />
+            <PriceComponent amount={orderItem.totalPrice} />
           </div>
         </div>
         <Chip size="sm">x{orderItem.quantity}</Chip>

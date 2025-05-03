@@ -9,17 +9,17 @@
 
 ## 🌟 Overview
 
-Telemora is a cutting-edge Telegram Mini App that delivers a seamless marketplace experience. Powered by **Next.js**,
-**React Query**, and **TailwindCSS**, it enables users to browse products, manage orders, create
-stores, and process payments using **TON Connect**.
+Telemora is a cutting-edge Telegram Mini App that delivers a seamless marketplace experience.
+Powered by **Next.js**, **React Query**, and **TailwindCSS**, it enables users to browse products,
+manage orders, create stores, and process payments using **TON Connect**.
 
-This project serves as the frontend interface for the **Telemora API**, providing robust integration for authentication,
-product management, order processing, and payment handling.
+This project serves as the frontend interface for the **Telemora API**, providing robust integration
+for authentication, product management, order processing, and payment handling.
 
 ### 🔌 API Integration
 
-This frontend interacts with the **Telemora API** for data fetching and operations.
-The API base URL is set via the `NEXT_PUBLIC_API_URL` environment variable.
+This frontend interacts with the **Telemora API** for data fetching and operations. The API base URL
+is set via the `NEXT_PUBLIC_API_URL` environment variable.
 
 ## 🚀 Features
 
@@ -43,12 +43,12 @@ The API base URL is set via the `NEXT_PUBLIC_API_URL` environment variable.
 
 ## ⚙️ Required Environment Variables
 
-| Variable | Example Value | Description |
-|----------|---------------|-------------|
-| `NEXT_PUBLIC_API_URL` | `https://api.telemora.com` | Base URL for API requests |
-| `NEXT_PUBLIC_TELEMORA_ADDRESS` | `EQabc...` | TON wallet for marketplace treasury |
-| `NEXT_PUBLIC_SMART_CONTRACT_ADDRESS` | `EQdef...` | TON smart contract payment address |
-| `NEXT_PUBLIC_COMMISSION_PERCENTAGE` | `2.5` | Platform fee as a percentage |
+| Variable                             | Example Value              | Description                         |
+|--------------------------------------|----------------------------|-------------------------------------|
+| `NEXT_PUBLIC_API_URL`                | `https://api.telemora.com` | Base URL for API requests           |
+| `NEXT_PUBLIC_TELEMORA_ADDRESS`       | `EQabc...`                 | TON wallet for marketplace treasury |
+| `NEXT_PUBLIC_SMART_CONTRACT_ADDRESS` | `EQdef...`                 | TON smart contract payment address  |
+| `NEXT_PUBLIC_COMMISSION_PERCENTAGE`  | `2.5`                      | Platform fee as a percentage        |
 
 ## 📁 Project Structure
 
@@ -69,10 +69,10 @@ The API base URL is set via the `NEXT_PUBLIC_API_URL` environment variable.
 - npm (v8 or higher)
 - Git
 
-
 ### Installation
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/hamedaravane/telemora-web.git
    cd telemora-web
@@ -86,6 +86,7 @@ The API base URL is set via the `NEXT_PUBLIC_API_URL` environment variable.
 ### Development
 
 1. Start the development server
+
    ```bash
    npm run dev
    ```
@@ -95,6 +96,7 @@ The API base URL is set via the `NEXT_PUBLIC_API_URL` environment variable.
 ### Build
 
 1. Create a production build
+
    ```bash
    npm run build
    ```
@@ -108,4 +110,5 @@ The API base URL is set via the `NEXT_PUBLIC_API_URL` environment variable.
 
 **This is NOT open source.**  
 All rights to this code are reserved by Hamed Arghavan.  
-This repository is shared for collaboration purposes only. Unauthorized use or reproduction is strictly prohibited.
+This repository is shared for collaboration purposes only. Unauthorized use or reproduction is
+strictly prohibited.

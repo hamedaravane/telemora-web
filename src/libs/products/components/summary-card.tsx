@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '@heroui/react';
 import { FaStore } from 'react-icons/fa6';
-import Price from '@/libs/common/components/price';
+import PriceComponent from '@/libs/common/components/PriceComponent';
 
 interface ProductSummaryCardProps {
   product: ProductSummary;
@@ -41,7 +41,7 @@ export default function ProductSummaryCard({ product, className }: ProductSummar
       <div className="flex-1 space-y-1">
         <div className="flex justify-between items-center">
           <h3 className="text-sm font-semibold line-clamp-1">{name}</h3>
-          <Price amount={price} />
+          <PriceComponent amount={price} />
         </div>
 
         <div className="flex items-center justify-between">

@@ -72,7 +72,7 @@ export default function ProfilePage() {
             <PageHeader title="Recent Orders" />
             <div className="space-y-4">
               {user.orders.map((order) => (
-                <OrderSummaryCard key={order.id} order={order} currencyInfo={user.currencyInfo} />
+                <OrderSummaryCard key={order.id} order={order} />
               ))}
             </div>
           </section>

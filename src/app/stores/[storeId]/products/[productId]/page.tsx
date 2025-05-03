@@ -3,7 +3,6 @@
 import { useParams } from 'next/navigation';
 import { Button, Divider, ScrollShadow, Skeleton } from '@heroui/react';
 import AppLayout from '@/libs/common/components/app-layout';
-import Price from '@/libs/common/components/price';
 import Image from 'next/image';
 import ReviewPreviewCard from '@/libs/reviews/components/preview-card';
 import { PageHeader } from '@/libs/common/components/page-header';
@@ -11,18 +10,11 @@ import { User } from '@heroui/user';
 import StarRating from '@/libs/common/components/star-rating';
 import { useProductDetails } from '@/libs/products/hooks';
 import ErrorPage from '@/libs/common/components/errorPage';
-import { useUser } from '@/context/userContext';
-import Decimal from 'decimal.js';
+import PriceComponent from '@/libs/common/components/PriceComponent';
 
 export default function ProductDetailsPage() {
   const { storeId, productId } = useParams();
-  const user = useUser();
-  const currencyInfo = user?.currencyInfo;
   const { data: product, isLoading, error, refetch } = useProductDetails(+storeId, +productId);
-
-  const tonPriceInLocalCurrency = new Decimal(currencyInfo?.tonToUsdRate || 0)
-    .dividedBy(new Decimal(currencyInfo?.localCurrencyToUsdRate || 0))
-    .toNumber();
 
   if (isLoading) {
     return (
@@ -67,12 +59,7 @@ export default function ProductDetailsPage() {
 
         <div>
           <h1 className="text-lg font-bold">{product.name}</h1>
-          <Price fontSize={16} amount={product.price} />
-          <Price
-            fontSize={16}
-            amount={tonPriceInLocalCurrency}
-            localCurrencyCode={currencyInfo?.localCurrencyCode}
-          />
+          <PriceComponent amount={product.price} />
         </div>
 
         <Button fullWidth size="lg" className="mt-4">

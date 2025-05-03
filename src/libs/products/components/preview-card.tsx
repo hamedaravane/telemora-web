@@ -3,20 +3,14 @@
 import { ProductPreview } from '@/libs/products/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import Price from '@/libs/common/components/price';
 import { Card, CardBody, CardFooter } from '@heroui/react';
-import { CurrencyInfo } from '@/libs/users/types';
-import Decimal from 'decimal.js';
+import PriceComponent from '@/libs/common/components/PriceComponent';
 
 interface ProductPreviewCard {
   product: ProductPreview;
-  currencyInfo: CurrencyInfo;
 }
 
-export default function ProductPreviewCard({ product, currencyInfo }: ProductPreviewCard) {
-  const tonPriceInLocalCurrency = new Decimal(currencyInfo?.tonToUsdRate || 0)
-    .dividedBy(new Decimal(currencyInfo?.localCurrencyToUsdRate || 0))
-    .toNumber();
+export default function ProductPreviewCard({ product }: ProductPreviewCard) {
   return (
     <Link href={`/stores/${product.storeId}/products/${product.id}`}>
       <Card>
@@ -32,11 +26,7 @@ export default function ProductPreviewCard({ product, currencyInfo }: ProductPre
         </CardBody>
         <CardFooter className="block space-y-2">
           <h3 className="text-sm font-medium line-clamp-2 truncate">{product.name}</h3>
-          <Price amount={product.price} />
-          <Price
-            amount={tonPriceInLocalCurrency}
-            localCurrencyCode={currencyInfo.localCurrencyCode}
-          />
+          <PriceComponent amount={product.price} />
         </CardFooter>
       </Card>
     </Link>
