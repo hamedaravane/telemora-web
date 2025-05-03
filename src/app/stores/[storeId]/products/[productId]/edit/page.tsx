@@ -4,15 +4,15 @@ import { useParams, useRouter } from 'next/navigation';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { UpdateProductFormData, updateProductSchema } from '@/libs/products/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import AppLayout from '@/components/shared/app-layout';
+import AppLayout from '@/libs/common/components/app-layout';
 import { Button, Form, Input, Textarea } from '@heroui/react';
 import { useProductDetails, useUpdateProductMutation } from '@/libs/products/hooks';
-import { PageHeader } from '@/components/shared/page-header';
+import { PageHeader } from '@/libs/common/components/page-header';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-import { ProductTypeSelector } from '@/components/products/product-type-selector';
-import { ProductAttributeFields } from '@/components/products/product-attributes-field';
-import { ProductVariantFields } from '@/components/products/product-variants-field';
+import { ProductTypeSelector } from '@/libs/products/components/product-type-selector';
+import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
+import { ProductVariantFields } from '@/libs/products/components/product-variants-field';
 
 export default function EditProductPage() {
   const { storeId, productId } = useParams<{ storeId: string; productId: string }>();
@@ -64,7 +64,7 @@ export default function EditProductPage() {
       router.push(`/stores/${result.store.id}`);
     } catch (error) {
       console.error(error);
-      toast.error('Failed to create products');
+      toast.error('Failed to create components');
     }
   };
 

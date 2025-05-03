@@ -4,7 +4,7 @@ import { createPayment, getPaymentDetails, getPayments } from '@/libs/payments/a
 
 export function usePayments() {
   return useQuery({
-    queryKey: ['payments'],
+    queryKey: ['components'],
     queryFn: getPayments,
   });
 }
@@ -23,7 +23,7 @@ export function useCreatePayment() {
   return useMutation({
     mutationFn: (data: CreatePaymentDto) => createPayment(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['payments'] });
+      queryClient.invalidateQueries({ queryKey: ['components'] });
     },
   });
 }

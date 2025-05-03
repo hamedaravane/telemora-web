@@ -1,7 +1,7 @@
 'use client';
 
 import BottomNavigation from './bottom-navigation';
-import BackwardNavbar from '@/components/shared/backward-navbar';
+import BackwardNavbar from '@/libs/common/components/backward-navbar';
 import React, { PropsWithChildren } from 'react';
 
 const InnerLayout: React.FC<PropsWithChildren> = ({ children }) => {

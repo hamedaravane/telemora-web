@@ -12,7 +12,7 @@ import { generateMockProductDetail, generateMockProductPreviews } from '@/libs/p
 
 export function useStoreProducts(storeId: number) {
   return useQuery({
-    queryKey: ['store-products', storeId],
+    queryKey: ['store-components', storeId],
     queryFn: () => (isDev ? generateMockProductPreviews() : getStoreProducts(storeId)),
     enabled: !!storeId,
   });
@@ -33,7 +33,7 @@ export function useCreateProductMutation(storeId: number) {
     mutationFn: (data: CreateProductFormData) =>
       isDev ? generateMockProductDetail(storeId) : createProduct(storeId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['store-products', storeId] });
+      queryClient.invalidateQueries({ queryKey: ['store-components', storeId] });
     },
   });
 }
@@ -46,7 +46,7 @@ export function useUpdateProductMutation(storeId: number, productId: number) {
       isDev ? generateMockProductDetail(storeId) : updateProduct(storeId, productId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['product-details', storeId, productId] });
-      queryClient.invalidateQueries({ queryKey: ['store-products', storeId] });
+      queryClient.invalidateQueries({ queryKey: ['store-components', storeId] });
     },
   });
 }
@@ -57,7 +57,7 @@ export function useDeleteProductMutation(storeId: number, productId: number) {
   return useMutation({
     mutationFn: () => deleteProduct(storeId, productId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['store-products', storeId] });
+      queryClient.invalidateQueries({ queryKey: ['store-components', storeId] });
     },
   });
 }

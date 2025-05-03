@@ -3,11 +3,11 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Spinner } from '@heroui/react';
-import AppLayout from '@/components/shared/app-layout';
-import StoreSummaryCard from '@/components/stores/summary-card';
-import { PageHeader } from '@/components/shared/page-header';
+import AppLayout from '@/libs/common/components/app-layout';
+import StoreSummaryCard from '@/libs/stores/components/summary-card';
+import { PageHeader } from '@/libs/common/components/page-header';
 import { useUserStoresQuery } from '@/libs/stores/hooks';
-import ErrorPage from '@/components/shared/errorPage';
+import ErrorPage from '@/libs/common/components/errorPage';
 
 export default function StoreListPage() {
   const router = useRouter();

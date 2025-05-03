@@ -5,13 +5,13 @@ import { useParams, useRouter } from 'next/navigation';
 import { Accordion, AccordionItem, Button, Chip, Spinner, Tooltip } from '@heroui/react';
 import Image from 'next/image';
 import { useUser } from '@/context/userContext';
-import AppLayout from '@/components/shared/app-layout';
+import AppLayout from '@/libs/common/components/app-layout';
 import { FaPlus } from 'react-icons/fa6';
 import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
-import StarRating from '@/components/shared/star-rating';
-import ProductPreviewCard from '@/components/products/preview-card';
+import StarRating from '@/libs/common/components/star-rating';
+import ProductPreviewCard from '@/libs/products/components/preview-card';
 import { useStoreDetailsQuery } from '@/libs/stores/hooks';
-import ErrorPage from '@/components/shared/errorPage';
+import ErrorPage from '@/libs/common/components/errorPage';
 import { copyToClipboard } from '@/utils/clipboard';
 
 export default function StoreDetailsPage() {
@@ -128,9 +128,16 @@ export default function StoreDetailsPage() {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          {user && store.products.slice(0, 4).map((product) => (
-            <ProductPreviewCard key={product.id} product={product} currencyInfo={user?.currencyInfo}/>
-          ))}
+          {user &&
+            store.products
+              .slice(0, 4)
+              .map((product) => (
+                <ProductPreviewCard
+                  key={product.id}
+                  product={product}
+                  currencyInfo={user?.currencyInfo}
+                />
+              ))}
         </div>
 
         {isOwner && (

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '@heroui/react';
 import { FaStore } from 'react-icons/fa6';
-import Price from '@/components/shared/price';
+import Price from '@/libs/common/components/price';
 
 interface ProductSummaryCardProps {
   product: ProductSummary;

@@ -5,7 +5,7 @@ import { Button, Form, Select, SelectItem } from '@heroui/react';
 import { Controller, useForm } from 'react-hook-form';
 import { UpdateLanguageFormData, updateLanguageSchema } from '@/libs/users/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { PageHeader } from '@/components/shared/page-header';
+import { PageHeader } from '@/libs/common/components/page-header';
 import toast from 'react-hot-toast';
 
 const availableLanguages = [

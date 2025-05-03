@@ -1,4 +1,4 @@
-// libs/reviews/schemas.ts
+// libs/components/schemas.ts
 import { z } from 'zod';
 import { ReportReason } from '@/libs/reviews/types';
 

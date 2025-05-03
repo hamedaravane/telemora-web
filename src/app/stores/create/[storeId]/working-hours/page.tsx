@@ -6,8 +6,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button, Form, Input, Progress, Switch } from '@heroui/react';
-import AppLayout from '@/components/shared/app-layout';
-import { PageHeader } from '@/components/shared/page-header';
+import AppLayout from '@/libs/common/components/app-layout';
+import { PageHeader } from '@/libs/common/components/page-header';
 
 import { CreateStoreWorkingHoursDto, storeWorkingHoursFormSchema } from '@/libs/stores/schemas';
 

@@ -4,7 +4,7 @@ import { StoreSummary } from '@/libs/stores/types';
 import { Card, CardBody, CardFooter, CardHeader, Chip } from '@heroui/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import StarRating from '@/components/shared/star-rating';
+import StarRating from '@/libs/common/components/star-rating';
 import { Address } from '@/libs/location/types';
 
 const StoreSummaryCard = ({ store }: { store: StoreSummary }) => {

@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import AppLayout from '@/components/shared/app-layout';
+import AppLayout from '@/libs/common/components/app-layout';
 import { ScrollShadow, Skeleton } from '@heroui/react';
-import { StorePreviewCard } from '@/components/stores/preview-card';
+import { StorePreviewCard } from '@/libs/stores/components/preview-card';
 import { useDiscoverableStoresQuery, useFeaturedStoresQuery } from '@/libs/stores/hooks';
 
 export default function MarketPage() {

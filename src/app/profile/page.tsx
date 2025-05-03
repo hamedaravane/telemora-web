@@ -1,13 +1,13 @@
 'use client';
 
-import AppLayout from '@/components/shared/app-layout';
+import AppLayout from '@/libs/common/components/app-layout';
 import { useUser } from '@/context/userContext';
 import { Divider, Skeleton } from '@heroui/react';
-import { StorePreviewCard } from '@/components/stores/preview-card';
-import OrderSummaryCard from '@/components/orders/summary-card';
-import { PageHeader } from '@/components/shared/page-header';
+import { StorePreviewCard } from '@/libs/stores/components/preview-card';
+import OrderSummaryCard from '@/libs/orders/components/summary-card';
+import { PageHeader } from '@/libs/common/components/page-header';
 import React from 'react';
-import ProfileCard from '@/components/users/profile-card';
+import ProfileCard from '@/libs/users/components/profile-card';
 
 export default function ProfilePage() {
   const user = useUser();
@@ -72,7 +72,7 @@ export default function ProfilePage() {
             <PageHeader title="Recent Orders" />
             <div className="space-y-4">
               {user.orders.map((order) => (
-                <OrderSummaryCard key={order.id} order={order} currencyInfo={user.currencyInfo}/>
+                <OrderSummaryCard key={order.id} order={order} currencyInfo={user.currencyInfo} />
               ))}
             </div>
           </section>

@@ -8,10 +8,10 @@ import { Button, Form, Progress, Spinner } from '@heroui/react';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 
-import AppLayout from '@/components/shared/app-layout';
+import AppLayout from '@/libs/common/components/app-layout';
 import { useSubmitStoreLogoMutation } from '@/libs/stores/hooks';
 import { CreateStoreLogoDto, storeLogoFormSchema } from '@/libs/stores/schemas';
-import { PageHeader } from '@/components/shared/page-header';
+import { PageHeader } from '@/libs/common/components/page-header';
 
 export default function CreateStoreLogoUpload() {
   const router = useRouter();

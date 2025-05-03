@@ -6,9 +6,9 @@ import { Button, Form, Input, Progress } from '@heroui/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import AppLayout from '@/components/shared/app-layout';
-import { PageHeader } from '@/components/shared/page-header';
-import { Tag } from '@/components/shared/tag';
+import AppLayout from '@/libs/common/components/app-layout';
+import { PageHeader } from '@/libs/common/components/page-header';
+import { Tag } from '@/libs/common/components/tag';
 
 import { CreateStoreTagsDto, storeTagsFormSchema } from '@/libs/stores/schemas';
 import toast from 'react-hot-toast';

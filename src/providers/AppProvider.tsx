@@ -6,7 +6,7 @@ import { QueryContext } from '@/context/queryContext';
 import TonConnectClientProvider from '@/providers/TonConnectClientProvider';
 import dynamic from 'next/dynamic';
 
-const InitTelegram = dynamic(() => import('@/components/shared/init-telegram'), {
+const InitTelegram = dynamic(() => import('@/libs/common/components/init-telegram'), {
   ssr: false,
 });
 

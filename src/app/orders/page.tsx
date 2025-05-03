@@ -2,15 +2,14 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import AppLayout from '@/components/shared/app-layout';
+import AppLayout from '@/libs/common/components/app-layout';
 import { Button, Spinner } from '@heroui/react';
 import { FaBoxOpen } from 'react-icons/fa6';
-import OrderSummaryCard from '@/components/orders/summary-card';
-import { PageHeader } from '@/components/shared/page-header';
+import OrderSummaryCard from '@/libs/orders/components/summary-card';
+import { PageHeader } from '@/libs/common/components/page-header';
 import { useMyOrders } from '@/libs/orders/hooks';
-import ErrorPage from '@/components/shared/errorPage';
+import ErrorPage from '@/libs/common/components/errorPage';
 import { useUser } from '@/context/userContext';
-
 
 export default function OrdersPage() {
   const router = useRouter();
@@ -43,9 +42,15 @@ export default function OrdersPage() {
         </div>
       ) : (
         <div className="flex flex-col gap-y-2 pb-10">
-          {user && orders.map((order) => (
-            <OrderSummaryCard key={order.id} currencyInfo={user?.currencyInfo} order={order} href={`/orders/${order.id}`} />
-          ))}
+          {user &&
+            orders.map((order) => (
+              <OrderSummaryCard
+                key={order.id}
+                currencyInfo={user?.currencyInfo}
+                order={order}
+                href={`/orders/${order.id}`}
+              />
+            ))}
         </div>
       )}
     </AppLayout>

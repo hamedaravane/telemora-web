@@ -2,15 +2,15 @@
 
 import { useParams } from 'next/navigation';
 import { Button, Divider, ScrollShadow, Skeleton } from '@heroui/react';
-import AppLayout from '@/components/shared/app-layout';
-import Price from '@/components/shared/price';
+import AppLayout from '@/libs/common/components/app-layout';
+import Price from '@/libs/common/components/price';
 import Image from 'next/image';
-import ReviewPreviewCard from '@/components/reviews/preview-card';
-import { PageHeader } from '@/components/shared/page-header';
+import ReviewPreviewCard from '@/libs/reviews/components/preview-card';
+import { PageHeader } from '@/libs/common/components/page-header';
 import { User } from '@heroui/user';
-import StarRating from '@/components/shared/star-rating';
+import StarRating from '@/libs/common/components/star-rating';
 import { useProductDetails } from '@/libs/products/hooks';
-import ErrorPage from '@/components/shared/errorPage';
+import ErrorPage from '@/libs/common/components/errorPage';
 import { useUser } from '@/context/userContext';
 import Decimal from 'decimal.js';
 
@@ -21,8 +21,8 @@ export default function ProductDetailsPage() {
   const { data: product, isLoading, error, refetch } = useProductDetails(+storeId, +productId);
 
   const tonPriceInLocalCurrency = new Decimal(currencyInfo?.tonToUsdRate || 0)
-  .dividedBy(new Decimal(currencyInfo?.localCurrencyToUsdRate || 0))
-  .toNumber();
+    .dividedBy(new Decimal(currencyInfo?.localCurrencyToUsdRate || 0))
+    .toNumber();
 
   if (isLoading) {
     return (
@@ -68,7 +68,11 @@ export default function ProductDetailsPage() {
         <div>
           <h1 className="text-lg font-bold">{product.name}</h1>
           <Price fontSize={16} amount={product.price} />
-          <Price fontSize={16} amount={tonPriceInLocalCurrency} localCurrencyCode={currencyInfo?.localCurrencyCode} />
+          <Price
+            fontSize={16}
+            amount={tonPriceInLocalCurrency}
+            localCurrencyCode={currencyInfo?.localCurrencyCode}
+          />
         </div>
 
         <Button fullWidth size="lg" className="mt-4">

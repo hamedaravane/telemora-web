@@ -2,8 +2,8 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Form, Input, Progress, Textarea } from '@heroui/react';
-import AppLayout from '@/components/shared/app-layout';
-import { PageHeader } from '@/components/shared/page-header';
+import AppLayout from '@/libs/common/components/app-layout';
+import { PageHeader } from '@/libs/common/components/page-header';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSubmitStoreBasicInfoMutation } from '@/libs/stores/hooks';

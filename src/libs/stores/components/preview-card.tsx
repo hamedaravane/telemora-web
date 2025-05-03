@@ -1,6 +1,6 @@
 import { StorePreview } from '@/libs/stores/types';
 import Image from 'next/image';
-import StarRating from '@/components/shared/star-rating';
+import StarRating from '@/libs/common/components/star-rating';
 import Link from 'next/link';
 import React from 'react';
 import { Card, CardBody, cn } from '@heroui/react';

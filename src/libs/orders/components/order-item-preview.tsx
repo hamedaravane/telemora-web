@@ -1,6 +1,6 @@
 import React from 'react';
 import { OrderItemPreview } from '@/libs/orders/types';
-import Price from '@/components/shared/price';
+import Price from '@/libs/common/components/price';
 import { Card, CardBody, Chip } from '@heroui/react';
 import Image from 'next/image';
 
