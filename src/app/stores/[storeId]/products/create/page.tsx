@@ -14,6 +14,7 @@ import { PageHeader } from '@/libs/common/components/page-header';
 import { ProductTypeSelector } from '@/libs/products/components/product-type-selector';
 import { ProductVariantFields } from '@/libs/products/components/product-variants-field';
 import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
 
 export default function CreateProductPage() {
   const { storeId } = useParams();
@@ -54,6 +55,7 @@ export default function CreateProductPage() {
     try {
       const result = await mutateAsync(data);
       toast.success('Product created successfully!');
+      hapticFeedback.impactOccurred('light');
       router.push(`/stores/${result.store.id}`);
     } catch (error) {
       console.error(error);

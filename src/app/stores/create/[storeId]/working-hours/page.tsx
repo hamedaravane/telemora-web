@@ -13,6 +13,7 @@ import { CreateStoreWorkingHoursDto, storeWorkingHoursFormSchema } from '@/libs/
 
 import toast from 'react-hot-toast';
 import { useSubmitStoreWorkingHoursMutation } from '@/libs/stores/hooks';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -76,6 +77,7 @@ export default function CreateStoreWorkingHours() {
     try {
       await mutateAsync(data);
       toast.success('Working hours saved');
+      hapticFeedback.impactOccurred('light');
       router.push(`/stores/create/${storeId}/logo-upload`);
     } catch {
       toast.error('Failed to save working hours');

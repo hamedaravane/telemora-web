@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Button, Form, Input, Progress, Select, SelectItem, Skeleton } from '@heroui/react';
-import { locationManager, useSignal } from '@telegram-apps/sdk-react';
+import { hapticFeedback, locationManager, useSignal } from '@telegram-apps/sdk-react';
 import { FaGear, FaLocationDot } from 'react-icons/fa6';
 import AppLayout from '@/libs/common/components/app-layout';
 import { PageHeader } from '@/libs/common/components/page-header';
@@ -101,6 +101,7 @@ export default function CreateStoreLocation() {
     try {
       await updateLocation(data);
       toast.success('Store location updated!');
+      hapticFeedback.impactOccurred('light');
       router.push(`/stores/create/${storeId}/tags`);
     } catch (error) {
       console.error(error);

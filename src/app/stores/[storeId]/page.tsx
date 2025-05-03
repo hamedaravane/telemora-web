@@ -13,6 +13,7 @@ import ProductPreviewCard from '@/libs/products/components/preview-card';
 import { useStoreDetailsQuery } from '@/libs/stores/hooks';
 import ErrorPage from '@/libs/common/components/errorPage';
 import { copyToClipboard } from '@/utils/clipboard';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams<{ storeId: string }>();
@@ -21,7 +22,10 @@ export default function StoreDetailsPage() {
   const { data: store, isLoading, error } = useStoreDetailsQuery(storeId);
   const isOwner = user && store && store.owner.id === user.id;
 
-  const handleShare = () => copyToClipboard(window.location.href);
+  const handleShare = () => {
+    copyToClipboard(window.location.href);
+    hapticFeedback.impactOccurred('light');
+  };
 
   const handleEdit = () => router.push(`/stores/${store?.id}/edit`);
   const handleAddProduct = () => router.push(`/stores/${store?.id}/products/new`);
