@@ -25,22 +25,22 @@ interface PriceProps {
   amount: number;
   fontSize?: number;
   precision?: number;
+  localCurrencyCode?: string;
 }
 
-const Price: React.FC<PriceProps> = ({ amount, fontSize = 14, precision = 5 }) => {
+const Price: React.FC<PriceProps> = ({ amount, fontSize = 14, precision = 5 ,localCurrencyCode='USD'}) => {
   const formattedAmount = amount.toLocaleString('en-US', {
     minimumFractionDigits: amount >= 1 ? 0 : Math.min(precision, 5),
     maximumFractionDigits: Math.min(precision, 5),
   });
-
   return (
     <div className="flex items-center">
-      <CurrencySymbol />
-      <span className="ms-2" style={{ fontSize }}>
-        {formattedAmount}
-      </span>
+    <CurrencySymbol />
+    <span className="ms-2" style={{ fontSize }}>
+      {formattedAmount} {localCurrencyCode} 
+    </span>
     </div>
-  );
+  )
 };
 
 export default React.memo(Price);

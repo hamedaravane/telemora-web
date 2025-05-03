@@ -9,7 +9,7 @@ export async function generateMockOrderItemPreview(): Promise<OrderItemPreview> 
   return {
     product: await generateMockProductPreview(faker.number.int()),
     quantity: faker.number.int({ min: 1, max: 5 }),
-    totalPrice: Number(faker.commerce.price({ min: 10, max: 300 })),
+    totalPrice: Number(faker.commerce.price({ min: 10, max: 300 }))
   };
 }
 

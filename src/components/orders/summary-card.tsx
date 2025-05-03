@@ -1,19 +1,25 @@
 'use client';
 
 import { OrderStatus, OrderSummary } from '@/libs/orders/types';
+import { CurrencyInfo } from '@/libs/users/types';
 import { Card, CardBody, CardHeader, Chip } from '@heroui/react';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import Price from '@/components/shared/price';
+import Decimal from 'decimal.js';
 
 interface OrderSummaryCardProps {
   order: OrderSummary;
+  currencyInfo: CurrencyInfo;
   href?: string;
   className?: string;
 }
 
-export default function OrderSummaryCard({ order, href, className }: OrderSummaryCardProps) {
+export default function OrderSummaryCard({ order, currencyInfo, href, className }: OrderSummaryCardProps) {
   const { id, status, totalAmount, store, deliveryDate, createdAt } = order;
+  const tonPriceInLocalCurrency = new Decimal(currencyInfo?.tonToUsdRate || 0)
+    .dividedBy(new Decimal(currencyInfo?.localCurrencyToUsdRate || 0))
+    .toNumber();
 
   const cardContent = (
     <Card className={`w-full ${className}`}>
@@ -33,6 +39,7 @@ export default function OrderSummaryCard({ order, href, className }: OrderSummar
       <CardBody className="text-sm text-gray-700">
         <div className="flex justify-between items-center">
           <Price amount={totalAmount} />
+          <Price amount={tonPriceInLocalCurrency} localCurrencyCode={currencyInfo.localCurrencyCode}/>
           <div className="text-xs text-gray-500 text-right">
             <p className="font-medium">Est. Delivery</p>
             <p>{format(new Date(deliveryDate), 'PP')}</p>

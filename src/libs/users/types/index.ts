@@ -23,6 +23,12 @@ export interface UserSummary extends UserPublicPreview {
   address: Address;
 }
 
+export interface CurrencyInfo{
+  tonToUsdRate: string;
+  localCurrencyToUsdRate: string;
+  localCurrencyCode: string;
+}
+
 export interface UserPrivateProfile extends UserSummary {
   telegramId: string;
   phoneNumber?: string;
@@ -30,6 +36,7 @@ export interface UserPrivateProfile extends UserSummary {
   walletAddress?: string;
   stores?: StorePreview[];
   orders?: OrderSummary[];
+  currencyInfo: CurrencyInfo;
 }
 
 export interface UpdateContactLocationDto {
@@ -48,3 +55,4 @@ export interface UpdateProfileDto {
   firstName?: string;
   lastName?: string;
 }
+
