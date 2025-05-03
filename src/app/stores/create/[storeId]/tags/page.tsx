@@ -13,6 +13,7 @@ import { Tag } from '@/libs/common/components/tag';
 import { CreateStoreTagsDto, storeTagsFormSchema } from '@/libs/stores/schemas';
 import toast from 'react-hot-toast';
 import { useSubmitStoreTagsMutation } from '@/libs/stores/hooks';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
 
 const TAG_SUGGESTIONS = [
   'Clothing',
@@ -70,6 +71,7 @@ export default function CreateStoreTags() {
     try {
       await mutateAsync(data);
       toast.success('Tags saved!');
+      hapticFeedback.impactOccurred('light');
       router.push(`/stores/create/${storeId}/working-hours`);
     } catch {
       toast.error('Failed to save tags');

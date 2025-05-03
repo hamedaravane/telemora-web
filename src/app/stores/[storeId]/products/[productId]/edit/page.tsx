@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 import { ProductTypeSelector } from '@/libs/products/components/product-type-selector';
 import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
 import { ProductVariantFields } from '@/libs/products/components/product-variants-field';
+import { hapticFeedback } from '@telegram-apps/sdk';
 
 export default function EditProductPage() {
   const { storeId, productId } = useParams<{ storeId: string; productId: string }>();
@@ -61,6 +62,7 @@ export default function EditProductPage() {
     try {
       const result = await mutateAsync(data);
       toast.success('Product updated successfully!');
+      hapticFeedback.impactOccurred('light');
       router.push(`/stores/${result.store.id}`);
     } catch (error) {
       console.error(error);

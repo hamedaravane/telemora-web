@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useSubmitStoreBasicInfoMutation } from '@/libs/stores/hooks';
 import { CreateStoreBasicDto, storeBasicFormSchema } from '@/libs/stores/schemas';
 import toast from 'react-hot-toast';
+import { hapticFeedback } from '@telegram-apps/sdk';
 
 export default function CreateStoreBasicInformation() {
   const {
@@ -33,6 +34,7 @@ export default function CreateStoreBasicInformation() {
       const result = await mutateAsync(formData);
       console.log('Store created:', result);
       toast.success('Store created successfully!');
+      hapticFeedback.impactOccurred('light');
       router.push(`/stores/create/${result.id}/location`);
     } catch (err) {
       console.error('Create store error:', err);

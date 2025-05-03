@@ -12,6 +12,7 @@ import AppLayout from '@/libs/common/components/app-layout';
 import { useSubmitStoreLogoMutation } from '@/libs/stores/hooks';
 import { CreateStoreLogoDto, storeLogoFormSchema } from '@/libs/stores/schemas';
 import { PageHeader } from '@/libs/common/components/page-header';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
 
 export default function CreateStoreLogoUpload() {
   const router = useRouter();
@@ -111,6 +112,7 @@ export default function CreateStoreLogoUpload() {
     try {
       const result = await mutateAsync(data);
       toast.success('Store created successfully!');
+      hapticFeedback.impactOccurred('light');
       router.push(`/stores/${result.id}`);
     } catch {
       toast.error('Store submission failed.');

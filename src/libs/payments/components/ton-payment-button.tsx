@@ -7,6 +7,7 @@ import { useCreatePayment } from '@/libs/payments/hooks';
 import { buildMarketplaceTransaction } from '@/libs/payments/utils';
 import { environment } from '@environments';
 import { Cell } from '@ton/core';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
 
 interface TonPaymentButtonProps {
   amountTon: number;
@@ -51,8 +52,8 @@ export function TonPaymentButton({ amountTon, sellerAddress, orderId }: TonPayme
         toWalletAddress: sellerAddress,
         transactionHash: hash,
       });
-
       toast.success('Payment sent & saved!');
+      hapticFeedback.impactOccurred('light');
     } catch (error) {
       console.error('TON payment failed:', error);
       toast.error('Payment failed or cancelled');

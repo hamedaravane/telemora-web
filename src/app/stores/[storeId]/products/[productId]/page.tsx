@@ -11,6 +11,7 @@ import StarRating from '@/libs/common/components/star-rating';
 import { useProductDetails } from '@/libs/products/hooks';
 import ErrorPage from '@/libs/common/components/errorPage';
 import PriceComponent from '@/libs/common/components/PriceComponent';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
 
 export default function ProductDetailsPage() {
   const { storeId, productId } = useParams();
@@ -62,7 +63,15 @@ export default function ProductDetailsPage() {
           <PriceComponent amount={product.price} />
         </div>
 
-        <Button fullWidth size="lg" className="mt-4">
+        <Button
+          fullWidth
+          size="lg"
+          className="mt-4"
+          onPress={() => {
+            // Add to cart logic will go here
+            hapticFeedback.impactOccurred('light');
+          }}
+        >
           Add to Cart
         </Button>
 
