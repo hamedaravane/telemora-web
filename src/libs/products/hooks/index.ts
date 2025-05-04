@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/libs/api/query-keys';
 import { CreateProductFormData, UpdateProductFormData } from '@/libs/products/schemas';
 import {
   createProduct,
@@ -12,7 +13,7 @@ import { generateMockProductDetail, generateMockProductPreviews } from '@/libs/p
 
 export function useStoreProducts(storeId: number) {
   return useQuery({
-    queryKey: ['store-components', storeId],
+    queryKey: queryKeys.products.byStore(storeId),
     queryFn: () => (isDev ? generateMockProductPreviews() : getStoreProducts(storeId)),
     enabled: !!storeId,
   });
@@ -20,7 +21,7 @@ export function useStoreProducts(storeId: number) {
 
 export function useProductDetails(storeId: number, productId: number) {
   return useQuery({
-    queryKey: ['product-details', storeId, productId],
+    queryKey: queryKeys.products.detail(storeId, productId),
     queryFn: () => (isDev ? generateMockProductDetail(1) : getProductDetails(storeId, productId)),
     enabled: !!storeId && !!productId,
   });
@@ -33,7 +34,7 @@ export function useCreateProductMutation(storeId: number) {
     mutationFn: (data: CreateProductFormData) =>
       isDev ? generateMockProductDetail(storeId) : createProduct(storeId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['store-components', storeId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.byStore(storeId) });
     },
   });
 }
@@ -45,8 +46,8 @@ export function useUpdateProductMutation(storeId: number, productId: number) {
     mutationFn: (data: UpdateProductFormData) =>
       isDev ? generateMockProductDetail(storeId) : updateProduct(storeId, productId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['product-details', storeId, productId] });
-      queryClient.invalidateQueries({ queryKey: ['store-components', storeId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.detail(storeId, productId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.byStore(storeId) });
     },
   });
 }
@@ -57,7 +58,7 @@ export function useDeleteProductMutation(storeId: number, productId: number) {
   return useMutation({
     mutationFn: () => deleteProduct(storeId, productId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['store-components', storeId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.byStore(storeId) });
     },
   });
 }
