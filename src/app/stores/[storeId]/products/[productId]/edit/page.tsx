@@ -14,6 +14,7 @@ import { ProductTypeSelector } from '@/libs/products/components/product-type-sel
 import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
 import { ProductVariantFields } from '@/libs/products/components/product-variants-field';
 import { hapticFeedback } from '@telegram-apps/sdk';
+import ImageUploader from '@/libs/common/components/ImageUploader';
 
 export default function EditProductPage() {
   const { storeId, productId } = useParams<{ storeId: string; productId: string }>();
@@ -74,6 +75,8 @@ export default function EditProductPage() {
     <AppLayout>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <PageHeader title="Edit Product" />
+
+        <ImageUploader />
 
         <Input
           label="Product Name"

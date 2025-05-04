@@ -3,18 +3,17 @@
 import React, { useRef, useState } from 'react';
 import { Button } from '@heroui/react';
 import toast from 'react-hot-toast';
-import Cropper from 'react-easy-crop';
+import Cropper, { Area } from 'react-easy-crop';
 import { getCroppedImg } from '@/utils/imageCropper';
 import { compressImage } from '@/utils/imageCompressor';
 
-interface MobileImageUploaderProps {
+interface ImageUploaderProps {
   maxFiles?: number;
   maxFileSizeMB?: number;
   acceptTypes?: string[];
   cropAspectRatio?: number;
   onUpload?: (urls: string[]) => void;
   onError?: (error: string) => void;
-  uploadImage: (file: File) => Promise<string>;
 }
 
 export async function uploadImage(file: File): Promise<string> {
@@ -32,13 +31,13 @@ export async function uploadImage(file: File): Promise<string> {
 }
 
 export default function ImageUploader({
-  maxFiles = 3,
+  maxFiles = 1,
   maxFileSizeMB = 5,
   acceptTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'],
   cropAspectRatio = 1,
   onUpload,
   onError,
-}: MobileImageUploaderProps) {
+}: ImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [croppedImages, setCroppedImages] = useState<string[]>([]);
@@ -76,7 +75,7 @@ export default function ImageUploader({
     setCropping(true);
   };
 
-  const handleCropComplete = async (_: never, croppedAreaPixels: any) => {
+  const handleCropComplete = async (croppedArea: Area, croppedAreaPixels: Area) => {
     if (!imageSrc) return;
     try {
       const croppedBlob = await getCroppedImg(imageSrc!, croppedAreaPixels, 'webp');
@@ -94,7 +93,7 @@ export default function ImageUploader({
         setCropping(false);
         onUpload?.([...croppedImages, url]);
       }
-    } catch (err) {
+    } catch {
       toast.error('Failed to crop or upload.');
       onError?.('Failed during cropping or uploading');
     }
