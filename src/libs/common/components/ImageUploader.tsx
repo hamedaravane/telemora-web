@@ -1,19 +1,33 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@heroui/react';
 import toast from 'react-hot-toast';
 import Cropper, { Area } from 'react-easy-crop';
 import { getCroppedImg } from '@/utils/imageCropper';
 import { compressImage } from '@/utils/imageCompressor';
+import { useImmer } from 'use-immer';
+
+const DEFAULT_ACCEPT = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+  'image/heic-sequence',
+];
 
 interface ImageUploaderProps {
+  /** max selectable files in one session */
   maxFiles?: number;
+  /** megabytes */
   maxFileSizeMB?: number;
+  /** mime types accepted */
   acceptTypes?: string[];
+  /** aspect ratio for cropper (w / h) */
   cropAspectRatio?: number;
+  /** emitted when **all** images successfully uploaded */
   onUpload?: (urls: string[]) => void;
-  onError?: (error: string) => void;
+  onError?: (msg: string) => void;
 }
 
 export async function uploadImage(file: File): Promise<string> {
@@ -30,109 +44,149 @@ export async function uploadImage(file: File): Promise<string> {
   return data.url as string;
 }
 
-export default function ImageUploader({
+export function ImageUploader({
   maxFiles = 1,
   maxFileSizeMB = 5,
-  acceptTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'],
+  acceptTypes = DEFAULT_ACCEPT,
   cropAspectRatio = 1,
   onUpload,
   onError,
 }: ImageUploaderProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [croppedImages, setCroppedImages] = useState<string[]>([]);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  /** <input type="file"> handle */
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  /** all picked files (after validation) */
+  const [files, setFiles] = useState<File[]>([]);
+  /** index of a file being cropped */
+  const [idx, setIdx] = useState(0);
+  /** cropper params */
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [cropping, setCropping] = useState(false);
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  /** local object URL for current image */
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  /** uploaded urls */
+  const [uploadedUrls, updateUrls] = useImmer<string[]>([]);
+  /** is cropping dialog visible */
+  const cropping = previewUrl !== null;
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
+  const handlePick = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const list = e.target.files;
+    if (!list) return;
 
-    const validFiles: File[] = [];
-    for (const file of Array.from(files)) {
+    const accepted: File[] = [];
+    Array.from(list).some((file, i) => {
       if (!acceptTypes.includes(file.type)) {
-        toast.error('Unsupported file format.');
-        onError?.('Unsupported file format');
-        continue;
+        toast.error(`File ${i + 1}: unsupported type`);
+        onError?.('unsupported-type');
+        return false;
       }
       if (file.size > maxFileSizeMB * 1024 * 1024) {
-        toast.error(`File exceeds ${maxFileSizeMB}MB.`);
-        onError?.('File too large');
-        continue;
+        toast.error(`File ${i + 1}: exceeds ${maxFileSizeMB} MB`);
+        onError?.('too-large');
+        return false;
       }
-      validFiles.push(file);
-    }
+      accepted.push(file);
+      return accepted.length === maxFiles;
+    });
 
-    if (validFiles.length === 0) return;
+    if (!accepted.length) return;
 
-    setSelectedFiles(validFiles.slice(0, maxFiles));
-    const fileReader = new FileReader();
-    fileReader.onload = () => setImageSrc(fileReader.result as string);
-    fileReader.readAsDataURL(validFiles[0]);
-    setCropping(true);
+    setFiles(accepted);
+    setIdx(0);
   };
 
-  const handleCropComplete = async (croppedArea: Area, croppedAreaPixels: Area) => {
-    if (!imageSrc) return;
-    try {
-      const croppedBlob = await getCroppedImg(imageSrc!, croppedAreaPixels, 'webp');
-      const compressedFile = await compressImage(croppedBlob);
-      const url = await uploadImage(compressedFile);
-      setCroppedImages((prev) => [...prev, url]);
+  useEffect(() => {
+    if (!files[idx]) return;
+    const url = URL.createObjectURL(files[idx]);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [files, idx]);
 
-      const nextIndex = currentImageIndex + 1;
-      if (selectedFiles[nextIndex]) {
-        const reader = new FileReader();
-        reader.onload = () => setImageSrc(reader.result as string);
-        reader.readAsDataURL(selectedFiles[nextIndex]);
-        setCurrentImageIndex(nextIndex);
-      } else {
-        setCropping(false);
-        onUpload?.([...croppedImages, url]);
+  const finishCrop = useCallback(
+    async (_: Area, pixels: Area) => {
+      if (!previewUrl) return;
+      try {
+        const cropped = await getCroppedImg(previewUrl, pixels, 'webp');
+        const compressed = await compressImage(cropped);
+        const url = await uploadImage(compressed);
+
+        updateUrls((draft) => {
+          draft.push(url);
+        });
+
+        if (idx + 1 < files.length) {
+          setIdx((prev) => prev + 1);
+          setCrop({ x: 0, y: 0 });
+          setZoom(1);
+        } else {
+          setPreviewUrl(null);
+          onUpload?.([...uploadedUrls, url]);
+          setFiles([]);
+          setIdx(0);
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error('Crop / upload failed');
+        onError?.('crop-upload-fail');
       }
-    } catch {
-      toast.error('Failed to crop or upload.');
-      onError?.('Failed during cropping or uploading');
-    }
+    },
+    [previewUrl, files.length, idx, onUpload, onError, updateUrls, uploadedUrls],
+  );
+
+  const cancelAll = (): void => {
+    setPreviewUrl(null);
+    setFiles([]);
+    setIdx(0);
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
   };
 
   return (
     <div className="space-y-4">
       <input
-        type="file"
-        accept={acceptTypes.join(',')}
-        multiple
-        hidden
         ref={fileInputRef}
-        onChange={handleFileChange}
+        type="file"
+        multiple={maxFiles > 1}
+        accept={acceptTypes.join(',')}
+        aria-label="Choose images"
+        className="hidden"
+        onChange={handlePick}
       />
-      <Button onPress={() => fileInputRef.current?.click()}>Upload Image</Button>
 
-      {cropping && imageSrc && (
-        <div className="relative w-full h-[300px] bg-black rounded-xl overflow-hidden">
+      <Button onPress={() => fileInputRef.current?.click()} fullWidth>
+        {cropping ? 'Pick more' : 'Pick image'}
+      </Button>
+
+      {cropping && previewUrl && (
+        <div className="relative w-full h-[320px] rounded-xl overflow-hidden bg-black">
           <Cropper
-            image={imageSrc}
+            image={previewUrl}
             crop={crop}
             zoom={zoom}
             aspect={cropAspectRatio}
             onCropChange={setCrop}
             onZoomChange={setZoom}
-            onCropComplete={handleCropComplete}
+            onCropComplete={finishCrop}
           />
+          <div className="absolute bottom-2 inset-x-0 flex justify-around px-4">
+            <Button size="sm" variant="shadow" onPress={cancelAll}>
+              Cancel
+            </Button>
+            <Button size="sm" onPress={() => finishCrop({} as Area, {} as Area)}>
+              Done
+            </Button>
+          </div>
         </div>
       )}
 
-      {croppedImages.length > 0 && (
+      {uploadedUrls.length > 0 && (
         <div className="grid grid-cols-3 gap-2">
-          {croppedImages.map((url, i) => (
+          {uploadedUrls.map((url, i) => (
             <img
               key={i}
               src={url}
               alt={`Uploaded image ${i + 1}`}
-              className="w-full h-auto rounded border"
+              className="w-full aspect-square rounded border object-cover"
             />
           ))}
         </div>
