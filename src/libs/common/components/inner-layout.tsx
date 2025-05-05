@@ -1,6 +1,6 @@
 'use client';
 
-import BottomNavigation from './bottom-navigation';
+import BottomNavigation from './BottomTabs';
 import BackwardNavbar from '@/libs/common/components/backward-navbar';
 import React, { PropsWithChildren } from 'react';
 

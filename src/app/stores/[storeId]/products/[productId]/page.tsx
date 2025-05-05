@@ -68,7 +68,6 @@ export default function ProductDetailsPage() {
           size="lg"
           className="mt-4"
           onPress={() => {
-            // Add to cart logic will go here
             hapticFeedback.impactOccurred('light');
           }}
         >
