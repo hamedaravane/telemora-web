@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '@/libs/api/query-keys';
+import { queryKeys } from '@/libs/common/api/query-keys';
 import { CreateProductFormData, UpdateProductFormData } from '@/libs/products/schemas';
 import {
   createProduct,

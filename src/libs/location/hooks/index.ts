@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { queryKeys } from '@/libs/api/query-keys';
+import { queryKeys } from '@/libs/common/api/query-keys';
 import { CanonicalLocation, NearestLocationResponse } from '@/libs/location/types';
 import {
   getCitiesByState,

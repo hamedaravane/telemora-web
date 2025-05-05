@@ -15,7 +15,7 @@ export const queryKeys = {
         detail: (storeId: string | number, productId: string | number) => ['products', storeId, productId] as const,
         byStore: (storeId: string | number) => ['products', 'store', storeId] as const,
     },
-    reviews: {
+    reviews: {  
         all: ['reviews'] as const,
         detail: (id: string | number) => ['reviews', 'detail', id] as const,
         byProduct: (productId: string | number) => ['reviews', 'product', productId] as const,
