@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { queryKeys } from '@/libs/common/api/query-keys';
 import { CanonicalLocation, NearestLocationResponse } from '@/libs/location/types';
 import {
   getCitiesByState,
@@ -9,14 +10,14 @@ import {
 
 export function useCountries() {
   return useQuery<CanonicalLocation[]>({
-    queryKey: ['countries'],
+    queryKey: queryKeys.location.countries,
     queryFn: getCountries,
   });
 }
 
 export function useStatesByCountry(countryId?: number) {
   return useQuery<CanonicalLocation[]>({
-    queryKey: ['states', countryId],
+    queryKey: queryKeys.location.statesByCountry(countryId!),
     queryFn: () => getStatesByCountry(countryId!),
     enabled: !!countryId,
   });
@@ -24,7 +25,7 @@ export function useStatesByCountry(countryId?: number) {
 
 export function useCitiesByState(stateId?: number) {
   return useQuery<CanonicalLocation[]>({
-    queryKey: ['cities', stateId],
+    queryKey: queryKeys.location.citiesByState(stateId!),
     queryFn: () => getCitiesByState(stateId!),
     enabled: !!stateId,
   });
@@ -32,7 +33,7 @@ export function useCitiesByState(stateId?: number) {
 
 export function useNearestLocation(lat?: number, lng?: number) {
   return useQuery<NearestLocationResponse>({
-    queryKey: ['nearest-location', lat, lng],
+    queryKey: queryKeys.location.nearest(lat!, lng!),
     queryFn: () => getNearestLocation(lat!, lng!),
     enabled: !!lat && !!lng,
   });
