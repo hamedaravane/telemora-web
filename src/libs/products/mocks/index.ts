@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { generateMockReviewPreview } from '@/libs/reviews/mocks';
+import { generateMockReviewPreviews } from '@/libs/reviews/mocks';
 import { generateMockStorePreview } from '@/libs/stores/mocks';
 
 import {
@@ -13,9 +13,9 @@ import {
   ProductVariant,
 } from '../types';
 
-export async function generateMockProductPreview(id: number): Promise<ProductPreview> {
+export async function generateMockProductPreview(): Promise<ProductPreview> {
   return {
-    id,
+    id: faker.number.int(),
     name: faker.commerce.productName(),
     slug: faker.helpers.slugify(faker.commerce.productName()),
     price: Number(faker.commerce.price({ min: 10, max: 500 })),
@@ -29,18 +29,18 @@ export async function generateMockProductPreview(id: number): Promise<ProductPre
   };
 }
 
-export async function generateMockProductSummary(id: number): Promise<ProductSummary> {
+export async function generateMockProductSummary(): Promise<ProductSummary> {
   return {
-    ...(await generateMockProductPreview(id)),
+    ...(await generateMockProductPreview()),
     productType: faker.helpers.arrayElement(Object.values(ProductType)),
     store: await generateMockStorePreview(),
   };
 }
 
-export async function generateMockProductDetail(id: number): Promise<ProductDetail> {
+export async function generateMockProductDetail(): Promise<ProductDetail> {
   const productType = faker.helpers.arrayElement(Object.values(ProductType));
   return {
-    ...(await generateMockProductSummary(id)),
+    ...(await generateMockProductSummary()),
     description: faker.commerce.productDescription(),
     attributes: Array.from(
       { length: 3 },
@@ -74,7 +74,7 @@ export async function generateMockProductDetail(id: number): Promise<ProductDeta
     ],
     stock: faker.number.int({ min: 0, max: 100 }),
     downloadLink: productType === 'digital' ? faker.internet.url() : undefined,
-    reviews: [await generateMockReviewPreview(id), await generateMockReviewPreview(id + 1)],
+    reviews: await generateMockReviewPreviews(),
     createdAt: faker.date.past(),
   };
 }
@@ -129,5 +129,5 @@ export async function generateMockCategoryTree(count: number = 8): Promise<Produ
 }
 
 export async function generateMockProductPreviews(): Promise<ProductPreview[]> {
-  return Promise.all(Array.from({ length: 10 }, (_, i) => generateMockProductPreview(i)));
+  return Promise.all(Array.from({ length: 10 }, () => generateMockProductPreview()));
 }
