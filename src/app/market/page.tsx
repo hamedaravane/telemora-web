@@ -3,7 +3,7 @@
 import { ScrollShadow, Skeleton } from '@heroui/react';
 import React from 'react';
 
-import AppLayout from '@/libs/common/components/app-layout';
+import AppLayout from '@/libs/common/components/AppLayout';
 import { StorePreviewCard } from '@/libs/stores/components/preview-card';
 import { useDiscoverableStoresQuery, useFeaturedStoresQuery } from '@/libs/stores/hooks';
 

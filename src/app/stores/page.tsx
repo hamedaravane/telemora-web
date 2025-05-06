@@ -4,7 +4,7 @@ import { Button, Spinner } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import AppLayout from '@/libs/common/components/app-layout';
+import AppLayout from '@/libs/common/components/AppLayout';
 import ErrorPage from '@/libs/common/components/errorPage';
 import { PageHeader } from '@/libs/common/components/page-header';
 import StoreSummaryCard from '@/libs/stores/components/summary-card';

@@ -4,7 +4,7 @@ import { Alert, Button, Card, CardBody, CardFooter, Divider, Spinner } from '@he
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
 
-import AppLayout from '@/libs/common/components/app-layout';
+import AppLayout from '@/libs/common/components/AppLayout';
 import ErrorPage from '@/libs/common/components/errorPage';
 import { PageHeader } from '@/libs/common/components/page-header';
 import PriceComponent from '@/libs/common/components/PriceComponent';

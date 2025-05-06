@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
-import AppLayout from '@/libs/common/components/app-layout';
+import AppLayout from '@/libs/common/components/AppLayout';
 import { PageHeader } from '@/libs/common/components/page-header';
 import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
 import { ProductTypeSelector } from '@/libs/products/components/product-type-selector';

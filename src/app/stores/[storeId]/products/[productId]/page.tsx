@@ -6,7 +6,7 @@ import { hapticFeedback } from '@telegram-apps/sdk-react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 
-import AppLayout from '@/libs/common/components/app-layout';
+import AppLayout from '@/libs/common/components/AppLayout';
 import ErrorPage from '@/libs/common/components/errorPage';
 import { PageHeader } from '@/libs/common/components/page-header';
 import PriceComponent from '@/libs/common/components/PriceComponent';

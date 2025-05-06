@@ -8,7 +8,7 @@ import React, { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
-import AppLayout from '@/libs/common/components/app-layout';
+import AppLayout from '@/libs/common/components/AppLayout';
 import { PageHeader } from '@/libs/common/components/page-header';
 import { useSubmitStoreWorkingHoursMutation } from '@/libs/stores/hooks';
 import { CreateStoreWorkingHoursDto, storeWorkingHoursFormSchema } from '@/libs/stores/schemas';

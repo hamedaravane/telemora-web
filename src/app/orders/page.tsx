@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { FaBoxOpen } from 'react-icons/fa6';
 
-import AppLayout from '@/libs/common/components/app-layout';
+import AppLayout from '@/libs/common/components/AppLayout';
 import ErrorPage from '@/libs/common/components/errorPage';
 import { PageHeader } from '@/libs/common/components/page-header';
 import OrderSummaryCard from '@/libs/orders/components/summary-card';

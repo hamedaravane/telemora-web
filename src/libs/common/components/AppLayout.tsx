@@ -10,7 +10,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
   return (
     <div className="relative flex min-h-screen flex-col">
       <CustomNavbar />
-      <main className="flex-1 px-4 pb-24">{children}</main>
+      <main className="mb-12 flex-1 px-4">{children}</main>
       <BottomTabs />
     </div>
   );

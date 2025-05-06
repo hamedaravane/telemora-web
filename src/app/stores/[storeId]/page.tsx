@@ -9,7 +9,7 @@ import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
 import { FaPlus } from 'react-icons/fa6';
 
 import { useUser } from '@/context/userContext';
-import AppLayout from '@/libs/common/components/app-layout';
+import AppLayout from '@/libs/common/components/AppLayout';
 import ErrorPage from '@/libs/common/components/errorPage';
 import StarRating from '@/libs/common/components/star-rating';
 import ProductPreviewCard from '@/libs/products/components/preview-card';
