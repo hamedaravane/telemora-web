@@ -23,7 +23,7 @@ export function init(debug: boolean): void {
   void viewport
     .mount()
     .then(() => {
-      if (!viewport.isCssVarsBound() && viewport.isMounted()) {
+      if (!viewport.isCssVarsBound()) {
         viewport.bindCssVars();
       }
     })
