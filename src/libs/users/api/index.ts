@@ -1,5 +1,5 @@
-import httpClient from '@/libs/common/utils/http-client';
 import { isDev } from '@/libs/common/utils';
+import httpClient from '@/libs/common/utils/http-client';
 import { generateMockUserPrivateProfile } from '@/libs/users/mocks';
 import { UpdateContactLocationDto, UpdateLanguageDto, UpdateProfileDto, UserPrivateProfile } from '@/libs/users/types';
 

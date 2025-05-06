@@ -1,5 +1,5 @@
-import httpClient from '@/libs/common/utils/http-client';
 import { isDev } from '@/libs/common/utils';
+import httpClient from '@/libs/common/utils/http-client';
 import { generateMockProductDetail, generateMockProductPreviews } from '@/libs/products/mocks';
 import { CreateProductDto, ProductDetail, ProductPreview, UpdateProductDto } from '@/libs/products/types';
 

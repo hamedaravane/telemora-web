@@ -8,6 +8,7 @@ import AppLayout from '@/libs/common/components/AppLayout';
 import ErrorPage from '@/libs/common/components/errorPage';
 import { PageHeader } from '@/libs/common/components/page-header';
 import PriceComponent from '@/libs/common/components/PriceComponent';
+import { formatDate, formatRelative } from '@/libs/common/utils/date';
 import OrderItemPreviewCard from '@/libs/orders/components/order-item-preview';
 import { OrderShipmentCard } from '@/libs/orders/components/order-shipment-card';
 import { OrderStatusChip } from '@/libs/orders/components/order-status-chip';
@@ -16,7 +17,6 @@ import { OrderStatus } from '@/libs/orders/types';
 import { PaymentStatusChip } from '@/libs/payments/components/payment-status-chip';
 import { TonPaymentButton } from '@/libs/payments/components/ton-payment-button';
 import { PaymentStatus } from '@/libs/payments/types';
-import { formatDate, formatRelative } from '@/libs/common/utils/date';
 
 export default function OrderDetailsPage() {
   const { orderId } = useParams<{ orderId: string }>();
