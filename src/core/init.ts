@@ -20,17 +20,26 @@ export function init(debug: boolean): void {
   mountMiniAppSync();
   mountThemeParamsSync();
   initData.restore();
-  void viewport
-    .mount()
-    .then(() => {
-      viewport.bindCssVars();
-    })
-    .catch((e) => {
-      console.error('Something went wrong mounting the viewport', e);
-    });
+  if (viewport.isMounted()) {
+    void viewport
+      .mount()
+      .then(() => {
+        if (viewport.bindCssVars.isAvailable()) {
+          viewport.bindCssVars();
+        }
+      })
+      .catch((e) => {
+        console.error('Something went wrong mounting the viewport', e);
+      });
+  }
 
-  miniApp.bindCssVars();
-  themeParams.bindCssVars();
+  if (!miniApp.bindCssVars.isAvailable()) {
+    miniApp.bindCssVars();
+  }
+
+  if (!themeParams.bindCssVars.isAvailable()) {
+    themeParams.bindCssVars();
+  }
 
   if (debug) {
     import('eruda').then((lib) => lib.default.init()).catch(console.error);
