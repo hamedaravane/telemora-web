@@ -2,7 +2,7 @@
 
 import React, { PropsWithChildren } from 'react';
 import CustomNavbar from './navbar';
-import { BottomTabs } from './BottomTabs';
+import BottomTabs from '@/libs/common/components/BottomTabs';
 
 export default function AppLayout({ children }: PropsWithChildren) {
   return (

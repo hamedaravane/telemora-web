@@ -12,43 +12,45 @@ export default function MarketPage() {
 
   return (
     <AppLayout>
-      {isDiscoverStoresLoading && (
-        <section>
-          <HorizontalScroll>
-            {new Array<number>(4).map((_) => (
-              <Skeleton key={_} />
-            ))}
-          </HorizontalScroll>
-        </section>
-      )}
-      {discoverStores && (
-        <section>
-          <HorizontalScroll>
-            {discoverStores.map((store) => (
-              <StorePreviewCard key={store.id} store={store} />
-            ))}
-          </HorizontalScroll>
-        </section>
-      )}
+      <div className="space-y-5">
+        {isDiscoverStoresLoading && (
+          <section>
+            <HorizontalScroll>
+              {new Array<number>(4).map((_) => (
+                <Skeleton key={_} />
+              ))}
+            </HorizontalScroll>
+          </section>
+        )}
+        {discoverStores && (
+          <section>
+            <HorizontalScroll>
+              {discoverStores.map((store) => (
+                <StorePreviewCard key={store.id} store={store} />
+              ))}
+            </HorizontalScroll>
+          </section>
+        )}
 
-      {isFeaturedStoresLoading && (
-        <section>
-          <HorizontalScroll>
-            {new Array<number>(4).map((_) => (
-              <Skeleton key={_} />
-            ))}
-          </HorizontalScroll>
-        </section>
-      )}
-      {featuredStores && (
-        <section>
-          <HorizontalScroll>
-            {featuredStores.map((store) => (
-              <StorePreviewCard key={store.id} store={store} />
-            ))}
-          </HorizontalScroll>
-        </section>
-      )}
+        {isFeaturedStoresLoading && (
+          <section>
+            <HorizontalScroll>
+              {new Array<number>(4).map((_) => (
+                <Skeleton key={_} />
+              ))}
+            </HorizontalScroll>
+          </section>
+        )}
+        {featuredStores && (
+          <section>
+            <HorizontalScroll>
+              {featuredStores.map((store) => (
+                <StorePreviewCard key={store.id} store={store} />
+              ))}
+            </HorizontalScroll>
+          </section>
+        )}
+      </div>
     </AppLayout>
   );
 }

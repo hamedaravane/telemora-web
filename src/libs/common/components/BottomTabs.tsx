@@ -5,21 +5,40 @@ import { FaClipboard, FaHome, FaStore, FaUser } from 'react-icons/fa';
 import { Tab, Tabs } from '@heroui/react';
 
 const TABS = [
-  { key: 'market', href: '/market', label: 'Market', icon: <FaHome size={18} /> },
-  { key: 'stores', href: '/stores', label: 'Stores', icon: <FaStore size={18} /> },
-  { key: 'orders', href: '/orders', label: 'Orders', icon: <FaClipboard size={18} /> },
-  { key: 'profile', href: '/profile', label: 'Profile', icon: <FaUser size={18} /> },
+  { key: 'market', href: '/market', label: 'Market', icon: <FaHome /> },
+  { key: 'stores', href: '/stores', label: 'Stores', icon: <FaStore /> },
+  { key: 'orders', href: '/orders', label: 'Orders', icon: <FaClipboard /> },
+  { key: 'profile', href: '/profile', label: 'Profile', icon: <FaUser /> },
 ];
 
 export default function BottomTabs() {
   const pathname = usePathname();
 
   return (
-    <Tabs aria-label="Options" selectedKey={pathname}>
+    <Tabs
+      selectedKey={pathname}
+      size="lg"
+      fullWidth
+      placement="bottom"
+      classNames={{
+        tabWrapper: 'px-4 mb-6 fixed bottom-0 z-50 w-full',
+        base: '',
+        tabList: '',
+        tab: 'h-16',
+        tabContent: 'flex flex-col items-center gap-1 text-sm',
+      }}
+    >
       {TABS.map(({ key, href, label, icon }) => (
-        <Tab key={key} title={label} href={href}>
-          {icon}
-        </Tab>
+        <Tab
+          key={key}
+          href={href}
+          title={
+            <>
+              {icon} {label}
+            </>
+          }
+          titleValue={label}
+        />
       ))}
     </Tabs>
   );
