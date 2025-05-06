@@ -24,7 +24,7 @@ export function init(debug: boolean): void {
     void viewport
       .mount()
       .then(() => {
-        if (viewport.bindCssVars.isAvailable()) {
+        if (!viewport.isCssVarsBound()) {
           viewport.bindCssVars();
         }
       })
@@ -33,11 +33,11 @@ export function init(debug: boolean): void {
       });
   }
 
-  if (!miniApp.bindCssVars.isAvailable()) {
+  if (!miniApp.isCssVarsBound()) {
     miniApp.bindCssVars();
   }
 
-  if (!themeParams.bindCssVars.isAvailable()) {
+  if (!themeParams.isCssVarsBound()) {
     themeParams.bindCssVars();
   }
 
