@@ -16,10 +16,12 @@ export default function BottomTabs() {
 
   return (
     <Tabs
+      aria-label="Bottom Navigation"
       selectedKey={pathname}
       size="lg"
       fullWidth
       placement="bottom"
+      items={tabList}
       classNames={{
         tabWrapper: 'px-4 mb-6 fixed bottom-0 z-50 w-full',
         base: '',
@@ -27,7 +29,7 @@ export default function BottomTabs() {
         tab: 'h-16',
       }}
     >
-      {tabList.map(({ key, href, label, icon }) => (
+      {({ key, href, label, icon }) => (
         <Tab
           key={key}
           href={href}
@@ -37,7 +39,7 @@ export default function BottomTabs() {
             </div>
           }
         />
-      ))}
+      )}
     </Tabs>
   );
 }
