@@ -2,6 +2,18 @@
   "name": "telemora-web",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Hamed Arghavan",
+    "email": "hamedaravane@gmail.com",
+    "url": "https://github.com/hamedaravane"
+  },
+  "bugs": {
+    "url": "https://github.com/hamedaravane/telemora-web/issues"
+  },
+  "packageManager": "npm@10.9.2",
+  "repository": {
+    "url": "https://github.com/hamedaravane/telemora-web"
+  },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
       "eslint --fix",
