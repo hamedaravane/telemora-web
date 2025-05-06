@@ -20,18 +20,16 @@ export function init(debug: boolean): void {
   mountMiniAppSync();
   mountThemeParamsSync();
   initData.restore();
-  if (viewport.isMounted()) {
-    void viewport
-      .mount()
-      .then(() => {
-        if (!viewport.isCssVarsBound()) {
-          viewport.bindCssVars();
-        }
-      })
-      .catch((e) => {
-        console.error('Something went wrong mounting the viewport', e);
-      });
-  }
+  void viewport
+    .mount()
+    .then(() => {
+      if (!viewport.isCssVarsBound() && viewport.isMounted()) {
+        viewport.bindCssVars();
+      }
+    })
+    .catch((e) => {
+      console.error('Something went wrong mounting the viewport', e);
+    });
 
   if (!miniApp.isCssVarsBound()) {
     miniApp.bindCssVars();
