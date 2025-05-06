@@ -1,18 +1,19 @@
 'use client';
 
 import { Tab, Tabs } from '@heroui/react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { FaClipboard, FaHome, FaStore, FaUser } from 'react-icons/fa';
 
 const tabList = [
-  { key: '/market', href: '/market', label: 'Market', icon: <FaHome size={15} /> },
-  { key: '/stores', href: '/stores', label: 'Stores', icon: <FaStore size={15} /> },
-  { key: '/orders', href: '/orders', label: 'Orders', icon: <FaClipboard size={15} /> },
-  { key: '/profile', href: '/profile', label: 'Profile', icon: <FaUser size={15} /> },
+  { key: '/market', label: 'Market', icon: <FaHome size={15} /> },
+  { key: '/stores', label: 'Stores', icon: <FaStore size={15} /> },
+  { key: '/orders', label: 'Orders', icon: <FaClipboard size={15} /> },
+  { key: '/profile', label: 'Profile', icon: <FaUser size={15} /> },
 ];
 
 export default function BottomTabs() {
   const pathname = usePathname();
+  const route = useRouter();
 
   return (
     <Tabs
@@ -24,16 +25,16 @@ export default function BottomTabs() {
       items={tabList}
       classNames={{
         tabWrapper: 'px-4 mb-6 fixed bottom-0 z-50 w-full',
-        base: '',
+        base: 'backdrop-blur-sm',
         tabList: '',
         tab: 'h-16',
-        cursor: 'bg-default-200',
+        cursor: 'bg-default-200 text-primary',
       }}
+      onSelectionChange={(key) => route.push(key as string)}
     >
-      {({ key, href, label, icon }) => (
+      {({ key, label, icon }) => (
         <Tab
           key={key}
-          href={href}
           title={
             <div className="flex flex-col items-center gap-1 text-sm">
               {icon} <span>{label}</span>
