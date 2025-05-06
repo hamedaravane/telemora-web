@@ -1,4 +1,4 @@
-import httpClient from '@/libs/common/http-client';
+import httpClient from '@/libs/common/utils/http-client';
 import { generateMockStoreDetail, generateMockStoreSummaries } from '@/libs/stores/mocks';
 import {
   CreateAddressDto,

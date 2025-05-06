@@ -1,4 +1,4 @@
-import httpClient from '@/libs/common/http-client';
+import httpClient from '@/libs/common/utils/http-client';
 import { isDev } from '@/libs/common/utils';
 import {
   generateMockReviewDetail,

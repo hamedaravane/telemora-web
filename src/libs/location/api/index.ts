@@ -1,4 +1,4 @@
-import httpClient from '@/libs/common/http-client';
+import httpClient from '@/libs/common/utils/http-client';
 import { generateMockCities, generateMockCountries, generateMockStates } from '@/libs/location/mocks';
 import { isDev } from '../../common/utils';
 

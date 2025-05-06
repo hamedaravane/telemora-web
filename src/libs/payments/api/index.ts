@@ -1,4 +1,4 @@
-import httpClient from '@/libs/common/http-client';
+import httpClient from '@/libs/common/utils/http-client';
 import { generateMockPaymentDetail, generateMockPaymentSummaries } from '@/libs/payments/mocks';
 import { CreatePaymentDto, PaymentDetail, PaymentSummary } from '@/libs/payments/types';
 import { isDev } from '../../common/utils';
