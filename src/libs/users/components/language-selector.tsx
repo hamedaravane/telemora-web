@@ -76,7 +76,7 @@ export default function LanguageSelector({
         )}
       />
 
-      <div className="flex gap-x-4 mt-6 justify-end">
+      <div className="mt-6 flex justify-end gap-x-4">
         {onClose && (
           <Button type="button" variant="ghost" onPress={onClose}>
             Cancel

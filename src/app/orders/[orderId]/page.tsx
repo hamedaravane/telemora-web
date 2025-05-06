@@ -27,7 +27,7 @@ export default function OrderDetailsPage() {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="h-screen flex items-center justify-center">
+        <div className="flex h-screen items-center justify-center">
           <Spinner label="Loading order..." />
         </div>
       </AppLayout>
@@ -48,7 +48,7 @@ export default function OrderDetailsPage() {
         subtitle={`Placed on ${formatDate(order.createdAt)}`}
       />
 
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <OrderStatusChip status={order.status} />
 
         {order.payment && <PaymentStatusChip status={order.payment.status} />}
@@ -90,8 +90,8 @@ export default function OrderDetailsPage() {
 
       {/* Order Summary */}
       <div className="mb-12">
-        <h2 className="text-lg font-semibold mb-2">Summary</h2>
-        <div className="text-sm space-y-1">
+        <h2 className="mb-2 text-lg font-semibold">Summary</h2>
+        <div className="space-y-1 text-sm">
           <div className="flex gap-x-2">
             <span>Total Amount: </span>
             <PriceComponent amount={order.totalAmount} />

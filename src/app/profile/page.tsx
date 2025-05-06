@@ -16,12 +16,12 @@ export default function ProfilePage() {
   if (!user) {
     return (
       <AppLayout>
-        <main className="max-w-2xl mx-auto px-4 py-6 space-y-10">
+        <main className="mx-auto max-w-2xl space-y-10 px-4 py-6">
           <div className="space-y-4">
             <div className="flex flex-col items-center">
-              <Skeleton className="w-32 h-32 rounded-full" />
-              <Skeleton className="w-40 h-4 mt-4 rounded" />
-              <Skeleton className="w-24 h-3 mt-2 rounded" />
+              <Skeleton className="h-32 w-32 rounded-full" />
+              <Skeleton className="mt-4 h-4 w-40 rounded" />
+              <Skeleton className="mt-2 h-3 w-24 rounded" />
             </div>
 
             <div className="flex space-x-2">
@@ -54,7 +54,7 @@ export default function ProfilePage() {
 
   return (
     <AppLayout>
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-10">
+      <main className="mx-auto max-w-2xl space-y-10 px-4 py-6">
         <ProfileCard user={user} />
         <Divider />
         {user.stores && user.stores.length > 0 && (

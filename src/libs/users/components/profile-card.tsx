@@ -15,13 +15,13 @@ export default function ProfileCard({ user }: { user: UserPrivateProfile }) {
           alt="user photo"
           width={128}
           height={128}
-          className="rounded-full object-cover w-32 aspect-square inline-block"
+          className="inline-block aspect-square w-32 rounded-full object-cover"
         />
         <div className="mt-4">
-          <h2 className="font-semibold text-lg">
+          <h2 className="text-lg font-semibold">
             {user.firstName} {user.lastName}
           </h2>
-          {user.username && <p className="text-gray-500 lowercase text-sm">@{user.username}</p>}
+          {user.username && <p className="text-sm lowercase text-gray-500">@{user.username}</p>}
         </div>
       </div>
       <div className="flex space-x-2">

@@ -11,7 +11,7 @@ export default function ReviewPreviewCard({ content }: { content: ReviewPreview 
   return (
     <Card>
       <CardBody>
-        <div className="flex items-center justify-between mb-2">
+        <div className="mb-2 flex items-center justify-between">
           <div>
             <User
               name={`${content.buyer.username}`}

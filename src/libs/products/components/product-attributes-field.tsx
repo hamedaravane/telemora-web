@@ -27,9 +27,9 @@ export function ProductAttributeFields<TFieldValues extends Record<string, unkno
 }: ProductAttributeFieldsProps<TFieldValues>) {
   return (
     <section>
-      <h2 className="font-semibold mb-2">Attributes</h2>
+      <h2 className="mb-2 font-semibold">Attributes</h2>
       {fields.map((field, index) => (
-        <div key={field.id} className="flex items-center gap-2 mb-2">
+        <div key={field.id} className="mb-2 flex items-center gap-2">
           <Input
             {...register(`${name}.${index}.attributeName` as Path<TFieldValues>)}
             placeholder="Name"

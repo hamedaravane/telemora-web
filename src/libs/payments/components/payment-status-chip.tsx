@@ -14,7 +14,7 @@ export function PaymentStatusChip({ status }: { status: PaymentStatus }) {
   return (
     <span
       className={clsx(
-        'text-xs font-medium px-3 py-1 rounded-full capitalize',
+        'rounded-full px-3 py-1 text-xs font-medium capitalize',
         statusStyles[status],
       )}
     >

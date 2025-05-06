@@ -58,7 +58,7 @@ export default function MarketPage() {
 
 function HorizontalScroll({ children }: { children: React.ReactNode }) {
   return (
-    <ScrollShadow className="flex gap-x-4 max-w-full" hideScrollBar orientation="horizontal">
+    <ScrollShadow className="flex max-w-full gap-x-4" hideScrollBar orientation="horizontal">
       {children}
     </ScrollShadow>
   );

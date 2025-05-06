@@ -26,7 +26,7 @@ export default function ProductPreviewCard({ product }: ProductPreviewCard) {
           />
         </CardBody>
         <CardFooter className="block space-y-2">
-          <h3 className="text-sm font-medium line-clamp-2 truncate">{product.name}</h3>
+          <h3 className="line-clamp-2 truncate text-sm font-medium">{product.name}</h3>
           <PriceComponent amount={product.price} />
         </CardFooter>
       </Card>

@@ -92,7 +92,7 @@ export default function CreateStoreWorkingHours() {
           subtitle="Optionally set your store’s weekly availability"
         />
 
-        <div className="space-y-5 mt-6">
+        <div className="mt-6 space-y-5">
           {DAYS.map((day) => {
             const isEnabled = enabledDays.has(day);
             const open = workingHours?.[day]?.open ?? '';
@@ -101,7 +101,7 @@ export default function CreateStoreWorkingHours() {
 
             return (
               <div key={day}>
-                <div className="flex items-center justify-between mb-2">
+                <div className="mb-2 flex items-center justify-between">
                   <span className="font-medium">{day}</span>
                   <Switch isSelected={isEnabled} onChange={() => toggleDay(day)} size="sm">
                     Open
@@ -139,7 +139,7 @@ export default function CreateStoreWorkingHours() {
                       />
                     </div>
                     {invalid && (
-                      <p className="text-red-500 text-xs mt-1">
+                      <p className="mt-1 text-xs text-red-500">
                         Opening time must be earlier than closing time.
                       </p>
                     )}
@@ -152,8 +152,8 @@ export default function CreateStoreWorkingHours() {
 
         {/* Summary */}
         <div className="mt-10" id="summary">
-          <h2 className="text-lg font-semibold mb-2">Weekly Summary</h2>
-          <ul className="text-sm text-default-600 space-y-1">
+          <h2 className="mb-2 text-lg font-semibold">Weekly Summary</h2>
+          <ul className="space-y-1 text-sm text-default-600">
             {DAYS.map((day) => {
               const isOpen = enabledDays.has(day);
               const { open, close } = workingHours?.[day] || {};

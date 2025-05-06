@@ -22,10 +22,10 @@ export default function ProductDetailsPage() {
     return (
       <AppLayout>
         <div className="space-y-4">
-          <Skeleton className="w-full h-52 rounded-xl" />
-          <Skeleton className="w-3/4 h-6 rounded" />
-          <Skeleton className="w-1/2 h-6 rounded" />
-          <Skeleton className="w-full h-10 rounded" />
+          <Skeleton className="h-52 w-full rounded-xl" />
+          <Skeleton className="h-6 w-3/4 rounded" />
+          <Skeleton className="h-6 w-1/2 rounded" />
+          <Skeleton className="h-10 w-full rounded" />
         </div>
       </AppLayout>
     );
@@ -45,7 +45,7 @@ export default function ProductDetailsPage() {
                 width={240}
                 height={240}
                 alt={product.name}
-                className="rounded-xl aspect-square object-cover w-60 shrink-0"
+                className="aspect-square w-60 shrink-0 rounded-xl object-cover"
               />
             ))}
           </ScrollShadow>
@@ -83,8 +83,8 @@ export default function ProductDetailsPage() {
 
         {Array.isArray(product.attributes) && product.attributes.length > 0 && (
           <div>
-            <h3 className="font-semibold mb-2">Attributes</h3>
-            <ul className="text-sm text-neutral-400 list-disc list-inside">
+            <h3 className="mb-2 font-semibold">Attributes</h3>
+            <ul className="list-inside list-disc text-sm text-neutral-400">
               {product.attributes.map((attr, i) => (
                 <li key={i}>
                   {attr.attributeName}: {attr.attributeValue}
@@ -96,8 +96,8 @@ export default function ProductDetailsPage() {
 
         {Array.isArray(product.variants) && product.variants.length > 0 && (
           <div>
-            <h3 className="font-semibold mb-2">Variants</h3>
-            <ul className="text-sm text-neutral-400 list-disc list-inside">
+            <h3 className="mb-2 font-semibold">Variants</h3>
+            <ul className="list-inside list-disc text-sm text-neutral-400">
               {product.variants.map((variant, i) => (
                 <li key={i}>
                   {variant.variantName}: {variant.variantValue}

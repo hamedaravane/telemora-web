@@ -15,7 +15,7 @@ export default function OrderItemPreviewCard({ orderItem }: { orderItem: OrderIt
             alt={orderItem.product.name}
             width={64}
             height={64}
-            className="aspect-square object-cover rounded"
+            className="aspect-square rounded object-cover"
           />
           <div className="space-y-4">
             <strong>{orderItem.product.name}</strong>

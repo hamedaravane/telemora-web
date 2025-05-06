@@ -101,7 +101,7 @@ export default function CreateProductPage() {
         />
 
         {previewUrl && (
-          <img src={previewUrl} alt="Preview" className="w-full rounded-xl border mt-2" />
+          <img src={previewUrl} alt="Preview" className="mt-2 w-full rounded-xl border" />
         )}
 
         <ProductTypeSelector name="productType" control={control} errors={errors} />

@@ -11,20 +11,20 @@ export const StorePreviewCard = ({ store }: { store: StorePreview }) => {
     <Link href={`/stores/${store.id}`} className="block" passHref>
       <Card
         className={cn(
-          'p-4 rounded-xl transition hover:shadow-md',
-          !store.isActive && 'opacity-50 pointer-events-none',
+          'rounded-xl p-4 transition hover:shadow-md',
+          !store.isActive && 'pointer-events-none opacity-50',
         )}
       >
-        <CardBody className="flex flex-col items-center text-center space-y-2">
+        <CardBody className="flex flex-col items-center space-y-2 text-center">
           <Image
             src={store.logo?.url ?? '/fallback-store.png'}
             alt={store.name}
             width={64}
             height={64}
-            className="rounded-full object-cover h-16 w-16"
+            className="h-16 w-16 rounded-full object-cover"
           />
           <div className="w-full">
-            <h3 className="font-medium text-sm truncate">{store.name}</h3>
+            <h3 className="truncate text-sm font-medium">{store.name}</h3>
             <StarRating rating={store.reputation} />
           </div>
         </CardBody>

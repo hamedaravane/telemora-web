@@ -34,7 +34,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
 
   return (
     <div
-      className={clsx('flex gap-1 my-1', starSizeClass, colorClass, className)}
+      className={clsx('my-1 flex gap-1', starSizeClass, colorClass, className)}
       role="img"
       aria-label={`Rated ${rating} out of ${max} stars`}
     >
@@ -45,7 +45,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
       {Array.from({ length: emptyStars }).map((_, i) => (
         <FaRegStar key={`empty-${i}`} aria-hidden="true" />
       ))}
-      {showNumber && <span className="ml-1 text-gray-600 text-xs">{rating.toFixed(1)}</span>}
+      {showNumber && <span className="ml-1 text-xs text-gray-600">{rating.toFixed(1)}</span>}
     </div>
   );
 };

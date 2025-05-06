@@ -20,7 +20,7 @@ export default function StoreListPage() {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="flex min-h-screen items-center justify-center">
           <Spinner size="lg" />
         </div>
       </AppLayout>
@@ -34,9 +34,9 @@ export default function StoreListPage() {
       <PageHeader title="My Stores" subtitle="Manage your business from here" />
 
       {stores && stores.length === 0 ? (
-        <div className="text-center mt-12">
-          <div className="text-gray-400 text-5xl mb-2">🏪</div>
-          <p className="text-gray-600 mb-4">You don’t own any stores yet.</p>
+        <div className="mt-12 text-center">
+          <div className="mb-2 text-5xl text-gray-400">🏪</div>
+          <p className="mb-4 text-gray-600">You don’t own any stores yet.</p>
           <Button size="lg" onPress={handleCreateStore}>
             Create Your First Store
           </Button>

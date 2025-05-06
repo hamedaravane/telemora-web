@@ -120,7 +120,7 @@ export default function CreateStoreLocation() {
           subtitle="Help customers find you by setting your store address."
         />
 
-        <div className="flex gap-4 mb-4">
+        <div className="mb-4 flex gap-4">
           <Button
             fullWidth
             size="sm"

@@ -20,7 +20,7 @@ export default function OrdersPage() {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex h-screen items-center justify-center">
           <Spinner size="lg" />
         </div>
       </AppLayout>
@@ -34,9 +34,9 @@ export default function OrdersPage() {
       <PageHeader title="My Orders" subtitle="Track your purchases and check order status." />
 
       {orders?.length === 0 ? (
-        <div className="flex flex-col items-center text-center mt-20">
-          <FaBoxOpen className="w-16 h-16  mb-4" />
-          <p className=" mb-4">You haven’t placed any orders yet.</p>
+        <div className="mt-20 flex flex-col items-center text-center">
+          <FaBoxOpen className="mb-4 h-16 w-16" />
+          <p className="mb-4">You haven’t placed any orders yet.</p>
           <Button onPress={goToMarket}>Go to Marketplace</Button>
         </div>
       ) : (

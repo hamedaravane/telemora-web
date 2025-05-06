@@ -33,15 +33,15 @@ export default function ProductSummaryCard({ product, className }: ProductSummar
   return (
     <Link
       href={href}
-      className={`flex items-center gap-3 p-3 rounded-lg border border-gray-200 bg-white hover:shadow-sm transition-all ${className}`}
+      className={`flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 transition-all hover:shadow-sm ${className}`}
     >
-      <div className="relative w-16 h-16 rounded-md overflow-hidden bg-gray-100 shrink-0">
+      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md bg-gray-100">
         <Image src={image[0].url} alt={image[0].alt ?? name} fill className="object-cover" />
       </div>
 
       <div className="flex-1 space-y-1">
-        <div className="flex justify-between items-center">
-          <h3 className="text-sm font-semibold line-clamp-1">{name}</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="line-clamp-1 text-sm font-semibold">{name}</h3>
           <PriceComponent amount={price} />
         </div>
 
