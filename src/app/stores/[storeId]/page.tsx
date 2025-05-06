@@ -14,7 +14,7 @@ import ErrorPage from '@/libs/common/components/errorPage';
 import StarRating from '@/libs/common/components/star-rating';
 import ProductPreviewCard from '@/libs/products/components/preview-card';
 import { useStoreDetailsQuery } from '@/libs/stores/hooks';
-import { copyToClipboard } from '@/utils/clipboard';
+import { copyToClipboard } from '@/libs/common/utils/clipboard';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams<{ storeId: string }>();

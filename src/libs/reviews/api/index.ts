@@ -14,7 +14,7 @@ import {
   ReviewReplyPreview,
   ReviewReportPreview,
 } from '@/libs/reviews/types';
-import { isDev } from '@/utils';
+import { isDev } from '../../common/utils';
 
 export async function createReview(productId: number, data: CreateReviewDto) {
   return isDev

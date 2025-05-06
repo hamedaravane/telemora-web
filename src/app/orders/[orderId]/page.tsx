@@ -16,7 +16,7 @@ import { OrderStatus } from '@/libs/orders/types';
 import { PaymentStatusChip } from '@/libs/payments/components/payment-status-chip';
 import { TonPaymentButton } from '@/libs/payments/components/ton-payment-button';
 import { PaymentStatus } from '@/libs/payments/types';
-import { formatDate, formatRelative } from '@/utils/date';
+import { formatDate, formatRelative } from '@/libs/common/utils/date';
 
 export default function OrderDetailsPage() {
   const { orderId } = useParams<{ orderId: string }>();

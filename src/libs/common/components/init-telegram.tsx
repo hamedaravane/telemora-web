@@ -4,12 +4,12 @@ import { useLaunchParams } from '@telegram-apps/sdk-react';
 import { type PropsWithChildren } from 'react';
 
 import { init } from '@/core/init';
-import { useClientOnce } from '@/hooks/useClientOnce';
-import { useDidMount } from '@/hooks/useDidMount';
-import { UseTelegramMock } from '@/hooks/useTelegramMock';
+import { useClientOnce } from '@/libs/common/hooks/useClientOnce';
+import { useDidMount } from '@/libs/common/hooks/useDidMount';
+import { UseTelegramMock } from '@/libs/common/hooks/useTelegramMock';
 import { ErrorBoundary } from '@/libs/common/components/ErrorBoundary';
 import SplashScreen from '@/libs/common/components/splash-screen';
-import { isDev } from '@/utils';
+import { isDev } from '../utils';
 
 export default function InitTelegram({ children }: PropsWithChildren) {
   UseTelegramMock(isDev);

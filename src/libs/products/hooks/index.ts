@@ -1,16 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { queryKeys } from '@/libs/common/api/query-keys';
-import {
-  createProduct,
-  deleteProduct,
-  getProductDetails,
-  getStoreProducts,
-  updateProduct,
-} from '@/libs/products/api';
+import { createProduct, deleteProduct, getProductDetails, getStoreProducts, updateProduct } from '@/libs/products/api';
 import { generateMockProductDetail, generateMockProductPreviews } from '@/libs/products/mocks';
 import { CreateProductFormData, UpdateProductFormData } from '@/libs/products/schemas';
-import { isDev } from '@/utils';
+import { isDev } from '../../common/utils';
 
 export function useStoreProducts(storeId: number) {
   return useQuery({
