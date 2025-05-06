@@ -5,10 +5,10 @@ import { FaClipboard, FaHome, FaStore, FaUser } from 'react-icons/fa';
 import { Tab, Tabs } from '@heroui/react';
 
 const tabList = [
-  { key: 'market', href: '/market', label: 'Market', icon: <FaHome size={15} /> },
-  { key: 'stores', href: '/stores', label: 'Stores', icon: <FaStore size={15} /> },
-  { key: 'orders', href: '/orders', label: 'Orders', icon: <FaClipboard size={15} /> },
-  { key: 'profile', href: '/profile', label: 'Profile', icon: <FaUser size={15} /> },
+  { key: '/market', href: '/market', label: 'Market', icon: <FaHome size={15} /> },
+  { key: '/stores', href: '/stores', label: 'Stores', icon: <FaStore size={15} /> },
+  { key: '/orders', href: '/orders', label: 'Orders', icon: <FaClipboard size={15} /> },
+  { key: '/profile', href: '/profile', label: 'Profile', icon: <FaUser size={15} /> },
 ];
 
 export default function BottomTabs() {
@@ -27,6 +27,7 @@ export default function BottomTabs() {
         base: '',
         tabList: '',
         tab: 'h-16',
+        cursor: 'bg-default-200',
       }}
     >
       {({ key, href, label, icon }) => (
