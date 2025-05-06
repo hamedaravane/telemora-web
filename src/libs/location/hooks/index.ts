@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
+
 import { queryKeys } from '@/libs/common/api/query-keys';
-import { CanonicalLocation, NearestLocationResponse } from '@/libs/location/types';
 import {
   getCitiesByState,
   getCountries,
   getNearestLocation,
   getStatesByCountry,
 } from '@/libs/location/api';
+import { CanonicalLocation, NearestLocationResponse } from '@/libs/location/types';
 
 export function useCountries() {
   return useQuery<CanonicalLocation[]>({

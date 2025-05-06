@@ -1,5 +1,6 @@
-import { PaymentStatus } from '@/libs/payments/types';
 import clsx from 'clsx';
+
+import { PaymentStatus } from '@/libs/payments/types';
 
 const statusStyles: Record<PaymentStatus, string> = {
   [PaymentStatus.PENDING]: 'bg-yellow-100 text-yellow-800',

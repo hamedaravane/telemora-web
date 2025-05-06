@@ -1,17 +1,18 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import { Button, Divider, ScrollShadow, Skeleton } from '@heroui/react';
-import AppLayout from '@/libs/common/components/app-layout';
-import Image from 'next/image';
-import ReviewPreviewCard from '@/libs/reviews/components/preview-card';
-import { PageHeader } from '@/libs/common/components/page-header';
 import { User } from '@heroui/user';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
+import Image from 'next/image';
+import { useParams } from 'next/navigation';
+
+import AppLayout from '@/libs/common/components/app-layout';
+import ErrorPage from '@/libs/common/components/errorPage';
+import { PageHeader } from '@/libs/common/components/page-header';
+import PriceComponent from '@/libs/common/components/PriceComponent';
 import StarRating from '@/libs/common/components/star-rating';
 import { useProductDetails } from '@/libs/products/hooks';
-import ErrorPage from '@/libs/common/components/errorPage';
-import PriceComponent from '@/libs/common/components/PriceComponent';
-import { hapticFeedback } from '@telegram-apps/sdk-react';
+import ReviewPreviewCard from '@/libs/reviews/components/preview-card';
 
 export default function ProductDetailsPage() {
   const { storeId, productId } = useParams();

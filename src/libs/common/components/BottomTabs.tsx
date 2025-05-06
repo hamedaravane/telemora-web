@@ -1,8 +1,8 @@
 'use client';
 
+import { Tab, Tabs } from '@heroui/react';
 import { usePathname } from 'next/navigation';
 import { FaClipboard, FaHome, FaStore, FaUser } from 'react-icons/fa';
-import { Tab, Tabs } from '@heroui/react';
 
 const tabList = [
   { key: '/market', href: '/market', label: 'Market', icon: <FaHome size={15} /> },

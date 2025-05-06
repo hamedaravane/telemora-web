@@ -1,13 +1,14 @@
 'use client';
 
-import { useTonAddress, useTonConnectUI, useTonWallet } from '@tonconnect/ui-react';
+import { environment } from '@environments';
 import { Button } from '@heroui/react';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
+import { Cell } from '@ton/core';
+import { useTonAddress, useTonConnectUI, useTonWallet } from '@tonconnect/ui-react';
 import toast from 'react-hot-toast';
+
 import { useCreatePayment } from '@/libs/payments/hooks';
 import { buildMarketplaceTransaction } from '@/libs/payments/utils';
-import { environment } from '@environments';
-import { Cell } from '@ton/core';
-import { hapticFeedback } from '@telegram-apps/sdk-react';
 
 interface TonPaymentButtonProps {
   amountTon: number;

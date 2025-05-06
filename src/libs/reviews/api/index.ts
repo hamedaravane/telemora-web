@@ -1,3 +1,10 @@
+import httpClient from '@/libs/common/http-client';
+import {
+  generateMockReviewDetail,
+  generateMockReviewPreviews,
+  generateMockReviewReplyPreview,
+  generateMockReviewReportPreview,
+} from '@/libs/reviews/mocks';
 import {
   CreateReviewDto,
   CreateReviewReplyDto,
@@ -7,14 +14,7 @@ import {
   ReviewReplyPreview,
   ReviewReportPreview,
 } from '@/libs/reviews/types';
-import httpClient from '@/libs/common/http-client';
 import { isDev } from '@/utils';
-import {
-  generateMockReviewDetail,
-  generateMockReviewPreviews,
-  generateMockReviewReplyPreview,
-  generateMockReviewReportPreview,
-} from '@/libs/reviews/mocks';
 
 export async function createReview(productId: number, data: CreateReviewDto) {
   return isDev

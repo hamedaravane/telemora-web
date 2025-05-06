@@ -1,19 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
 import { Button, Form, Input, Progress } from '@heroui/react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
+import { useParams, useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import AppLayout from '@/libs/common/components/app-layout';
 import { PageHeader } from '@/libs/common/components/page-header';
 import { Tag } from '@/libs/common/components/tag';
-
-import { CreateStoreTagsDto, storeTagsFormSchema } from '@/libs/stores/schemas';
-import toast from 'react-hot-toast';
 import { useSubmitStoreTagsMutation } from '@/libs/stores/hooks';
-import { hapticFeedback } from '@telegram-apps/sdk-react';
+import { CreateStoreTagsDto, storeTagsFormSchema } from '@/libs/stores/schemas';
 
 const TAG_SUGGESTIONS = [
   'Clothing',

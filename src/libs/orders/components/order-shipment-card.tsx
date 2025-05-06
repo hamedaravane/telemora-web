@@ -1,9 +1,10 @@
 'use client';
 
-import { OrderShipment } from '@/libs/orders/types';
+import clsx from 'clsx';
 import { format } from 'date-fns';
 import { FaExternalLinkAlt, FaTruck } from 'react-icons/fa';
-import clsx from 'clsx';
+
+import { OrderShipment } from '@/libs/orders/types';
 
 const statusColors: Record<NonNullable<OrderShipment['status']>, string> = {
   created: 'bg-gray-200 text-gray-800',

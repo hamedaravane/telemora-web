@@ -1,13 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
+
 import { queryKeys } from '@/libs/common/api/query-keys';
-import { StoreDetail, StoreSummary } from '@/libs/stores/types';
-import {
-  CreateAddressDto,
-  CreateStoreBasicDto,
-  CreateStoreLogoDto,
-  CreateStoreTagsDto,
-  CreateStoreWorkingHoursDto,
-} from '@/libs/stores/schemas';
 import {
   fetchDiscoverableStores,
   fetchFeaturedStores,
@@ -19,6 +12,14 @@ import {
   submitStoreTagsSelection,
   submitStoreWorkingHours,
 } from '@/libs/stores/api';
+import {
+  CreateAddressDto,
+  CreateStoreBasicDto,
+  CreateStoreLogoDto,
+  CreateStoreTagsDto,
+  CreateStoreWorkingHoursDto,
+} from '@/libs/stores/schemas';
+import { StoreDetail, StoreSummary } from '@/libs/stores/types';
 
 export function useUserStoresQuery() {
   return useQuery<StoreSummary[]>({

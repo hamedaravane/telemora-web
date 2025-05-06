@@ -1,10 +1,10 @@
+import httpClient from '@/libs/common/http-client';
 import {
   CreateProductDto,
   ProductDetail,
   ProductPreview,
   UpdateProductDto,
 } from '@/libs/products/types';
-import httpClient from '@/libs/common/http-client';
 
 export async function getStoreProducts(storeId: number) {
   return httpClient.get<ProductPreview[]>(`/stores/${storeId}/products`);

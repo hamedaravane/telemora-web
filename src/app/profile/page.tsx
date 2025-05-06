@@ -1,12 +1,13 @@
 'use client';
 
-import AppLayout from '@/libs/common/components/app-layout';
-import { useUser } from '@/context/userContext';
 import { Divider, Skeleton } from '@heroui/react';
-import { StorePreviewCard } from '@/libs/stores/components/preview-card';
-import OrderSummaryCard from '@/libs/orders/components/summary-card';
-import { PageHeader } from '@/libs/common/components/page-header';
 import React from 'react';
+
+import { useUser } from '@/context/userContext';
+import AppLayout from '@/libs/common/components/app-layout';
+import { PageHeader } from '@/libs/common/components/page-header';
+import OrderSummaryCard from '@/libs/orders/components/summary-card';
+import { StorePreviewCard } from '@/libs/stores/components/preview-card';
 import ProfileCard from '@/libs/users/components/profile-card';
 
 export default function ProfilePage() {

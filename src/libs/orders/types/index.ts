@@ -1,6 +1,6 @@
+import { PaymentSummary } from '@/libs/payments/types';
 import { ProductPreview } from '@/libs/products/types';
 import { StorePreview } from '@/libs/stores/types';
-import { PaymentSummary } from '@/libs/payments/types';
 import { UserSummary } from '@/libs/users/types';
 
 export enum OrderStatus {

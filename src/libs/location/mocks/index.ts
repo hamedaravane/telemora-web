@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+
 import { Address, CanonicalLocation } from '../types';
 
 function generateMockCanonicalLocation(type: CanonicalLocation['type']): CanonicalLocation {

@@ -1,19 +1,20 @@
 'use client';
 
-import React from 'react';
-import { useParams, useRouter } from 'next/navigation';
 import { Accordion, AccordionItem, Button, Chip, Spinner, Tooltip } from '@heroui/react';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
 import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
+import React from 'react';
+import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa6';
+
 import { useUser } from '@/context/userContext';
 import AppLayout from '@/libs/common/components/app-layout';
-import { FaPlus } from 'react-icons/fa6';
-import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
+import ErrorPage from '@/libs/common/components/errorPage';
 import StarRating from '@/libs/common/components/star-rating';
 import ProductPreviewCard from '@/libs/products/components/preview-card';
 import { useStoreDetailsQuery } from '@/libs/stores/hooks';
-import ErrorPage from '@/libs/common/components/errorPage';
 import { copyToClipboard } from '@/utils/clipboard';
-import { hapticFeedback } from '@telegram-apps/sdk-react';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams<{ storeId: string }>();

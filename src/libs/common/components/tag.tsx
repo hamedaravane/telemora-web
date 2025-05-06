@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
 import { Button } from '@heroui/react';
+import React from 'react';
 
 interface Props {
   label: string;

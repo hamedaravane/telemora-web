@@ -1,9 +1,10 @@
-import { StorePreview } from '@/libs/stores/types';
+import { Card, CardBody, cn } from '@heroui/react';
 import Image from 'next/image';
-import StarRating from '@/libs/common/components/star-rating';
 import Link from 'next/link';
 import React from 'react';
-import { Card, CardBody, cn } from '@heroui/react';
+
+import StarRating from '@/libs/common/components/star-rating';
+import { StorePreview } from '@/libs/stores/types';
 
 export const StorePreviewCard = ({ store }: { store: StorePreview }) => {
   return (

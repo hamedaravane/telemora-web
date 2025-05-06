@@ -1,10 +1,11 @@
 'use client';
 
-import { ProductPreview } from '@/libs/products/types';
+import { Card, CardBody, CardFooter } from '@heroui/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardBody, CardFooter } from '@heroui/react';
+
 import PriceComponent from '@/libs/common/components/PriceComponent';
+import { ProductPreview } from '@/libs/products/types';
 
 interface ProductPreviewCard {
   product: ProductPreview;

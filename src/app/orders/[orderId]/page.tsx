@@ -1,21 +1,22 @@
 'use client';
 
+import { Alert, Button, Card, CardBody, CardFooter, Divider, Spinner } from '@heroui/react';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { Alert, Button, Card, CardBody, CardFooter, Divider, Spinner } from '@heroui/react';
-import { useOrderDetails } from '@/libs/orders/hooks';
+
 import AppLayout from '@/libs/common/components/app-layout';
-import { PageHeader } from '@/libs/common/components/page-header';
 import ErrorPage from '@/libs/common/components/errorPage';
+import { PageHeader } from '@/libs/common/components/page-header';
+import PriceComponent from '@/libs/common/components/PriceComponent';
 import OrderItemPreviewCard from '@/libs/orders/components/order-item-preview';
-import { formatDate, formatRelative } from '@/utils/date';
+import { OrderShipmentCard } from '@/libs/orders/components/order-shipment-card';
 import { OrderStatusChip } from '@/libs/orders/components/order-status-chip';
+import { useOrderDetails } from '@/libs/orders/hooks';
+import { OrderStatus } from '@/libs/orders/types';
 import { PaymentStatusChip } from '@/libs/payments/components/payment-status-chip';
 import { TonPaymentButton } from '@/libs/payments/components/ton-payment-button';
-import { OrderShipmentCard } from '@/libs/orders/components/order-shipment-card';
 import { PaymentStatus } from '@/libs/payments/types';
-import { OrderStatus } from '@/libs/orders/types';
-import PriceComponent from '@/libs/common/components/PriceComponent';
+import { formatDate, formatRelative } from '@/utils/date';
 
 export default function OrderDetailsPage() {
   const { orderId } = useParams<{ orderId: string }>();

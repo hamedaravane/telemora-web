@@ -1,10 +1,11 @@
 'use client';
 
-import { OrderStatus, OrderSummary } from '@/libs/orders/types';
 import { Card, CardBody, CardHeader, Chip } from '@heroui/react';
 import { format } from 'date-fns';
 import Link from 'next/link';
+
 import PriceComponent from '@/libs/common/components/PriceComponent';
+import { OrderStatus, OrderSummary } from '@/libs/orders/types';
 
 interface OrderSummaryCardProps {
   order: OrderSummary;

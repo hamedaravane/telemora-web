@@ -1,6 +1,7 @@
 'use client';
 
 import { mockTelegramEnv, retrieveRawLaunchParams } from '@telegram-apps/sdk-react';
+
 import { useClientOnce } from '@/hooks/useClientOnce';
 import { mockLaunchParams } from '@/libs/common/mocks';
 

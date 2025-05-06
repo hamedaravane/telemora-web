@@ -1,4 +1,8 @@
 import { faker } from '@faker-js/faker';
+
+import { generateMockReviewPreview } from '@/libs/reviews/mocks';
+import { generateMockStorePreview } from '@/libs/stores/mocks';
+
 import {
   ProductAttribute,
   ProductCategoryNode,
@@ -8,8 +12,6 @@ import {
   ProductType,
   ProductVariant,
 } from '../types';
-import { generateMockStorePreview } from '@/libs/stores/mocks';
-import { generateMockReviewPreview } from '@/libs/reviews/mocks';
 
 export async function generateMockProductPreview(id: number): Promise<ProductPreview> {
   return {

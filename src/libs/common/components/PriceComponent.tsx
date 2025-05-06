@@ -1,8 +1,9 @@
 'use client';
 
-import { useUser } from '@/context/userContext';
 import Decimal from 'decimal.js';
 import React from 'react';
+
+import { useUser } from '@/context/userContext';
 
 export default function PriceComponent({ amount }: { amount: number }) {
   return (

@@ -1,7 +1,8 @@
-import { StorePreview } from '@/libs/stores/types';
-import { OrderSummary } from '@/libs/orders/types';
-import { Media } from '../../common/types';
 import { Address } from '@/libs/location/types';
+import { OrderSummary } from '@/libs/orders/types';
+import { StorePreview } from '@/libs/stores/types';
+
+import { Media } from '../../common/types';
 
 export enum UserRole {
   BUYER = 'buyer',

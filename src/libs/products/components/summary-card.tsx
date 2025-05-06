@@ -1,11 +1,12 @@
 'use client';
 
-import { ProductSummary, ProductType } from '@/libs/products/types';
+import { Badge } from '@heroui/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Badge } from '@heroui/react';
 import { FaStore } from 'react-icons/fa6';
+
 import PriceComponent from '@/libs/common/components/PriceComponent';
+import { ProductSummary, ProductType } from '@/libs/products/types';
 
 interface ProductSummaryCardProps {
   product: ProductSummary;

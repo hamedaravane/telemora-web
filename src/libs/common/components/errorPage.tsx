@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import { Button } from '@heroui/react';
-import { FaUndo } from 'react-icons/fa';
+import Image from 'next/image';
 import { useEffect } from 'react';
+import { FaUndo } from 'react-icons/fa';
 
 export default function ErrorPage({
   error,

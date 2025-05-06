@@ -1,19 +1,17 @@
 'use client';
 
-import React, { useMemo } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { Controller, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-
 import { Button, Form, Input, Progress, Switch } from '@heroui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
+import { useParams, useRouter } from 'next/navigation';
+import React, { useMemo } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+
 import AppLayout from '@/libs/common/components/app-layout';
 import { PageHeader } from '@/libs/common/components/page-header';
-
-import { CreateStoreWorkingHoursDto, storeWorkingHoursFormSchema } from '@/libs/stores/schemas';
-
-import toast from 'react-hot-toast';
 import { useSubmitStoreWorkingHoursMutation } from '@/libs/stores/hooks';
-import { hapticFeedback } from '@telegram-apps/sdk-react';
+import { CreateStoreWorkingHoursDto, storeWorkingHoursFormSchema } from '@/libs/stores/schemas';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 

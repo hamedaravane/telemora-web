@@ -1,12 +1,13 @@
 'use client';
 
-import { type PropsWithChildren } from 'react';
 import { useLaunchParams } from '@telegram-apps/sdk-react';
+import { type PropsWithChildren } from 'react';
+
+import { init } from '@/core/init';
 import { useClientOnce } from '@/hooks/useClientOnce';
 import { useDidMount } from '@/hooks/useDidMount';
-import { init } from '@/core/init';
-import { ErrorBoundary } from '@/libs/common/components/ErrorBoundary';
 import { UseTelegramMock } from '@/hooks/useTelegramMock';
+import { ErrorBoundary } from '@/libs/common/components/ErrorBoundary';
 import SplashScreen from '@/libs/common/components/splash-screen';
 import { isDev } from '@/utils';
 

@@ -1,15 +1,16 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-  UpdateContactLocationFormData,
-  UpdateLanguageFormData,
-  UpdateProfileFormData,
-} from '@/libs/users/schemas';
+
 import {
   telegramLogin,
   updateContactLocation,
   updateLanguage,
   updateProfile,
 } from '@/libs/users/api';
+import {
+  UpdateContactLocationFormData,
+  UpdateLanguageFormData,
+  UpdateProfileFormData,
+} from '@/libs/users/schemas';
 
 export function useTelegramLoginQuery() {
   return useQuery({

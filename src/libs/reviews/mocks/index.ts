@@ -1,4 +1,7 @@
 import { faker } from '@faker-js/faker';
+
+import { generateMockUserPublicPreview } from '@/libs/users/mocks';
+
 import {
   ReportReason,
   ReviewDetail,
@@ -6,7 +9,6 @@ import {
   ReviewReplyPreview,
   ReviewReportPreview,
 } from '../types';
-import { generateMockUserPublicPreview } from '@/libs/users/mocks';
 
 export async function generateMockReviewPreview(productId: number): Promise<ReviewPreview> {
   return {

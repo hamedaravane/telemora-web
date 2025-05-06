@@ -1,3 +1,5 @@
+import httpClient from '@/libs/common/http-client';
+import { generateMockStoreDetail, generateMockStoreSummaries } from '@/libs/stores/mocks';
 import {
   CreateAddressDto,
   CreateStoreBasicDto,
@@ -7,9 +9,7 @@ import {
   UpdateStoreDto,
 } from '@/libs/stores/schemas';
 import { StoreDetail, StoreSummary } from '@/libs/stores/types';
-import httpClient from '@/libs/common/http-client';
 import { isDev } from '@/utils';
-import { generateMockStoreDetail, generateMockStoreSummaries } from '@/libs/stores/mocks';
 
 export async function fetchUserStores() {
   return isDev ? generateMockStoreSummaries() : httpClient.get<StoreSummary[]>('/stores/my');

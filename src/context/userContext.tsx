@@ -1,10 +1,11 @@
 'use client';
 
 import React, { createContext, type PropsWithChildren, useContext } from 'react';
-import { UserPrivateProfile } from '@/libs/users/types';
-import { useTelegramLoginQuery } from '@/libs/users/hooks';
+
 import ErrorPage from '@/libs/common/components/errorPage';
 import SplashScreen from '@/libs/common/components/splash-screen';
+import { useTelegramLoginQuery } from '@/libs/users/hooks';
+import { UserPrivateProfile } from '@/libs/users/types';
 
 const UserContext = createContext<UserPrivateProfile | null>(null);
 

@@ -1,7 +1,7 @@
-import { CreatePaymentDto, PaymentDetail, PaymentSummary } from '@/libs/payments/types';
 import httpClient from '@/libs/common/http-client';
-import { isDev } from '@/utils';
 import { generateMockPaymentDetail, generateMockPaymentSummaries } from '@/libs/payments/mocks';
+import { CreatePaymentDto, PaymentDetail, PaymentSummary } from '@/libs/payments/types';
+import { isDev } from '@/utils';
 
 export async function getPayments() {
   return isDev ? generateMockPaymentSummaries() : httpClient.get<PaymentSummary[]>('/payments');

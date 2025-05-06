@@ -1,12 +1,12 @@
+import httpClient from '@/libs/common/http-client';
+import { generateMockUserPrivateProfile } from '@/libs/users/mocks';
 import {
   UpdateContactLocationDto,
   UpdateLanguageDto,
   UpdateProfileDto,
   UserPrivateProfile,
 } from '@/libs/users/types';
-import httpClient from '@/libs/common/http-client';
 import { isDev } from '@/utils';
-import { generateMockUserPrivateProfile } from '@/libs/users/mocks';
 
 export async function telegramLogin() {
   return isDev

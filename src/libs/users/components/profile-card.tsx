@@ -1,9 +1,10 @@
-import { UserPrivateProfile } from '@/libs/users/types';
-import Image from 'next/image';
 import { Button } from '@heroui/react';
+import Image from 'next/image';
+import React from 'react';
 import { FaPen } from 'react-icons/fa';
 import { FaGear } from 'react-icons/fa6';
-import React from 'react';
+
+import { UserPrivateProfile } from '@/libs/users/types';
 
 export default function ProfileCard({ user }: { user: UserPrivateProfile }) {
   return (

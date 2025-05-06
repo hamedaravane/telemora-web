@@ -1,8 +1,8 @@
 'use client';
 
+import clsx from 'clsx';
 import React from 'react';
 import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa';
-import clsx from 'clsx';
 
 interface StarRatingProps {
   rating: number;

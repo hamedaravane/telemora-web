@@ -1,5 +1,6 @@
-import { OrderStatus } from '@/libs/orders/types';
 import clsx from 'clsx';
+
+import { OrderStatus } from '@/libs/orders/types';
 
 const statusStyles: Record<OrderStatus, string> = {
   [OrderStatus.PENDING]: 'bg-yellow-100 text-yellow-800',

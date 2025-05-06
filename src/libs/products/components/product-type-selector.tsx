@@ -2,6 +2,7 @@
 
 import { Select, SelectItem } from '@heroui/react';
 import { Control, Controller, FieldErrors, FieldValues, Path } from 'react-hook-form';
+
 import { ProductType } from '@/libs/products/types';
 
 type ProductTypeSelectorProps<T extends FieldValues> = {
