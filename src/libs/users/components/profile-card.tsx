@@ -1,5 +1,6 @@
 import { Button } from '@heroui/react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { FaPen } from 'react-icons/fa';
 import { FaGear } from 'react-icons/fa6';
@@ -7,6 +8,7 @@ import { FaGear } from 'react-icons/fa6';
 import { UserPrivateProfile } from '@/libs/users/types';
 
 export default function ProfileCard({ user }: { user: UserPrivateProfile }) {
+  const router = useRouter();
   return (
     <div className="space-y-2">
       <div className="text-center">
@@ -25,11 +27,16 @@ export default function ProfileCard({ user }: { user: UserPrivateProfile }) {
         </div>
       </div>
       <div className="flex space-x-2">
-        <Button fullWidth size="sm" variant="flat">
+        <Button fullWidth size="sm" variant="flat" onPress={() => router.push('/profile/edit')}>
           <FaPen />
           Edit Profile
         </Button>
-        <Button fullWidth size="sm" variant="flat">
+        <Button
+          fullWidth
+          size="sm"
+          variant="flat"
+          onPress={() => router.push('/profile/preferences')}
+        >
           <FaGear />
           Preferences
         </Button>

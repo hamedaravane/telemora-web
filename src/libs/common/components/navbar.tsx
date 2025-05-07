@@ -9,7 +9,9 @@ export default function CustomNavbar() {
   return (
     <Navbar>
       <NavbarBrand>
-        <FaGear />
+        <Link href="/profile/preferences">
+          <FaGear />
+        </Link>
       </NavbarBrand>
       <NavbarContent justify="end">
         <NavbarItem>
