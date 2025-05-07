@@ -56,3 +56,8 @@ export interface UpdateProfileDto {
   firstName?: string;
   lastName?: string;
 }
+
+export interface UpdatePreferencesDto {
+  languageCode: string;
+  currencyCode: string;
+}

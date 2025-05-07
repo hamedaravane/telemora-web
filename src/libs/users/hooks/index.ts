@@ -5,10 +5,12 @@ import {
   updateContactLocation,
   updateLanguage,
   updateProfile,
+  updateUserPreferences,
 } from '@/libs/users/api';
 import {
   UpdateContactLocationFormData,
   UpdateLanguageFormData,
+  UpdatePreferencesFormData,
   UpdateProfileFormData,
 } from '@/libs/users/schemas';
 
@@ -54,5 +56,17 @@ export function useUpdateContactLocationMutation() {
       telegramId: number | string;
       data: UpdateContactLocationFormData;
     }) => updateContactLocation(telegramId, data),
+  });
+}
+
+export function useUpdatePreferencesMutation() {
+  return useMutation({
+    mutationFn: ({
+                   telegramId,
+                   data,
+                 }: {
+      telegramId: number | string;
+      data: UpdatePreferencesFormData;
+    }) => updateUserPreferences(telegramId, data),
   });
 }

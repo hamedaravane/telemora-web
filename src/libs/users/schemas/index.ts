@@ -17,6 +17,12 @@ export const updateContactLocationSchema = z.object({
   cityId: z.number(),
 });
 
+export const updatePreferencesSchema = z.object({
+  currencyCode: z.string(),
+  languageCode: z.string(),
+});
+
 export type UpdateProfileFormData = z.infer<typeof updateProfileSchema>;
 export type UpdateLanguageFormData = z.infer<typeof updateLanguageSchema>;
 export type UpdateContactLocationFormData = z.infer<typeof updateContactLocationSchema>;
+export type UpdatePreferencesFormData = z.infer<typeof updatePreferencesSchema>;
