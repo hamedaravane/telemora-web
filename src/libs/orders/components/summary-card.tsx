@@ -1,10 +1,11 @@
 'use client';
 
-import { OrderStatus, OrderSummary } from '@/libs/orders/types';
 import { Card, CardBody, CardHeader, Chip } from '@heroui/react';
 import { format } from 'date-fns';
 import Link from 'next/link';
+
 import PriceComponent from '@/libs/common/components/PriceComponent';
+import { OrderStatus, OrderSummary } from '@/libs/orders/types';
 
 interface OrderSummaryCardProps {
   order: OrderSummary;
@@ -17,7 +18,7 @@ export default function OrderSummaryCard({ order, href, className }: OrderSummar
 
   const cardContent = (
     <Card className={`w-full ${className}`}>
-      <CardHeader className="flex justify-between items-center">
+      <CardHeader className="flex items-center justify-between">
         <div>
           <h3 className="text-sm font-semibold">Order #{id}</h3>
           <p className="text-xs text-gray-500">
@@ -31,9 +32,9 @@ export default function OrderSummaryCard({ order, href, className }: OrderSummar
       </CardHeader>
 
       <CardBody className="text-sm text-gray-700">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <PriceComponent amount={totalAmount} />
-          <div className="text-xs text-gray-500 text-right">
+          <div className="text-right text-xs text-gray-500">
             <p className="font-medium">Est. Delivery</p>
             <p>{format(new Date(deliveryDate), 'PP')}</p>
           </div>

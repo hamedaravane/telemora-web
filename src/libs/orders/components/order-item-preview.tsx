@@ -1,8 +1,9 @@
-import React from 'react';
-import { OrderItemPreview } from '@/libs/orders/types';
 import { Card, CardBody, Chip } from '@heroui/react';
 import Image from 'next/image';
+import React from 'react';
+
 import PriceComponent from '@/libs/common/components/PriceComponent';
+import { OrderItemPreview } from '@/libs/orders/types';
 
 export default function OrderItemPreviewCard({ orderItem }: { orderItem: OrderItemPreview }) {
   return (
@@ -14,7 +15,7 @@ export default function OrderItemPreviewCard({ orderItem }: { orderItem: OrderIt
             alt={orderItem.product.name}
             width={64}
             height={64}
-            className="aspect-square object-cover rounded"
+            className="aspect-square rounded object-cover"
           />
           <div className="space-y-4">
             <strong>{orderItem.product.name}</strong>

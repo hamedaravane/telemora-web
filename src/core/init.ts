@@ -23,14 +23,21 @@ export function init(debug: boolean): void {
   void viewport
     .mount()
     .then(() => {
-      viewport.bindCssVars();
+      if (!viewport.isCssVarsBound()) {
+        viewport.bindCssVars();
+      }
     })
     .catch((e) => {
       console.error('Something went wrong mounting the viewport', e);
     });
 
-  miniApp.bindCssVars();
-  themeParams.bindCssVars();
+  if (!miniApp.isCssVarsBound()) {
+    miniApp.bindCssVars();
+  }
+
+  if (!themeParams.isCssVarsBound()) {
+    themeParams.bindCssVars();
+  }
 
   if (debug) {
     import('eruda').then((lib) => lib.default.init()).catch(console.error);

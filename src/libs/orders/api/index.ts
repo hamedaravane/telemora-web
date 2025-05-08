@@ -1,9 +1,5 @@
-import httpClient from '@/libs/common/http-client';
-import {
-  CreateOrderFormData,
-  CreateOrderShipmentFormData,
-  UpdateOrderFormData,
-} from '@/libs/orders/schemas';
+import httpClient from '@/libs/common/utils/http-client';
+import { CreateOrderFormData, CreateOrderShipmentFormData, UpdateOrderFormData } from '@/libs/orders/schemas';
 import { OrderDetail, OrderSummary } from '@/libs/orders/types';
 
 export async function getMyOrders() {

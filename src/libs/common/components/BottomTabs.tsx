@@ -1,26 +1,47 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import { FaClipboard, FaHome, FaStore, FaUser } from 'react-icons/fa';
 import { Tab, Tabs } from '@heroui/react';
+import { usePathname, useRouter } from 'next/navigation';
+import { FaClipboard, FaHome, FaStore, FaUser } from 'react-icons/fa';
 
-const TABS = [
-  { key: 'market', href: '/market', label: 'Market', icon: <FaHome size={18} /> },
-  { key: 'stores', href: '/stores', label: 'Stores', icon: <FaStore size={18} /> },
-  { key: 'orders', href: '/orders', label: 'Orders', icon: <FaClipboard size={18} /> },
-  { key: 'profile', href: '/profile', label: 'Profile', icon: <FaUser size={18} /> },
+const tabList = [
+  { key: '/market', label: 'Market', icon: <FaHome size={15} /> },
+  { key: '/stores', label: 'Stores', icon: <FaStore size={15} /> },
+  { key: '/orders', label: 'Orders', icon: <FaClipboard size={15} /> },
+  { key: '/profile', label: 'Profile', icon: <FaUser size={15} /> },
 ];
 
 export default function BottomTabs() {
   const pathname = usePathname();
+  const route = useRouter();
 
   return (
-    <Tabs aria-label="Options" selectedKey={pathname}>
-      {TABS.map(({ key, href, label, icon }) => (
-        <Tab key={key} title={label} href={href}>
-          {icon}
-        </Tab>
-      ))}
+    <Tabs
+      aria-label="Bottom Navigation"
+      selectedKey={pathname}
+      size="lg"
+      fullWidth
+      placement="bottom"
+      items={tabList}
+      classNames={{
+        tabWrapper: 'px-4 mb-6 fixed bottom-0 z-50 w-full',
+        base: 'backdrop-blur-sm',
+        tabList: '',
+        tab: 'h-16',
+        cursor: 'bg-default-200 text-primary',
+      }}
+      onSelectionChange={(key) => route.push(key as string)}
+    >
+      {({ key, label, icon }) => (
+        <Tab
+          key={key}
+          title={
+            <div className="flex flex-col items-center gap-1 text-sm">
+              {icon} <span>{label}</span>
+            </div>
+          }
+        />
+      )}
     </Tabs>
   );
 }

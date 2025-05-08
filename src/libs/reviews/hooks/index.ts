@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { queryKeys } from '@/libs/common/api/query-keys';
-import { ReviewDetail, ReviewPreview } from '@/libs/reviews/types';
 import {
   createReview,
   deleteReviews,
@@ -14,6 +14,7 @@ import {
   CreateReviewReplyFormData,
   CreateReviewReportFormData,
 } from '@/libs/reviews/schemas';
+import { ReviewDetail, ReviewPreview } from '@/libs/reviews/types';
 
 export function useProductReviews(productId: number) {
   return useQuery<ReviewPreview[]>({

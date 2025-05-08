@@ -1,23 +1,41 @@
 'use client';
 
 import React, { createContext, type PropsWithChildren, useContext } from 'react';
-import { UserPrivateProfile } from '@/libs/users/types';
-import { useTelegramLoginQuery } from '@/libs/users/hooks';
-import ErrorPage from '@/libs/common/components/errorPage';
-import SplashScreen from '@/libs/common/components/splash-screen';
 
-const UserContext = createContext<UserPrivateProfile | null>(null);
+import { useTelegramLoginQuery } from '@/libs/users/hooks';
+import { UserPrivateProfile } from '@/libs/users/types';
+
+interface UserContext {
+  data?: UserPrivateProfile;
+  isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
+  error: Error | null;
+}
+
+const defaultValue: UserContext = {
+  data: undefined,
+  isLoading: true,
+  isError: false,
+  refetch: () => {
+  },
+  error: new Error(),
+};
+
+const UserContext = createContext<UserContext>(defaultValue);
 
 export function UserProvider({ children }: PropsWithChildren) {
-  const { data: user, isLoading, isError, refetch } = useTelegramLoginQuery();
+  const { data, isLoading, isError, refetch, error } = useTelegramLoginQuery();
 
-  if (isLoading) {
-    return <SplashScreen />;
-  }
+  const userContext: UserContext = {
+    data,
+    isLoading,
+    isError,
+    refetch,
+    error,
+  };
 
-  if (isError || !user) return <ErrorPage reset={refetch} />;
-
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={userContext}>{children}</UserContext.Provider>;
 }
 
 export const useUser = () => useContext(UserContext);

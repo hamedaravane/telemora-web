@@ -1,13 +1,14 @@
 'use client';
 
-import { useUser } from '@/context/userContext';
 import Decimal from 'decimal.js';
 import React from 'react';
+
+import { useUser } from '@/context/userContext';
 
 export default function PriceComponent({ amount }: { amount: number }) {
   return (
     <div>
-      <div className="space-x-2">
+      <div className="flex items-center gap-2">
         <span>{amount}</span>
         <TonCurrencyIcon />
       </div>
@@ -17,7 +18,7 @@ export default function PriceComponent({ amount }: { amount: number }) {
 }
 
 function UserCurrencyInfo() {
-  const user = useUser();
+  const { data: user } = useUser();
   if (!user) return null;
 
   const currencyInfo = user.currencyInfo;
@@ -36,8 +37,8 @@ function UserCurrencyInfo() {
 function TonCurrencyIcon() {
   return (
     <svg
-      width="20"
-      height="20"
+      width="14"
+      height="14"
       viewBox="0 0 56 56"
       style={{ display: 'inline-block' }}
       fill="none"

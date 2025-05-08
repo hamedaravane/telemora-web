@@ -1,24 +1,25 @@
 'use client';
 
-import React from 'react';
-import { useParams, useRouter } from 'next/navigation';
 import { Accordion, AccordionItem, Button, Chip, Spinner, Tooltip } from '@heroui/react';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
 import Image from 'next/image';
-import { useUser } from '@/context/userContext';
-import AppLayout from '@/libs/common/components/app-layout';
-import { FaPlus } from 'react-icons/fa6';
+import { useParams, useRouter } from 'next/navigation';
+import React from 'react';
 import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa6';
+
+import { useUser } from '@/context/userContext';
+import AppLayout from '@/libs/common/components/AppLayout';
+import ErrorPage from '@/libs/common/components/errorPage';
 import StarRating from '@/libs/common/components/star-rating';
+import { copyToClipboard } from '@/libs/common/utils/clipboard';
 import ProductPreviewCard from '@/libs/products/components/preview-card';
 import { useStoreDetailsQuery } from '@/libs/stores/hooks';
-import ErrorPage from '@/libs/common/components/errorPage';
-import { copyToClipboard } from '@/utils/clipboard';
-import { hapticFeedback } from '@telegram-apps/sdk-react';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams<{ storeId: string }>();
   const router = useRouter();
-  const user = useUser();
+  const { data: user } = useUser();
   const { data: store, isLoading, error } = useStoreDetailsQuery(storeId);
   const isOwner = user && store && store.owner.id === user.id;
 
@@ -35,7 +36,7 @@ export default function StoreDetailsPage() {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="flex min-h-screen items-center justify-center">
           <Spinner size="lg" />
         </div>
       </AppLayout>
@@ -47,7 +48,7 @@ export default function StoreDetailsPage() {
   return (
     <AppLayout>
       {/* Store Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           {store.logo?.url && (
             <Image
@@ -55,7 +56,7 @@ export default function StoreDetailsPage() {
               alt={store.name}
               width={48}
               height={48}
-              className="rounded-full object-cover aspect-square"
+              className="aspect-square rounded-full object-cover"
             />
           )}
           <div>
@@ -83,11 +84,11 @@ export default function StoreDetailsPage() {
 
       {/* Store Description */}
       {store.description && (
-        <p className="text-gray-700 text-sm mb-4 leading-snug">{store.description}</p>
+        <p className="mb-4 text-sm leading-snug text-gray-700">{store.description}</p>
       )}
 
       {/* Contact & Working Hours */}
-      <div className="mb-6 text-sm text-gray-600 space-y-1">
+      <div className="mb-6 space-y-1 text-sm text-gray-600">
         {store.contactNumber && <p>📞 {store.contactNumber}</p>}
         {store.email && <p>✉️ {store.email}</p>}
 
@@ -124,7 +125,7 @@ export default function StoreDetailsPage() {
 
       {/* Products Section */}
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
+        <div className="mb-2 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Featured Products</h2>
           <Button variant="ghost" size="sm" onPress={handleViewAll}>
             View All
@@ -139,7 +140,7 @@ export default function StoreDetailsPage() {
         </div>
 
         {isOwner && (
-          <div className="text-center mt-4">
+          <div className="mt-4 text-center">
             <Button onPress={handleAddProduct} startContent={<FaPlus />}>
               Add Product
             </Button>

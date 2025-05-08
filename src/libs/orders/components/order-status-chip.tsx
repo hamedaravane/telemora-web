@@ -1,5 +1,6 @@
-import { OrderStatus } from '@/libs/orders/types';
 import clsx from 'clsx';
+
+import { OrderStatus } from '@/libs/orders/types';
 
 const statusStyles: Record<OrderStatus, string> = {
   [OrderStatus.PENDING]: 'bg-yellow-100 text-yellow-800',
@@ -16,7 +17,7 @@ export function OrderStatusChip({ status }: { status: OrderStatus }) {
   return (
     <span
       className={clsx(
-        'text-xs font-medium px-3 py-1 rounded-full capitalize',
+        'rounded-full px-3 py-1 text-xs font-medium capitalize',
         statusStyles[status],
       )}
     >

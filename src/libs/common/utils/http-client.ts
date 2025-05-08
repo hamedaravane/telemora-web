@@ -1,5 +1,6 @@
-import axios from './axios';
 import { AxiosRequestConfig } from 'axios';
+
+import axios from './axios';
 
 export const httpClient = {
   get: <T>(url: string, config?: AxiosRequestConfig<unknown>) =>

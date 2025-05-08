@@ -1,19 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
 import { Button, Form, Input, Progress } from '@heroui/react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
+import { useParams, useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
-import AppLayout from '@/libs/common/components/app-layout';
+import AppLayout from '@/libs/common/components/AppLayout';
 import { PageHeader } from '@/libs/common/components/page-header';
 import { Tag } from '@/libs/common/components/tag';
-
-import { CreateStoreTagsDto, storeTagsFormSchema } from '@/libs/stores/schemas';
-import toast from 'react-hot-toast';
 import { useSubmitStoreTagsMutation } from '@/libs/stores/hooks';
-import { hapticFeedback } from '@telegram-apps/sdk-react';
+import { CreateStoreTagsDto, storeTagsFormSchema } from '@/libs/stores/schemas';
 
 const TAG_SUGGESTIONS = [
   'Clothing',
@@ -90,7 +89,7 @@ export default function CreateStoreTags() {
 
         {/* Suggestions */}
         <div className="mt-4">
-          <p className="text-sm font-medium mb-2 text-gray-600">Suggestions</p>
+          <p className="mb-2 text-sm font-medium text-gray-600">Suggestions</p>
           <div className="flex flex-wrap gap-2">
             {TAG_SUGGESTIONS.map((tag) => (
               <Tag
@@ -122,7 +121,7 @@ export default function CreateStoreTags() {
               Add &#34;{input.trim()}&#34;
             </Button>
           )}
-          {errors.tags && <p className="text-sm text-red-500 mt-2">{errors.tags.message}</p>}
+          {errors.tags && <p className="mt-2 text-sm text-red-500">{errors.tags.message}</p>}
         </div>
 
         {/* Navigation */}

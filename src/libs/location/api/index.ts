@@ -1,11 +1,8 @@
+import httpClient from '@/libs/common/utils/http-client';
+import { generateMockCities, generateMockCountries, generateMockStates } from '@/libs/location/mocks';
+
+import { isDev } from '../../common/utils';
 import { CanonicalLocation, NearestLocationResponse } from '../types';
-import httpClient from '@/libs/common/http-client';
-import { isDev } from '@/utils';
-import {
-  generateMockCities,
-  generateMockCountries,
-  generateMockStates,
-} from '@/libs/location/mocks';
 
 export async function getCountries() {
   return isDev

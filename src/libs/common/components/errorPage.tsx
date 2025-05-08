@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import { Button } from '@heroui/react';
-import { FaUndo } from 'react-icons/fa';
+import Image from 'next/image';
 import { useEffect } from 'react';
+import { FaUndo } from 'react-icons/fa';
 
 export default function ErrorPage({
   error,
@@ -16,7 +16,7 @@ export default function ErrorPage({
     console.error(error);
   }, [error]);
   return (
-    <div className="flex flex-col gap-y-4 min-h-screen justify-center items-center text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-y-4 text-center">
       <Image src="/server-error.webp" alt="failed to load" priority width={160} height={160} />
       <h3>Something went wrong!</h3>
       {reset && (

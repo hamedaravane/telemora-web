@@ -1,20 +1,21 @@
 'use client';
 
 import { Button, Input, Textarea } from '@heroui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { hapticFeedback } from '@telegram-apps/sdk-react';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import AppLayout from '@/libs/common/components/app-layout';
 import toast from 'react-hot-toast';
-import { useParams, useRouter } from 'next/navigation';
-import { ProductType } from '@/libs/products/types';
-import { useCreateProductMutation } from '@/libs/products/hooks';
-import { CreateProductFormData, createProductSchema } from '@/libs/products/schemas';
+
+import AppLayout from '@/libs/common/components/AppLayout';
 import { PageHeader } from '@/libs/common/components/page-header';
+import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
 import { ProductTypeSelector } from '@/libs/products/components/product-type-selector';
 import { ProductVariantFields } from '@/libs/products/components/product-variants-field';
-import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
-import { hapticFeedback } from '@telegram-apps/sdk-react';
+import { useCreateProductMutation } from '@/libs/products/hooks';
+import { CreateProductFormData, createProductSchema } from '@/libs/products/schemas';
+import { ProductType } from '@/libs/products/types';
 
 export default function CreateProductPage() {
   const { storeId } = useParams();
@@ -100,7 +101,7 @@ export default function CreateProductPage() {
         />
 
         {previewUrl && (
-          <img src={previewUrl} alt="Preview" className="w-full rounded-xl border mt-2" />
+          <img src={previewUrl} alt="Preview" className="mt-2 w-full rounded-xl border" />
         )}
 
         <ProductTypeSelector name="productType" control={control} errors={errors} />

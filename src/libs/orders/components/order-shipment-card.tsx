@@ -1,9 +1,10 @@
 'use client';
 
-import { OrderShipment } from '@/libs/orders/types';
+import clsx from 'clsx';
 import { format } from 'date-fns';
 import { FaExternalLinkAlt, FaTruck } from 'react-icons/fa';
-import clsx from 'clsx';
+
+import { OrderShipment } from '@/libs/orders/types';
 
 const statusColors: Record<NonNullable<OrderShipment['status']>, string> = {
   created: 'bg-gray-200 text-gray-800',
@@ -25,16 +26,16 @@ export function OrderShipmentCard({ shipment }: { shipment: OrderShipment }) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-x-2 text-lg font-semibold mb-2">
+        <div className="mb-2 flex items-center gap-x-2 text-lg font-semibold">
           <FaTruck />
           <span>Shipment Info</span>
         </div>
-        <span className={clsx('text-xs px-2 py-1 rounded-full capitalize', statusColors[status])}>
+        <span className={clsx('rounded-full px-2 py-1 text-xs capitalize', statusColors[status])}>
           {status.replace('_', ' ')}
         </span>
       </div>
       <div>
-        <div className="text-xs space-y-1">
+        <div className="space-y-1 text-xs">
           <p>
             <span className="font-semibold">Tracking:</span> {trackingNumber}
           </p>
