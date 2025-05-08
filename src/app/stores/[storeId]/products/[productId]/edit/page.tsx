@@ -18,7 +18,12 @@ import { UpdateProductFormData, updateProductSchema } from '@/libs/products/sche
 
 export default function EditProductPage() {
   const { storeId, productId } = useParams<{ storeId: string; productId: string }>();
-  const { data: product } = useProductDetails(+storeId, +productId);
+  const storeIdNum = parseInt(storeId, 10);
+  const productIdNum = parseInt(productId, 10);
+  if (isNaN(storeIdNum) || isNaN(productIdNum)) {
+    return <div>Error: Invalid store or product ID</div>;
+  }
+  const { data: product } = useProductDetails(storeIdNum, productIdNum);
 
   const {
     register,
@@ -56,7 +61,7 @@ export default function EditProductPage() {
     remove: removeVariant,
   } = useFieldArray({ control, name: 'variants' });
 
-  const { mutateAsync } = useUpdateProductMutation(+storeId, +productId);
+  const { mutateAsync } = useUpdateProductMutation(storeIdNum, productIdNum);
   const router = useRouter();
 
   const onSubmit = async (data: UpdateProductFormData) => {
