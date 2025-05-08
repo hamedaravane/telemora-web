@@ -5,9 +5,8 @@ import React from 'react';
 
 import { useUser } from '@/context/userContext';
 import AppLayout from '@/libs/common/components/AppLayout';
-import { PageHeader } from '@/libs/common/components/page-header';
-import OrderSummaryCard from '@/libs/orders/components/summary-card';
-import { StorePreviewCard } from '@/libs/stores/components/preview-card';
+import SummaryOrdersSection from '@/libs/orders/components/summary-orders-section';
+import PreviewStoresSection from '@/libs/stores/components/preview-stores-section';
 import ProfileCard from '@/libs/users/components/profile-card';
 
 export default function ProfilePage() {
@@ -56,25 +55,11 @@ export default function ProfilePage() {
         <ProfileCard user={user} />
         <Divider />
         {user.stores && user.stores.length > 0 && (
-          <section>
-            <PageHeader title="My Stores" />
-            <div className="grid grid-cols-2 gap-3">
-              {user.stores.map((store) => (
-                <StorePreviewCard key={store.id} store={store} />
-              ))}
-            </div>
-          </section>
+          <PreviewStoresSection stores={user.stores} title="My Stores" />
         )}
         <Divider />
-        {user.orders && user.orders.length > 0 && (
-          <section>
-            <PageHeader title="Recent Orders" />
-            <div className="space-y-4">
-              {user.orders.map((order) => (
-                <OrderSummaryCard key={order.id} order={order} />
-              ))}
-            </div>
-          </section>
+        {user.orders && (
+          <SummaryOrdersSection orders={user.orders} title="Recent Orders" />
         )}
       </main>
     </AppLayout>
