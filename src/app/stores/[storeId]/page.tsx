@@ -19,7 +19,7 @@ import { useStoreDetailsQuery } from '@/libs/stores/hooks';
 export default function StoreDetailsPage() {
   const { storeId } = useParams<{ storeId: string }>();
   const router = useRouter();
-  const user = useUser();
+  const { data: user } = useUser();
   const { data: store, isLoading, error } = useStoreDetailsQuery(storeId);
   const isOwner = user && store && store.owner.id === user.id;
 

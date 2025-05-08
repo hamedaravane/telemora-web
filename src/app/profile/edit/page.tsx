@@ -8,7 +8,7 @@ import AppLayout from '@/libs/common/components/AppLayout';
 import { PageHeader } from '@/libs/common/components/page-header';
 
 export default function EditProfilePage() {
-  const data = useUser();
+  const { data, isLoading } = useUser();
 
   return (
     <AppLayout>
@@ -20,6 +20,7 @@ export default function EditProfilePage() {
           inputMode="text"
           type="text"
           label="First Name"
+          disabled={isLoading}
           defaultValue={data?.firstName}
         ></Input>
         <Input
@@ -27,6 +28,7 @@ export default function EditProfilePage() {
           inputMode="text"
           type="text"
           label="Last Name"
+          disabled={isLoading}
           defaultValue={data?.lastName}
         ></Input>
         <Input
@@ -34,6 +36,7 @@ export default function EditProfilePage() {
           inputMode="tel"
           type="tel"
           label="Phone Number"
+          disabled={isLoading}
           defaultValue={data?.phoneNumber}
         ></Input>
         <Input
@@ -41,6 +44,7 @@ export default function EditProfilePage() {
           inputMode="email"
           type="email"
           label="E-Mail"
+          disabled={isLoading}
           defaultValue={data?.email}
         ></Input>
       </Form>

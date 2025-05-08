@@ -26,7 +26,7 @@ const localCurrencies = [
 ];
 
 export default function PreferencesPage() {
-  const user = useUser();
+  const { data: user } = useUser();
   const { mutate } = useUpdatePreferencesMutation();
   const {
     register,

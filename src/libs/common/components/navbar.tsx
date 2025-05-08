@@ -5,7 +5,7 @@ import { FaGear } from 'react-icons/fa6';
 import { useUser } from '@/context/userContext';
 
 export default function CustomNavbar() {
-  const user = useUser();
+  const { data } = useUser();
   return (
     <Navbar>
       <NavbarBrand>
@@ -16,7 +16,7 @@ export default function CustomNavbar() {
       <NavbarContent justify="end">
         <NavbarItem>
           <Link href="/profile">
-            <Avatar size="sm" src={user?.photo?.url || '/default-profile.png'} />
+            <Avatar size="sm" src={data?.photo?.url || '/default-profile.png'} />
           </Link>
         </NavbarItem>
       </NavbarContent>
