@@ -2,7 +2,7 @@ import { Avatar, Navbar, NavbarBrand, NavbarContent, NavbarItem } from '@heroui/
 import Link from 'next/link';
 import { FaGear } from 'react-icons/fa6';
 
-import { useUser } from '@/context/userContext';
+import { useUser } from '@/libs/users/context/userContext';
 
 export default function CustomNavbar() {
   const { data } = useUser();

@@ -8,7 +8,7 @@ import React from 'react';
 import { FaEdit, FaShareAlt, FaTrashAlt } from 'react-icons/fa';
 import { FaPlus } from 'react-icons/fa6';
 
-import { useUser } from '@/context/userContext';
+import { useUser } from '@/libs/users/context/userContext';
 import AppLayout from '@/libs/common/components/AppLayout';
 import ErrorPage from '@/libs/common/components/errorPage';
 import StarRating from '@/libs/common/components/star-rating';

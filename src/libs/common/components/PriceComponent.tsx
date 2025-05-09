@@ -3,7 +3,7 @@
 import Decimal from 'decimal.js';
 import React from 'react';
 
-import { useUser } from '@/context/userContext';
+import { useUser } from '@/libs/users/context/userContext';
 
 export default function PriceComponent({ amount }: { amount: number }) {
   return (

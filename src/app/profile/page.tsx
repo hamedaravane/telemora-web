@@ -3,7 +3,7 @@
 import { Divider } from '@heroui/react';
 import React from 'react';
 
-import { useUser } from '@/context/userContext';
+import { useUser } from '@/libs/users/context/userContext';
 import AppLayout from '@/libs/common/components/AppLayout';
 import SummaryOrdersSection from '@/libs/orders/components/summary-orders-section';
 import PreviewStoresSection from '@/libs/stores/components/preview-stores-section';

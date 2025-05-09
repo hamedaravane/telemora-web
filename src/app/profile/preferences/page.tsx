@@ -4,7 +4,7 @@ import { Button, Form, Select, SelectItem, Spinner } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { useUser } from '@/context/userContext';
+import { useUser } from '@/libs/users/context/userContext';
 import AppLayout from '@/libs/common/components/AppLayout';
 import { useUpdatePreferencesMutation } from '@/libs/users/hooks';
 import { UpdatePreferencesFormData, updatePreferencesSchema } from '@/libs/users/schemas';
