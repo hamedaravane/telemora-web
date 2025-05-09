@@ -5,10 +5,10 @@ import { usePathname, useRouter } from 'next/navigation';
 import { FaClipboard, FaHome, FaStore, FaUser } from 'react-icons/fa';
 
 const tabList = [
-  { key: '/market', label: 'Market', icon: <FaHome size={15} /> },
-  { key: '/stores', label: 'Stores', icon: <FaStore size={15} /> },
-  { key: '/orders', label: 'Orders', icon: <FaClipboard size={15} /> },
-  { key: '/profile', label: 'Profile', icon: <FaUser size={15} /> },
+  { key: '/market', label: 'Market', icon: <FaHome size={15} aria-label="Market" /> },
+  { key: '/stores', label: 'Stores', icon: <FaStore size={15} aria-label="Stores" /> },
+  { key: '/orders', label: 'Orders', icon: <FaClipboard size={15} aria-label="Orders" /> },
+  { key: '/profile', label: 'Profile', icon: <FaUser size={15} aria-label="Profile" /> },
 ];
 
 export default function BottomTabs() {

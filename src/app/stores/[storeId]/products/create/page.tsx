@@ -49,7 +49,7 @@ export default function CreateProductPage() {
     remove: removeVariant,
   } = useFieldArray({ control, name: 'variants' });
 
-  const { mutateAsync } = useCreateProductMutation(+storeId);
+  const { mutateAsync } = useCreateProductMutation(parseInt(storeId as string, 10));
   const router = useRouter();
 
   const onSubmit = async (data: CreateProductFormData) => {

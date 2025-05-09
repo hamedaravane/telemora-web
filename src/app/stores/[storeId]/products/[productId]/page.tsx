@@ -16,7 +16,12 @@ import ReviewPreviewCard from '@/libs/reviews/components/preview-card';
 
 export default function ProductDetailsPage() {
   const { storeId, productId } = useParams();
-  const { data: product, isLoading, error, refetch } = useProductDetails(+storeId, +productId);
+  const storeIdNum = parseInt(storeId as string, 10);
+  const productIdNum = parseInt(productId as string, 10);
+  if (isNaN(storeIdNum) || isNaN(productIdNum)) {
+    return <div>Error: Invalid store or product ID</div>;
+  }
+  const { data: product, isLoading, error, refetch } = useProductDetails(storeIdNum, productIdNum);
 
   if (isLoading) {
     return (
