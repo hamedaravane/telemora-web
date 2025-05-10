@@ -10,7 +10,7 @@ export default function CustomNavbar() {
     <Navbar>
       <NavbarBrand>
         <Link href="/profile/preferences">
-+          <FaGear aria-label="Preferences" />
+          <FaGear aria-label="Preferences" />
         </Link>
       </NavbarBrand>
       <NavbarContent justify="end">
