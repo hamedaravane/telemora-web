@@ -47,12 +47,7 @@ export default function PreferencesPage() {
       <PageHeader title="Preferences" />
 
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Select
-          {...register('languageCode')}
-          description="Choose your language"
-          label="Language"
-          labelPlacement="outside-left"
-        >
+        <Select {...register('languageCode')} description="Choose your language" label="Language">
           {supportedLanguages.map((language) => (
             <SelectItem key={language.key}>{language.label}</SelectItem>
           ))}
@@ -62,14 +57,13 @@ export default function PreferencesPage() {
           {...register('currencyCode')}
           description="We will show you the equal value as hint"
           label="Local Currency"
-          labelPlacement="outside-left"
         >
           {localCurrencies.map((currency) => (
             <SelectItem key={currency.key}>{currency.label}</SelectItem>
           ))}
         </Select>
 
-        <Button disabled={isSubmitting} type="submit">
+        <Button fullWidth disabled={isSubmitting} type="submit">
           Save
         </Button>
       </Form>
