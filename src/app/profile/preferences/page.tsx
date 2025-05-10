@@ -4,8 +4,8 @@ import { Button, Form, Select, SelectItem, Spinner } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { useUser } from '@/libs/users/context/userContext';
 import AppLayout from '@/libs/common/components/AppLayout';
+import { useUser } from '@/libs/users/context/userContext';
 import { useUpdatePreferencesMutation } from '@/libs/users/hooks';
 import { UpdatePreferencesFormData, updatePreferencesSchema } from '@/libs/users/schemas';
 
@@ -48,28 +48,31 @@ export default function PreferencesPage() {
   return (
     <AppLayout>
       <Form onSubmit={handleSubmit(onSubmit)}>
-
-        <Select {...register('languageCode')} description="Choose your language" label="Language"
-                labelPlacement="outside-left">
+        <Select
+          {...register('languageCode')}
+          description="Choose your language"
+          label="Language"
+          labelPlacement="outside-left"
+        >
           {supportedLanguages.map((language) => (
-            <SelectItem key={language.key}>
-              {language.label}
-            </SelectItem>
+            <SelectItem key={language.key}>{language.label}</SelectItem>
           ))}
         </Select>
 
-        <Select {...register('currencyCode')} description="We will show you the equal value as hint"
-                label="Local Currency"
-                labelPlacement="outside-left">
+        <Select
+          {...register('currencyCode')}
+          description="We will show you the equal value as hint"
+          label="Local Currency"
+          labelPlacement="outside-left"
+        >
           {localCurrencies.map((currency) => (
-            <SelectItem key={currency.key}>
-              {currency.label}
-            </SelectItem>
+            <SelectItem key={currency.key}>{currency.label}</SelectItem>
           ))}
         </Select>
 
-        <Button disabled={isSubmitting} type="submit">Save</Button>
-
+        <Button disabled={isSubmitting} type="submit">
+          Save
+        </Button>
       </Form>
     </AppLayout>
   );

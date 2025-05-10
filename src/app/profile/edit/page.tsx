@@ -3,9 +3,9 @@
 import { Form, Input } from '@heroui/react';
 import { FaPen } from 'react-icons/fa';
 
-import { useUser } from '@/libs/users/context/userContext';
 import AppLayout from '@/libs/common/components/AppLayout';
 import { PageHeader } from '@/libs/common/components/page-header';
+import { useUser } from '@/libs/users/context/userContext';
 
 export default function EditProfilePage() {
   const { data, isLoading } = useUser();
