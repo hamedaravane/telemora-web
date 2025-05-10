@@ -11,21 +11,15 @@ export default function SummaryOrdersSection({
   orders: OrderSummary[];
   title: string;
 }) {
-  if (orders.length === 0) {
-    return (
-      <section>
-        <h1>{title}</h1>
-        <Button as={'link'} href="/orders">
-          Create your first order
-        </Button>
-      </section>
-    );
-  }
   return (
-    <section>
+    <section className="space-y-4">
       <h1>{title}</h1>
       <div className="space-y-4">
-        {orders.map((order) => (
+        {orders.length === 0 ? (
+          <Button as={'link'} href="/orders">
+            Create your first order
+          </Button>
+        ) : orders.map((order) => (
           <OrderSummaryCard key={order.id} order={order} />
         ))}
       </div>
