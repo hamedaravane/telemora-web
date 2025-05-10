@@ -1,21 +1,22 @@
 'use client';
 
+import { Alert, Button, Card, CardBody, CardFooter, Divider, Spinner } from '@heroui/react';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { Alert, Button, Card, CardBody, CardFooter, Divider, Spinner } from '@heroui/react';
-import { useOrderDetails } from '@/libs/orders/hooks';
-import AppLayout from '@/libs/common/components/app-layout';
-import { PageHeader } from '@/libs/common/components/page-header';
+
+import AppLayout from '@/libs/common/components/AppLayout';
 import ErrorPage from '@/libs/common/components/errorPage';
+import { PageHeader } from '@/libs/common/components/page-header';
+import PriceComponent from '@/libs/common/components/PriceComponent';
+import { formatDate, formatRelative } from '@/libs/common/utils/date';
 import OrderItemPreviewCard from '@/libs/orders/components/order-item-preview';
-import { formatDate, formatRelative } from '@/utils/date';
+import { OrderShipmentCard } from '@/libs/orders/components/order-shipment-card';
 import { OrderStatusChip } from '@/libs/orders/components/order-status-chip';
+import { useOrderDetails } from '@/libs/orders/hooks';
+import { OrderStatus } from '@/libs/orders/types';
 import { PaymentStatusChip } from '@/libs/payments/components/payment-status-chip';
 import { TonPaymentButton } from '@/libs/payments/components/ton-payment-button';
-import { OrderShipmentCard } from '@/libs/orders/components/order-shipment-card';
 import { PaymentStatus } from '@/libs/payments/types';
-import { OrderStatus } from '@/libs/orders/types';
-import PriceComponent from '@/libs/common/components/PriceComponent';
 
 export default function OrderDetailsPage() {
   const { orderId } = useParams<{ orderId: string }>();
@@ -26,7 +27,7 @@ export default function OrderDetailsPage() {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="h-screen flex items-center justify-center">
+        <div className="flex h-screen items-center justify-center">
           <Spinner label="Loading order..." />
         </div>
       </AppLayout>
@@ -47,7 +48,7 @@ export default function OrderDetailsPage() {
         subtitle={`Placed on ${formatDate(order.createdAt)}`}
       />
 
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <OrderStatusChip status={order.status} />
 
         {order.payment && <PaymentStatusChip status={order.payment.status} />}
@@ -89,8 +90,8 @@ export default function OrderDetailsPage() {
 
       {/* Order Summary */}
       <div className="mb-12">
-        <h2 className="text-lg font-semibold mb-2">Summary</h2>
-        <div className="text-sm space-y-1">
+        <h2 className="mb-2 text-lg font-semibold">Summary</h2>
+        <div className="space-y-1 text-sm">
           <div className="flex gap-x-2">
             <span>Total Amount: </span>
             <PriceComponent amount={order.totalAmount} />

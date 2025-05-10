@@ -1,13 +1,15 @@
 import { faker } from '@faker-js/faker';
-import { OrderDetail, OrderItemPreview, OrderStatus, OrderSummary } from '../types';
-import { generateMockStorePreview } from '@/libs/stores/mocks';
-import { generateMockProductPreview } from '@/libs/products/mocks';
+
 import { generateMockPaymentSummary } from '@/libs/payments/mocks';
+import { generateMockProductPreview } from '@/libs/products/mocks';
+import { generateMockStorePreview } from '@/libs/stores/mocks';
 import { generateMockUserSummary } from '@/libs/users/mocks';
+
+import { OrderDetail, OrderItemPreview, OrderStatus, OrderSummary } from '../types';
 
 export async function generateMockOrderItemPreview(): Promise<OrderItemPreview> {
   return {
-    product: await generateMockProductPreview(faker.number.int()),
+    product: await generateMockProductPreview(),
     quantity: faker.number.int({ min: 1, max: 5 }),
     totalPrice: Number(faker.commerce.price({ min: 10, max: 300 })),
   };

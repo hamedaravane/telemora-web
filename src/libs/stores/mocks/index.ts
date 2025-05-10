@@ -1,8 +1,10 @@
 import { faker } from '@faker-js/faker';
-import { StoreDetail, StorePreview, StoreSummary } from '../types';
+
 import { generateMockAddress } from '@/libs/location/mocks';
-import { generateMockUserSummary } from '@/libs/users/mocks';
 import { generateMockProductPreviews } from '@/libs/products/mocks';
+import { generateMockUserSummary } from '@/libs/users/mocks';
+
+import { StoreDetail, StorePreview, StoreSummary } from '../types';
 
 export async function generateMockStorePreview(): Promise<StorePreview> {
   return {

@@ -1,13 +1,36 @@
 {
   "name": "telemora-web",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "author": {
+    "name": "Hamed Arghavan",
+    "email": "hamedaravane@gmail.com",
+    "url": "https://github.com/hamedaravane"
+  },
+  "bugs": {
+    "url": "https://github.com/hamedaravane/telemora-web/issues"
+  },
+  "packageManager": "npm@10.9.2",
+  "repository": {
+    "url": "https://github.com/hamedaravane/telemora-web"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css}": [
+      "prettier --write"
+    ]
+  },
   "scripts": {
     "dev": "next dev --turbo --port 4000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier . --write"
+    "lint-fix": "eslint --fix .",
+    "format": "prettier . --write",
+    "prepare": "husky"
   },
   "dependencies": {
     "@heroui/react": "^2.6.14",
@@ -42,8 +65,12 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
     "postcss": "^8",
     "prettier": "3.5.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

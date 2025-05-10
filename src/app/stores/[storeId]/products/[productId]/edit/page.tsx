@@ -1,24 +1,30 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { UpdateProductFormData, updateProductSchema } from '@/libs/products/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
-import AppLayout from '@/libs/common/components/app-layout';
 import { Button, Form, Input, Textarea } from '@heroui/react';
-import { useProductDetails, useUpdateProductMutation } from '@/libs/products/hooks';
-import { PageHeader } from '@/libs/common/components/page-header';
-import React, { useState } from 'react';
-import toast from 'react-hot-toast';
-import { ProductTypeSelector } from '@/libs/products/components/product-type-selector';
-import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
-import { ProductVariantFields } from '@/libs/products/components/product-variants-field';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { hapticFeedback } from '@telegram-apps/sdk';
+import { useParams, useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+
+import AppLayout from '@/libs/common/components/AppLayout';
+import { PageHeader } from '@/libs/common/components/page-header';
+import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
+import { ProductTypeSelector } from '@/libs/products/components/product-type-selector';
+import { ProductVariantFields } from '@/libs/products/components/product-variants-field';
+import { useProductDetails, useUpdateProductMutation } from '@/libs/products/hooks';
+import { UpdateProductFormData, updateProductSchema } from '@/libs/products/schemas';
 import ImageUploader from '@/libs/common/components/ImageUploader';
 
 export default function EditProductPage() {
   const { storeId, productId } = useParams<{ storeId: string; productId: string }>();
-  const { data: product } = useProductDetails(+storeId, +productId);
+  const storeIdNum = parseInt(storeId, 10);
+  const productIdNum = parseInt(productId, 10);
+  if (isNaN(storeIdNum) || isNaN(productIdNum)) {
+    return <div>Error: Invalid store or product ID</div>;
+  }
+  const { data: product } = useProductDetails(storeIdNum, productIdNum);
 
   const {
     register,
@@ -56,7 +62,7 @@ export default function EditProductPage() {
     remove: removeVariant,
   } = useFieldArray({ control, name: 'variants' });
 
-  const { mutateAsync } = useUpdateProductMutation(+storeId, +productId);
+  const { mutateAsync } = useUpdateProductMutation(storeIdNum, productIdNum);
   const router = useRouter();
 
   const onSubmit = async (data: UpdateProductFormData) => {
@@ -110,7 +116,7 @@ export default function EditProductPage() {
         />
 
         {previewUrl && (
-          <img src={previewUrl} alt="Preview" className="w-full rounded-xl border mt-2" />
+          <img src={previewUrl} alt="Preview" className="mt-2 w-full rounded-xl border" />
         )}
 
         <ProductTypeSelector name="productType" control={control} errors={errors} />

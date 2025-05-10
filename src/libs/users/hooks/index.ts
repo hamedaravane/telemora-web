@@ -1,15 +1,18 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-  UpdateContactLocationFormData,
-  UpdateLanguageFormData,
-  UpdateProfileFormData,
-} from '@/libs/users/schemas';
+
 import {
   telegramLogin,
   updateContactLocation,
   updateLanguage,
   updateProfile,
+  updateUserPreferences,
 } from '@/libs/users/api';
+import {
+  UpdateContactLocationFormData,
+  UpdateLanguageFormData,
+  UpdatePreferencesFormData,
+  UpdateProfileFormData,
+} from '@/libs/users/schemas';
 
 export function useTelegramLoginQuery() {
   return useQuery({
@@ -53,5 +56,17 @@ export function useUpdateContactLocationMutation() {
       telegramId: number | string;
       data: UpdateContactLocationFormData;
     }) => updateContactLocation(telegramId, data),
+  });
+}
+
+export function useUpdatePreferencesMutation() {
+  return useMutation({
+    mutationFn: ({
+                   telegramId,
+                   data,
+                 }: {
+      telegramId: number | string;
+      data: UpdatePreferencesFormData;
+    }) => updateUserPreferences(telegramId, data),
   });
 }

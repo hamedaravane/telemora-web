@@ -1,10 +1,11 @@
 'use client';
 
-import { ProductPreview } from '@/libs/products/types';
+import { Card, CardBody, CardFooter } from '@heroui/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardBody, CardFooter } from '@heroui/react';
+
 import PriceComponent from '@/libs/common/components/PriceComponent';
+import { ProductPreview } from '@/libs/products/types';
 
 interface ProductPreviewCard {
   product: ProductPreview;
@@ -25,7 +26,7 @@ export default function ProductPreviewCard({ product }: ProductPreviewCard) {
           />
         </CardBody>
         <CardFooter className="block space-y-2">
-          <h3 className="text-sm font-medium line-clamp-2 truncate">{product.name}</h3>
+          <h3 className="line-clamp-2 truncate text-sm font-medium">{product.name}</h3>
           <PriceComponent amount={product.price} />
         </CardFooter>
       </Card>

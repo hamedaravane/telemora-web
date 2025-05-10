@@ -27,9 +27,9 @@ export function ProductVariantFields<TFieldValues extends Record<string, unknown
 }: ProductVariantFieldsProps<TFieldValues>) {
   return (
     <section>
-      <h2 className="font-semibold mb-2">Variants</h2>
+      <h2 className="mb-2 font-semibold">Variants</h2>
       {fields.map((field, index) => (
-        <div key={field.id} className="flex items-center gap-2 mb-2">
+        <div key={field.id} className="mb-2 flex items-center gap-2">
           <Input
             {...register(`${name}.${index}.variantName` as Path<TFieldValues>)}
             placeholder="Name"

@@ -1,12 +1,14 @@
 'use client';
 
-import BottomNavigation from './bottom-navigation';
-import BackwardNavbar from '@/libs/common/components/backward-navbar';
 import React, { PropsWithChildren } from 'react';
+
+import BackwardNavbar from '@/libs/common/components/backward-navbar';
+
+import BottomNavigation from './BottomTabs';
 
 const InnerLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div className="h-screen relative">
+    <div className="relative h-screen">
       <BackwardNavbar />
       <div className="overflow-y-scroll">{children}</div>
       <BottomNavigation />

@@ -1,12 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { StoreDetail, StoreSummary } from '@/libs/stores/types';
-import {
-  CreateAddressDto,
-  CreateStoreBasicDto,
-  CreateStoreLogoDto,
-  CreateStoreTagsDto,
-  CreateStoreWorkingHoursDto,
-} from '@/libs/stores/schemas';
+
+import { queryKeys } from '@/libs/common/api/query-keys';
 import {
   fetchDiscoverableStores,
   fetchFeaturedStores,
@@ -18,31 +12,39 @@ import {
   submitStoreTagsSelection,
   submitStoreWorkingHours,
 } from '@/libs/stores/api';
+import {
+  CreateAddressDto,
+  CreateStoreBasicDto,
+  CreateStoreLogoDto,
+  CreateStoreTagsDto,
+  CreateStoreWorkingHoursDto,
+} from '@/libs/stores/schemas';
+import { StoreDetail, StoreSummary } from '@/libs/stores/types';
 
 export function useUserStoresQuery() {
   return useQuery<StoreSummary[]>({
-    queryKey: ['stores', 'my'],
+    queryKey: queryKeys.stores.my,
     queryFn: fetchUserStores,
   });
 }
 
 export function useStoreDetailsQuery(storeId: string) {
   return useQuery<StoreDetail>({
-    queryKey: ['stores', storeId],
+    queryKey: queryKeys.stores.detail(storeId),
     queryFn: () => fetchStoreDetails(storeId),
   });
 }
 
 export function useDiscoverableStoresQuery() {
   return useQuery<StoreSummary[]>({
-    queryKey: ['stores', 'discover'],
+    queryKey: queryKeys.stores.discover,
     queryFn: fetchDiscoverableStores,
   });
 }
 
 export function useFeaturedStoresQuery() {
   return useQuery<StoreSummary[]>({
-    queryKey: ['stores', 'featured'],
+    queryKey: queryKeys.stores.featured,
     queryFn: fetchFeaturedStores,
   });
 }

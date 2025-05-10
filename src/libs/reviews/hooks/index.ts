@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ReviewDetail, ReviewPreview } from '@/libs/reviews/types';
+
+import { queryKeys } from '@/libs/common/api/query-keys';
 import {
   createReview,
   deleteReviews,
@@ -13,17 +14,18 @@ import {
   CreateReviewReplyFormData,
   CreateReviewReportFormData,
 } from '@/libs/reviews/schemas';
+import { ReviewDetail, ReviewPreview } from '@/libs/reviews/types';
 
 export function useProductReviews(productId: number) {
   return useQuery<ReviewPreview[]>({
-    queryKey: ['reviews', 'product', productId],
+    queryKey: queryKeys.reviews.byProduct(productId),
     queryFn: () => getProductReviews(productId),
   });
 }
 
 export function useReviewDetail(id: string | number) {
   return useQuery<ReviewDetail>({
-    queryKey: ['reviews', 'detail', id],
+    queryKey: queryKeys.reviews.detail(id),
     queryFn: () => getReviewsById(id),
   });
 }
@@ -33,7 +35,7 @@ export function useCreateReviewMutation(productId: number) {
   return useMutation({
     mutationFn: (data: CreateReviewFormData) => createReview(productId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reviews', 'product', productId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.byProduct(productId) });
     },
   });
 }
@@ -55,7 +57,7 @@ export function useDeleteReviewMutation() {
   return useMutation({
     mutationFn: (id: string | number) => deleteReviews(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.reviews.all });
     },
   });
 }

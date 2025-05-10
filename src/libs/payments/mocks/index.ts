@@ -1,7 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { PaymentDetail, PaymentStatus, PaymentSummary } from '../types';
+
 import { generateMockOrderSummary } from '@/libs/orders/mocks';
 import { generateMockUserSummary } from '@/libs/users/mocks';
+
+import { PaymentDetail, PaymentStatus, PaymentSummary } from '../types';
 
 export async function generateMockPaymentSummary(): Promise<PaymentSummary> {
   return {

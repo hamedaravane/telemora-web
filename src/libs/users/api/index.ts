@@ -1,12 +1,13 @@
+import { isDev } from '@/libs/common/utils';
+import httpClient from '@/libs/common/utils/http-client';
+import { generateMockUserPrivateProfile } from '@/libs/users/mocks';
 import {
   UpdateContactLocationDto,
   UpdateLanguageDto,
+  UpdatePreferencesDto,
   UpdateProfileDto,
   UserPrivateProfile,
 } from '@/libs/users/types';
-import httpClient from '@/libs/common/http-client';
-import { isDev } from '@/utils';
-import { generateMockUserPrivateProfile } from '@/libs/users/mocks';
 
 export async function telegramLogin() {
   return isDev
@@ -33,4 +34,10 @@ export async function updateContactLocation(
   return isDev
     ? generateMockUserPrivateProfile()
     : httpClient.patch<UserPrivateProfile>(`/users/contact-location/${telegramId}`, data);
+}
+
+export async function updateUserPreferences(telegramId: number | string, data: UpdatePreferencesDto) {
+  return isDev
+    ? generateMockUserPrivateProfile()
+    : httpClient.patch<UserPrivateProfile>(`/users/preferences/${telegramId}`, data);
 }

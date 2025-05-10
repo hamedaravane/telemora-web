@@ -1,4 +1,9 @@
 import { faker } from '@faker-js/faker';
+
+import { generateMockAddress } from '@/libs/location/mocks';
+import { generateMockOrderSummary } from '@/libs/orders/mocks';
+import { generateMockStorePreviews } from '@/libs/stores/mocks';
+
 import {
   CurrencyInfo,
   UserPrivateProfile,
@@ -6,9 +11,6 @@ import {
   UserRole,
   UserSummary,
 } from '../types';
-import { generateMockAddress } from '@/libs/location/mocks';
-import { generateMockStorePreviews } from '@/libs/stores/mocks';
-import { generateMockOrderSummary } from '@/libs/orders/mocks';
 
 export async function generateMockUserPublicPreview(): Promise<UserPublicPreview> {
   return {

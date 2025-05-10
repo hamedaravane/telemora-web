@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { ProductType } from '@/libs/products/types';
 
 export const productAttributeSchema = z.object({
