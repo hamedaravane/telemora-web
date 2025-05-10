@@ -7,18 +7,10 @@ import AppLayout from '@/libs/common/components/AppLayout';
 import SummaryOrdersSection from '@/libs/orders/components/summary-orders-section';
 import PreviewStoresSection from '@/libs/stores/components/preview-stores-section';
 import ProfileCard from '@/libs/users/components/profile-card';
-import { useUser } from '@/libs/users/context/userContext';
+import { useUserState } from '@/libs/users/context/userContext';
 
 export default function ProfilePage() {
-  const { data, isLoading, isError } = useUser();
-
-  if (!data || isError) {
-    return (
-      <AppLayout>
-        <div>user not found</div>
-      </AppLayout>
-    );
-  }
+  const { data, isLoading } = useUserState();
 
   return (
     <AppLayout>

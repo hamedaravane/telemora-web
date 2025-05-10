@@ -14,12 +14,12 @@ import StarRating from '@/libs/common/components/star-rating';
 import { copyToClipboard } from '@/libs/common/utils/clipboard';
 import ProductPreviewCard from '@/libs/products/components/preview-card';
 import { useStoreDetailsQuery } from '@/libs/stores/hooks';
-import { useUser } from '@/libs/users/context/userContext';
+import { useUserState } from '@/libs/users/context/userContext';
 
 export default function StoreDetailsPage() {
   const { storeId } = useParams<{ storeId: string }>();
   const router = useRouter();
-  const { data: user } = useUser();
+  const { data: user } = useUserState();
   const { data: store, isLoading, error } = useStoreDetailsQuery(storeId);
   const isOwner = user && store && store.owner.id === user.id;
 

@@ -6,36 +6,28 @@ import { useTelegramLoginQuery } from '@/libs/users/hooks';
 import { UserPrivateProfile } from '@/libs/users/types';
 
 interface UserContext {
-  data?: UserPrivateProfile;
+  data: UserPrivateProfile;
   isLoading: boolean;
-  isError: boolean;
-  refetch: () => void;
-  error: Error | null;
 }
 
-const defaultValue: UserContext = {
-  data: undefined,
-  isLoading: true,
-  isError: false,
-  refetch: () => {
-  },
-  error: new Error(),
-};
-
-const UserContext = createContext<UserContext>(defaultValue);
+const UserContext = createContext<UserContext | undefined>(undefined);
 
 export function UserProvider({ children }: PropsWithChildren) {
-  const { data, isLoading, isError, refetch, error } = useTelegramLoginQuery();
+  const { data, isLoading, error } = useTelegramLoginQuery();
 
-  const userContext: UserContext = {
-    data,
-    isLoading,
-    isError,
-    refetch,
-    error,
-  };
+  if (error || !data) {
+    return;
+  }
 
-  return <UserContext.Provider value={userContext}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ data, isLoading }}>
+      {children}
+    </UserContext.Provider>
+  );
 }
 
-export const useUser = () => useContext(UserContext);
+export const useUserState = () => {
+  const context = useContext(UserContext);
+  if (!context) throw new Error('useUser must be used within <UserProvider>');
+  return context;
+};

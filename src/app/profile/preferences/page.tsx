@@ -1,11 +1,12 @@
 'use client';
 
-import { Button, Form, Select, SelectItem, Spinner } from '@heroui/react';
+import { Button, Form, Select, SelectItem } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import AppLayout from '@/libs/common/components/AppLayout';
-import { useUser } from '@/libs/users/context/userContext';
+import { PageHeader } from '@/libs/common/components/page-header';
+import { useUserState } from '@/libs/users/context/userContext';
 import { useUpdatePreferencesMutation } from '@/libs/users/hooks';
 import { UpdatePreferencesFormData, updatePreferencesSchema } from '@/libs/users/schemas';
 
@@ -26,7 +27,7 @@ const localCurrencies = [
 ];
 
 export default function PreferencesPage() {
-  const { data: user } = useUser();
+  const { data: user } = useUserState();
   const { mutate } = useUpdatePreferencesMutation();
   const {
     register,
@@ -36,10 +37,6 @@ export default function PreferencesPage() {
     resolver: zodResolver(updatePreferencesSchema),
   });
 
-  if (!user) {
-    return <Spinner />;
-  }
-
   const onSubmit = (data: UpdatePreferencesFormData) => {
     const telegramId = user.telegramId;
     mutate({ telegramId, data });
@@ -47,6 +44,8 @@ export default function PreferencesPage() {
 
   return (
     <AppLayout>
+      <PageHeader title="Preferences" />
+
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Select
           {...register('languageCode')}
