@@ -3,8 +3,8 @@
 import dynamic from 'next/dynamic';
 import { PropsWithChildren } from 'react';
 
-import { QueryContext } from '@/context/queryContext';
-import { UserProvider } from '@/context/userContext';
+import { QueryContext } from '@/libs/common/context/queryContext';
+import { UserProvider } from '@/libs/users/context/userContext';
 import TonConnectClientProvider from '@/providers/TonConnectClientProvider';
 
 const InitTelegram = dynamic(() => import('@/libs/common/components/init-telegram'), {

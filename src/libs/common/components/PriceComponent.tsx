@@ -3,7 +3,7 @@
 import Decimal from 'decimal.js';
 import React from 'react';
 
-import { useUser } from '@/context/userContext';
+import { useUserState } from '@/libs/users/context/userContext';
 
 export default function PriceComponent({ amount }: { amount: number }) {
   return (
@@ -18,7 +18,7 @@ export default function PriceComponent({ amount }: { amount: number }) {
 }
 
 function UserCurrencyInfo() {
-  const { data: user } = useUser();
+  const { data: user } = useUserState();
   if (!user) return null;
 
   const currencyInfo = user.currencyInfo;

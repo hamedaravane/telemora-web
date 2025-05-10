@@ -34,7 +34,7 @@ const StoreSummaryCard = ({ store }: { store: StoreSummary }) => {
         </CardBody>
         <CardFooter className="block space-y-2">
           <p className="truncate text-xs">{formatAddress(store.address)}</p>
-          <div className="space-x-1">
+          <div className="flex gap-2">
             {store.tags?.slice(0, 3).map((tag) => (
               <Chip key={tag} size="sm">
                 {tag}

@@ -2,15 +2,15 @@ import { Avatar, Navbar, NavbarBrand, NavbarContent, NavbarItem } from '@heroui/
 import Link from 'next/link';
 import { FaGear } from 'react-icons/fa6';
 
-import { useUser } from '@/context/userContext';
+import { useUserState } from '@/libs/users/context/userContext';
 
 export default function CustomNavbar() {
-  const { data } = useUser();
+  const { data } = useUserState();
   return (
     <Navbar>
       <NavbarBrand>
         <Link href="/profile/preferences">
-+          <FaGear aria-label="Preferences" />
+          <FaGear aria-label="Preferences" />
         </Link>
       </NavbarBrand>
       <NavbarContent justify="end">
