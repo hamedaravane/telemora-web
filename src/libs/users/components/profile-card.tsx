@@ -26,9 +26,9 @@ export default function ProfileCard({ user }: { user: UserPrivateProfile }) {
           {user.username && <p className="text-sm lowercase text-gray-500">@{user.username}</p>}
         </div>
       </div>
-      <div className="flex space-x-2">
+      <div className="flex gap-x-4">
         <Button fullWidth size="sm" variant="flat" onPress={() => router.push('/profile/edit')}>
-+          <FaPen aria-label="Edit Profile" />
+          <FaPen aria-label="Edit Profile" />
           Edit Profile
         </Button>
         <Button
@@ -37,7 +37,7 @@ export default function ProfileCard({ user }: { user: UserPrivateProfile }) {
           variant="flat"
           onPress={() => router.push('/profile/preferences')}
         >
-+          <FaGear aria-label="Preferences" />
+          <FaGear aria-label="Preferences" />
           Preferences
         </Button>
       </div>
