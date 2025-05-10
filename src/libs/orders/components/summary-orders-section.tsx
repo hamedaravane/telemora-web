@@ -1,16 +1,23 @@
+import { Button } from '@heroui/react';
 import React from 'react';
 
 import OrderSummaryCard from '@/libs/orders/components/summary-card';
 import { OrderSummary } from '@/libs/orders/types';
 
-export default function SummaryOrdersSection({ orders, title }: { orders: OrderSummary[], title: string }) {
+export default function SummaryOrdersSection({
+  orders,
+  title,
+}: {
+  orders: OrderSummary[];
+  title: string;
+}) {
   if (orders.length === 0) {
     return (
       <section>
         <h1>{title}</h1>
-        <div>
-          <p>Create your first order</p>
-        </div>
+        <Button as={'link'} href="/orders">
+          Create your first order
+        </Button>
       </section>
     );
   }

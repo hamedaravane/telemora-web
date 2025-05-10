@@ -17,9 +17,7 @@ export default function ProfilePage() {
       <main className="mx-auto max-w-2xl space-y-10 px-4 py-6">
         <ProfileCard user={data} />
         <Divider />
-        {data.stores && data.stores.length > 0 && (
-          <PreviewStoresSection stores={data.stores} title="My Stores" />
-        )}
+        {data.stores && <PreviewStoresSection stores={data.stores} title="My Stores" />}
         <Divider />
         {data.orders && <SummaryOrdersSection orders={data.orders} title="Recent Orders" />}
       </main>
