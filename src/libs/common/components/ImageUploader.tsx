@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@heroui/react';
-import toast from 'react-hot-toast';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Cropper, { Area } from 'react-easy-crop';
-import { getCroppedImg } from '@/utils/imageCropper';
-import { compressImage } from '@/utils/imageCompressor';
+import toast from 'react-hot-toast';
 import { useImmer } from 'use-immer';
+
+import { compressImage } from '@/libs/common/utils/imageCompressor';
+import { getCroppedImg } from '@/libs/common/utils/imageCropper';
 
 const DEFAULT_ACCEPT = [
   'image/jpeg',
@@ -158,7 +159,7 @@ export function ImageUploader({
       </Button>
 
       {cropping && previewUrl && (
-        <div className="relative w-full h-[320px] rounded-xl overflow-hidden bg-black">
+        <div className="relative h-[320px] w-full overflow-hidden rounded-xl bg-black">
           <Cropper
             image={previewUrl}
             crop={crop}
@@ -168,7 +169,7 @@ export function ImageUploader({
             onZoomChange={setZoom}
             onCropComplete={finishCrop}
           />
-          <div className="absolute bottom-2 inset-x-0 flex justify-around px-4">
+          <div className="absolute inset-x-0 bottom-2 flex justify-around px-4">
             <Button size="sm" variant="shadow" onPress={cancelAll}>
               Cancel
             </Button>
@@ -186,7 +187,7 @@ export function ImageUploader({
               key={i}
               src={url}
               alt={`Uploaded image ${i + 1}`}
-              className="w-full aspect-square rounded border object-cover"
+              className="aspect-square w-full rounded border object-cover"
             />
           ))}
         </div>
