@@ -24,9 +24,11 @@ export async function getProductDetails(storeId: number, productId: number) {
     : httpClient.get<ProductDetail>(`/stores/${storeId}/products/${productId}`);
 }
 
-export async function uploadProductPhotos(storeId: number, productId: number, data: File) {
+export async function uploadProductPhotos(storeId: number, productId: number, data: File[]) {
   const formData = new FormData();
-  formData.append('photo', data);
+  data.forEach((file) => {
+    formData.append('photos', file);
+  });
 
   return isDev
     ? generateMockProductPhotos()
