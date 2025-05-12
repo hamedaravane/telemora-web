@@ -6,7 +6,7 @@ import { hapticFeedback } from '@telegram-apps/sdk-react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { FaPaperclip } from 'react-icons/fa';
 
@@ -45,6 +45,8 @@ export default function CreateProductPage() {
     },
   });
 
+  const setValue = useFormContext().setValue;
+
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
   const { mutateAsync: mutateAsyncProductPhotos, isPending } = useUploadProductPhotosMutation();
@@ -56,10 +58,13 @@ export default function CreateProductPage() {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
-    const result = await mutateAsyncProductPhotos(files);
-    const urls = result.imageUrls;
-
-    setPreviewUrls(urls);
+    try {
+      const result = await mutateAsyncProductPhotos(files);
+      setPreviewUrls(result.imageUrls);
+      setValue('imageUrls', result.imageUrls);
+    } catch (err) {
+      toast.error('Failed to upload images');
+    }
   };
 
   const {
