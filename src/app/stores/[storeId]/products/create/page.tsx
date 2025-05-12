@@ -5,9 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { hapticFeedback } from '@telegram-apps/sdk-react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { FaPaperclip } from 'react-icons/fa';
 
 import AppLayout from '@/libs/common/components/AppLayout';
 import { PageHeader } from '@/libs/common/components/page-header';
@@ -17,6 +18,14 @@ import { ProductVariantFields } from '@/libs/products/components/product-variant
 import { useCreateProductMutation, useUploadProductPhotosMutation } from '@/libs/products/hooks';
 import { CreateProductFormData, createProductSchema } from '@/libs/products/schemas';
 import { ProductType } from '@/libs/products/types';
+
+const DEFAULT_ACCEPT = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+  'image/heic-sequence',
+];
 
 export default function CreateProductPage() {
   const { storeId } = useParams();
@@ -35,6 +44,8 @@ export default function CreateProductPage() {
       imageUrls: [],
     },
   });
+
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
 
   const { mutateAsync: mutateAsyncProductPhotos, isPending } = useUploadProductPhotosMutation();
 
@@ -104,9 +115,26 @@ export default function CreateProductPage() {
           placeholder="Write a short product description..."
         />
 
-        <input type="file" multiple accept="image/*" onChange={handleOnChange} />
+        <input
+          ref={imageInputRef}
+          hidden
+          type="file"
+          multiple
+          accept={DEFAULT_ACCEPT.join(',')}
+          aria-label="Choose images"
+          onChange={handleOnChange}
+        />
 
-        {previewUrls.length && (
+        <Button
+          type="button"
+          fullWidth
+          onPress={() => imageInputRef.current?.click()}
+          startContent={<FaPaperclip />}
+        >
+          Choose Product Photos
+        </Button>
+
+        {previewUrls.length > 0 && (
           <ScrollShadow orientation="horizontal" className="flex gap-x-2">
             {previewUrls.map((url) => (
               <Image key={url} src={url} width={100} height={100} className="rounded" alt="" />
@@ -153,8 +181,8 @@ export default function CreateProductPage() {
           type="submit"
           color="primary"
           fullWidth
-          isDisabled={isSubmitting}
-          isLoading={isSubmitting}
+          isDisabled={isSubmitting || isPending}
+          isLoading={isSubmitting || isPending}
         >
           {isSubmitting ? 'Creating...' : 'Create Product'}
         </Button>

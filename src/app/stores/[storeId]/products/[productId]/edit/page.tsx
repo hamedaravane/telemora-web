@@ -10,7 +10,6 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import AppLayout from '@/libs/common/components/AppLayout';
-import { ImageUploader } from '@/libs/common/components/ImageUploader';
 import { PageHeader } from '@/libs/common/components/page-header';
 import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
 import { ProductTypeSelector } from '@/libs/products/components/product-type-selector';
@@ -95,8 +94,6 @@ export default function EditProductPage() {
     <AppLayout>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <PageHeader title="Edit Product" />
-
-        <ImageUploader />
 
         <Input
           label="Product Name"
