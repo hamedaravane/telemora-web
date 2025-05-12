@@ -24,7 +24,7 @@ export async function getProductDetails(storeId: number, productId: number) {
     : httpClient.get<ProductDetail>(`/stores/${storeId}/products/${productId}`);
 }
 
-export async function uploadProductPhotos(storeId: number, productId: number, data: File[]) {
+export async function uploadProductPhotos(data: File[]) {
   const formData = new FormData();
   data.forEach((file) => {
     formData.append('photos', file);
@@ -32,7 +32,7 @@ export async function uploadProductPhotos(storeId: number, productId: number, da
 
   return isDev
     ? generateMockProductPhotos()
-    : httpClient.post<{ imageUrls: string[] }>(`stores/${storeId}/products/${productId}/photo`);
+    : httpClient.post<{ imageUrls: string[] }>(`/products/photo`);
 }
 
 export async function createProduct(storeId: number, data: CreateProductDto) {

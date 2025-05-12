@@ -1,8 +1,9 @@
 'use client';
 
-import { Button, Input, Textarea } from '@heroui/react';
+import { Button, Input, ScrollShadow, Textarea } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hapticFeedback } from '@telegram-apps/sdk-react';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -13,7 +14,7 @@ import { PageHeader } from '@/libs/common/components/page-header';
 import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
 import { ProductTypeSelector } from '@/libs/products/components/product-type-selector';
 import { ProductVariantFields } from '@/libs/products/components/product-variants-field';
-import { useCreateProductMutation } from '@/libs/products/hooks';
+import { useCreateProductMutation, useUploadProductPhotosMutation } from '@/libs/products/hooks';
 import { CreateProductFormData, createProductSchema } from '@/libs/products/schemas';
 import { ProductType } from '@/libs/products/types';
 
@@ -31,11 +32,24 @@ export default function CreateProductPage() {
       productType: ProductType.PHYSICAL,
       attributes: [],
       variants: [],
+      imageUrls: [],
     },
   });
 
+  const { mutateAsync: mutateAsyncProductPhotos, isPending } = useUploadProductPhotosMutation();
+
   const productType = watch('productType');
-  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
+  const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const result = await mutateAsyncProductPhotos(files);
+    const urls = result.imageUrls;
+
+    setPreviewUrls(urls);
+  };
 
   const {
     fields: attributeFields,
@@ -90,18 +104,14 @@ export default function CreateProductPage() {
           placeholder="Write a short product description..."
         />
 
-        <Input
-          label="Image URL"
-          {...register('imageUrl')}
-          onChange={(e) => {
-            setPreviewUrl(e.target.value);
-          }}
-          isInvalid={!!errors.imageUrl}
-          errorMessage={errors.imageUrl?.message}
-        />
+        <input type="file" multiple accept="image/*" onChange={handleOnChange} />
 
-        {previewUrl && (
-          <img src={previewUrl} alt="Preview" className="mt-2 w-full rounded-xl border" />
+        {previewUrls.length && (
+          <ScrollShadow orientation="horizontal" className="flex gap-x-2">
+            {previewUrls.map((url) => (
+              <Image key={url} src={url} width={100} height={100} className="rounded" alt="" />
+            ))}
+          </ScrollShadow>
         )}
 
         <ProductTypeSelector name="productType" control={control} errors={errors} />

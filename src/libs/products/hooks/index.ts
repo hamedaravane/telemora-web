@@ -27,13 +27,13 @@ export function useProductDetails(storeId: number, productId: number) {
   });
 }
 
-export function useUploadProductPhotosMutation(storeId: number, productId: number) {
+export function useUploadProductPhotosMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: File[]) => uploadProductPhotos(storeId, productId, data),
+    mutationFn: (data: File[]) => uploadProductPhotos(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.products.detail(storeId, productId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.all });
     },
   });
 }
