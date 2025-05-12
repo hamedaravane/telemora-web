@@ -1,6 +1,12 @@
+import { faker } from '@faker-js/faker';
+
 import { isDev } from '@/libs/common/utils';
 import httpClient from '@/libs/common/utils/http-client';
-import { generateMockProductDetail, generateMockProductPreviews } from '@/libs/products/mocks';
+import {
+  generateMockProductDetail,
+  generateMockProductPhotos,
+  generateMockProductPreviews,
+} from '@/libs/products/mocks';
 import { CreateProductDto, ProductDetail, ProductPreview, UpdateProductDto } from '@/libs/products/types';
 
 export async function getStoreProducts(storeId: number) {
@@ -9,6 +15,15 @@ export async function getStoreProducts(storeId: number) {
 
 export async function getProductDetails(storeId: number, productId: number) {
   return isDev ? generateMockProductDetail() : httpClient.get<ProductDetail>(`/stores/${storeId}/products/${productId}`);
+}
+
+export async function uploadProductPhotos(storeId: number, productId: number, data: File) {
+  const formData = new FormData();
+  formData.append('photo', data);
+
+  return isDev
+    ? generateMockProductPhotos()
+    : httpClient.post<{ imageUrls: string[] }>(`stores/${storeId}/products/${productId}/photo`);
 }
 
 export async function createProduct(storeId: number, data: CreateProductDto) {
