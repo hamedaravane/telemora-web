@@ -19,15 +19,15 @@ export function ProductPhotosUploader() {
   const { mutateAsync: mutateAsyncProductPhotos, isPending } = useUploadProductPhotosMutation();
   const { setValue, getValues } = useFormContext();
   const initialUrls = getValues('imageUrls') || [];
-  const [previewUrls, setPreviewUrls] = useState<string[]>(initialUrls);
+  const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>(initialUrls);
 
-  const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
     try {
       const result = await mutateAsyncProductPhotos(files);
-      setPreviewUrls(result.imageUrls);
+      setUploadedImageUrls(result.imageUrls);
       setValue('imageUrls', result.imageUrls);
     } catch (err) {
       toast.error('Failed to upload images');
@@ -43,7 +43,7 @@ export function ProductPhotosUploader() {
         multiple
         accept={DEFAULT_ACCEPT.join(',')}
         aria-label="Choose images"
-        onChange={handleOnChange}
+        onChange={handleFileInputChange}
       />
 
       <Button
@@ -55,9 +55,9 @@ export function ProductPhotosUploader() {
         Choose Product Photos
       </Button>
 
-      {previewUrls.length > 0 && (
+      {uploadedImageUrls.length > 0 && (
         <ScrollShadow orientation="horizontal" className="flex gap-x-2">
-          {previewUrls.map((url) => (
+          {uploadedImageUrls.map((url) => (
             <Image key={url} src={url} width={100} height={100} className="rounded" alt="" />
           ))}
         </ScrollShadow>
