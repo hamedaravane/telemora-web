@@ -28,7 +28,8 @@ export function useCreateOrder() {
 
   return useMutation<OrderDetail, Error, CreateOrderFormData>({
     mutationFn: (data) => (isDev ? generateMockOrderDetail() : createOrder(data)),
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.prefetchQuery({ queryKey: queryKeys.orders.all, queryFn: isDev ? generateMockOrderSummaries : getMyOrders });
       queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
     },
   });

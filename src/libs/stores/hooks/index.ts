@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { queryKeys } from '@/libs/common/api/query-keys';
 import {
@@ -50,8 +50,13 @@ export function useFeaturedStoresQuery() {
 }
 
 export function useSubmitStoreBasicInfoMutation() {
+  const queryClient = useQueryClient();
   return useMutation<StoreDetail, Error, CreateStoreBasicDto>({
     mutationFn: (data) => submitStoreBasicInfo(data),
+    onSuccess: async () => {
+      await queryClient.prefetchQuery({ queryKey: queryKeys.stores.my, queryFn: fetchUserStores });
+
+    },
   });
 }
 
