@@ -29,6 +29,15 @@ export async function generateMockProductPreview(): Promise<ProductPreview> {
   };
 }
 
+export async function generateMockProductPhotos(): Promise<{imageUrls: string[]}> {
+  const imageUrls = Array.from(
+    { length: 4 },
+    () => faker.image.url()
+  );
+
+  return { imageUrls };
+}
+
 export async function generateMockProductSummary(): Promise<ProductSummary> {
   return {
     ...(await generateMockProductPreview()),
