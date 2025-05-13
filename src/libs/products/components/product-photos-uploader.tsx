@@ -17,8 +17,9 @@ const DEFAULT_ACCEPT = [
 export function ProductPhotosUploader() {
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const { mutateAsync: mutateAsyncProductPhotos, isPending } = useUploadProductPhotosMutation();
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  const setValue = useFormContext().setValue;
+  const { setValue, getValues } = useFormContext();
+  const initialUrls = getValues('imageUrls') || [];
+  const [previewUrls, setPreviewUrls] = useState<string[]>(initialUrls);
 
   const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
