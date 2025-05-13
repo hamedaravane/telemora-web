@@ -1,31 +1,22 @@
 'use client';
 
-import { Button, Input, ScrollShadow, Textarea } from '@heroui/react';
+import { Button, Input, Textarea } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hapticFeedback } from '@telegram-apps/sdk-react';
-import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useRef, useState } from 'react';
-import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
+import React from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { FaPaperclip } from 'react-icons/fa';
 
 import AppLayout from '@/libs/common/components/AppLayout';
 import { PageHeader } from '@/libs/common/components/page-header';
 import { ProductAttributeFields } from '@/libs/products/components/product-attributes-field';
 import { ProductTypeSelector } from '@/libs/products/components/product-type-selector';
 import { ProductVariantFields } from '@/libs/products/components/product-variants-field';
-import { useCreateProductMutation, useUploadProductPhotosMutation } from '@/libs/products/hooks';
+import { useCreateProductMutation } from '@/libs/products/hooks';
 import { CreateProductFormData, createProductSchema } from '@/libs/products/schemas';
 import { ProductType } from '@/libs/products/types';
-
-const DEFAULT_ACCEPT = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/heic',
-  'image/heic-sequence',
-];
+import { ProductPhotosUploader } from '@/libs/products/components/product-photos-uploader';
 
 export default function CreateProductPage() {
   const { storeId } = useParams();
@@ -45,27 +36,7 @@ export default function CreateProductPage() {
     },
   });
 
-  const setValue = useFormContext().setValue;
-
-  const imageInputRef = useRef<HTMLInputElement | null>(null);
-
-  const { mutateAsync: mutateAsyncProductPhotos, isPending } = useUploadProductPhotosMutation();
-
   const productType = watch('productType');
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-
-  const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (!files.length) return;
-
-    try {
-      const result = await mutateAsyncProductPhotos(files);
-      setPreviewUrls(result.imageUrls);
-      setValue('imageUrls', result.imageUrls);
-    } catch (err) {
-      toast.error('Failed to upload images');
-    }
-  };
 
   const {
     fields: attributeFields,
@@ -99,6 +70,8 @@ export default function CreateProductPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-20">
         <PageHeader title="Create New Product" />
 
+        <ProductPhotosUploader />
+
         <Input
           label="Product Name"
           {...register('name')}
@@ -119,33 +92,6 @@ export default function CreateProductPage() {
           {...register('description')}
           placeholder="Write a short product description..."
         />
-
-        <input
-          ref={imageInputRef}
-          hidden
-          type="file"
-          multiple
-          accept={DEFAULT_ACCEPT.join(',')}
-          aria-label="Choose images"
-          onChange={handleOnChange}
-        />
-
-        <Button
-          type="button"
-          fullWidth
-          onPress={() => imageInputRef.current?.click()}
-          startContent={<FaPaperclip />}
-        >
-          Choose Product Photos
-        </Button>
-
-        {previewUrls.length > 0 && (
-          <ScrollShadow orientation="horizontal" className="flex gap-x-2">
-            {previewUrls.map((url) => (
-              <Image key={url} src={url} width={100} height={100} className="rounded" alt="" />
-            ))}
-          </ScrollShadow>
-        )}
 
         <ProductTypeSelector name="productType" control={control} errors={errors} />
 
@@ -186,8 +132,8 @@ export default function CreateProductPage() {
           type="submit"
           color="primary"
           fullWidth
-          isDisabled={isSubmitting || isPending}
-          isLoading={isSubmitting || isPending}
+          isDisabled={isSubmitting}
+          isLoading={isSubmitting}
         >
           {isSubmitting ? 'Creating...' : 'Create Product'}
         </Button>
