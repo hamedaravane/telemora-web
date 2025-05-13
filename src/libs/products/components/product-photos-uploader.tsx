@@ -49,6 +49,8 @@ export function ProductPhotosUploader() {
       <Button
         type="button"
         fullWidth
+        isDisabled={isPending}
+        isLoading={isPending}
         onPress={() => imageInputRef.current?.click()}
         startContent={<FaPaperclip />}
       >
