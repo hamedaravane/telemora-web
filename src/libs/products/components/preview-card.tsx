@@ -20,9 +20,9 @@ export default function ProductPreviewCard({ product }: ProductPreviewCard) {
             src={product.image[0].url}
             alt={product.image[0].alt ?? product.name}
             priority={true}
-            fill
-            sizes="(min-width: 640px) 32vw, 100vw"
-            className="relative object-cover"
+            width={100}
+            height={100}
+            className="relative aspect-square w-full rounded object-cover"
           />
         </CardBody>
         <CardFooter className="block space-y-2">

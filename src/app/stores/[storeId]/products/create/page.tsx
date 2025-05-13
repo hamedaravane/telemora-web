@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Input, Textarea } from '@heroui/react';
+import { Button, Form, Input, Textarea } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hapticFeedback } from '@telegram-apps/sdk-react';
 import { useParams, useRouter } from 'next/navigation';
@@ -67,7 +67,7 @@ export default function CreateProductPage() {
 
   return (
     <AppLayout>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-20">
+      <Form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-20">
         <PageHeader title="Create New Product" />
 
         <ProductPhotosUploader />
@@ -137,7 +137,7 @@ export default function CreateProductPage() {
         >
           {isSubmitting ? 'Creating...' : 'Create Product'}
         </Button>
-      </form>
+      </Form>
     </AppLayout>
   );
 }
