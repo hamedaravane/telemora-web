@@ -1,7 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { queryKeys } from '@/libs/common/api/query-keys';
-import { createProduct, deleteProduct, getProductDetails, getStoreProducts, updateProduct } from '@/libs/products/api';
+import {
+  createProduct,
+  deleteProduct,
+  getProductDetails,
+  getStoreProducts,
+  updateProduct,
+  uploadProductPhotos,
+} from '@/libs/products/api';
 import { CreateProductFormData, UpdateProductFormData } from '@/libs/products/schemas';
 
 export function useStoreProducts(storeId: number) {
@@ -20,12 +27,22 @@ export function useProductDetails(storeId: number, productId: number) {
   });
 }
 
+export function useUploadProductPhotosMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: File[]) => uploadProductPhotos(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.all });
+    },
+  });
+}
+
 export function useCreateProductMutation(storeId: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateProductFormData) =>
-      createProduct(storeId, data),
+    mutationFn: (data: CreateProductFormData) => createProduct(storeId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.products.byStore(storeId) });
     },
@@ -36,8 +53,7 @@ export function useUpdateProductMutation(storeId: number, productId: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: UpdateProductFormData) =>
-      updateProduct(storeId, productId, data),
+    mutationFn: (data: UpdateProductFormData) => updateProduct(storeId, productId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.products.detail(storeId, productId) });
       queryClient.invalidateQueries({ queryKey: queryKeys.products.byStore(storeId) });

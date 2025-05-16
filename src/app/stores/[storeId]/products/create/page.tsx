@@ -1,10 +1,10 @@
 'use client';
 
-import { Button, Input, Textarea } from '@heroui/react';
+import { Button, Form, Input, Textarea } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hapticFeedback } from '@telegram-apps/sdk-react';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
@@ -16,6 +16,7 @@ import { ProductVariantFields } from '@/libs/products/components/product-variant
 import { useCreateProductMutation } from '@/libs/products/hooks';
 import { CreateProductFormData, createProductSchema } from '@/libs/products/schemas';
 import { ProductType } from '@/libs/products/types';
+import { ProductPhotosUploader } from '@/libs/products/components/product-photos-uploader';
 
 export default function CreateProductPage() {
   const { storeId } = useParams();
@@ -31,11 +32,11 @@ export default function CreateProductPage() {
       productType: ProductType.PHYSICAL,
       attributes: [],
       variants: [],
+      imageUrls: [],
     },
   });
 
   const productType = watch('productType');
-  const [previewUrl, setPreviewUrl] = useState<string>('');
 
   const {
     fields: attributeFields,
@@ -66,8 +67,10 @@ export default function CreateProductPage() {
 
   return (
     <AppLayout>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-20">
+      <Form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-20">
         <PageHeader title="Create New Product" />
+
+        <ProductPhotosUploader />
 
         <Input
           label="Product Name"
@@ -89,20 +92,6 @@ export default function CreateProductPage() {
           {...register('description')}
           placeholder="Write a short product description..."
         />
-
-        <Input
-          label="Image URL"
-          {...register('imageUrl')}
-          onChange={(e) => {
-            setPreviewUrl(e.target.value);
-          }}
-          isInvalid={!!errors.imageUrl}
-          errorMessage={errors.imageUrl?.message}
-        />
-
-        {previewUrl && (
-          <img src={previewUrl} alt="Preview" className="mt-2 w-full rounded-xl border" />
-        )}
 
         <ProductTypeSelector name="productType" control={control} errors={errors} />
 
@@ -148,7 +137,7 @@ export default function CreateProductPage() {
         >
           {isSubmitting ? 'Creating...' : 'Create Product'}
         </Button>
-      </form>
+      </Form>
     </AppLayout>
   );
 }

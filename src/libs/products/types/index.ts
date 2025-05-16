@@ -52,7 +52,7 @@ export interface CreateProductDto {
   name: string;
   price: number;
   description?: string;
-  imageUrl: string;
+  imageUrls: string[];
   productType: ProductType;
   downloadLink?: string;
   stock?: number;

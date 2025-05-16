@@ -17,7 +17,7 @@ export const createProductSchema = z.object({
   name: z.string().min(1, 'Product name is required'),
   price: z.number().positive('Price must be greater than zero'),
   description: z.string().optional(),
-  imageUrl: z.string().url('Image URL must be valid'),
+  imageUrls: z.array(z.string().url()).min(1, 'At least one image is required'),
   productType: z.nativeEnum(ProductType),
   downloadLink: z.string().url('Download link must be a valid URL').optional(),
   stock: z.number().int().nonnegative().optional(),

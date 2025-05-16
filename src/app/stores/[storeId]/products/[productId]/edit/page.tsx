@@ -4,7 +4,7 @@ import { Button, Form, Input, Textarea } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { hapticFeedback } from '@telegram-apps/sdk';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
@@ -15,14 +15,12 @@ import { ProductTypeSelector } from '@/libs/products/components/product-type-sel
 import { ProductVariantFields } from '@/libs/products/components/product-variants-field';
 import { useProductDetails, useUpdateProductMutation } from '@/libs/products/hooks';
 import { UpdateProductFormData, updateProductSchema } from '@/libs/products/schemas';
+import { ProductPhotosUploader } from '@/libs/products/components/product-photos-uploader';
 
 export default function EditProductPage() {
   const { storeId, productId } = useParams<{ storeId: string; productId: string }>();
   const storeIdNum = parseInt(storeId, 10);
   const productIdNum = parseInt(productId, 10);
-  if (isNaN(storeIdNum) || isNaN(productIdNum)) {
-    return <div>Error: Invalid store or product ID</div>;
-  }
   const { data: product } = useProductDetails(storeIdNum, productIdNum);
 
   const {
@@ -37,7 +35,7 @@ export default function EditProductPage() {
       name: product?.name,
       price: product?.price,
       description: product?.description,
-      imageUrl: product?.image[0].url,
+      imageUrls: product?.image.map((m) => m.url),
       productType: product?.productType,
       downloadLink: product?.downloadLink,
       stock: product?.stock,
@@ -47,7 +45,6 @@ export default function EditProductPage() {
   });
 
   const productType = watch('productType');
-  const [previewUrl, setPreviewUrl] = useState<string>('');
 
   const {
     fields: attributeFields,
@@ -81,6 +78,8 @@ export default function EditProductPage() {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <PageHeader title="Edit Product" />
 
+        <ProductPhotosUploader />
+
         <Input
           label="Product Name"
           {...register('name')}
@@ -101,20 +100,6 @@ export default function EditProductPage() {
           {...register('description')}
           placeholder="Write a short product description..."
         />
-
-        <Input
-          label="Image URL"
-          {...register('imageUrl')}
-          onChange={(e) => {
-            setPreviewUrl(e.target.value);
-          }}
-          isInvalid={!!errors.imageUrl}
-          errorMessage={errors.imageUrl?.message}
-        />
-
-        {previewUrl && (
-          <img src={previewUrl} alt="Preview" className="mt-2 w-full rounded-xl border" />
-        )}
 
         <ProductTypeSelector name="productType" control={control} errors={errors} />
 
