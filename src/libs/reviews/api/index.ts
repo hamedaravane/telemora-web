@@ -19,13 +19,13 @@ import {
 export async function createReview(productId: number, data: CreateReviewDto) {
   return isDev
     ? generateMockReviewDetail()
-    : httpClient.post<ReviewDetail>(`/reviews/${productId}`, data);
+    : httpClient.post<ReviewDetail>(`/reviews/product/${productId}`, data);
 }
 
 export async function getProductReviews(productId: number) {
   return isDev
     ? generateMockReviewPreviews()
-    : httpClient.get<ReviewPreview[]>(`/reviews/${productId}`);
+    : httpClient.get<ReviewPreview[]>(`/reviews/product/${productId}`);
 }
 
 export async function getReviewsById(id: string | number) {
