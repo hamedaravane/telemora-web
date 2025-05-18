@@ -13,7 +13,7 @@ import { StoreDetail, StoreSummary } from '@/libs/stores/types';
 import { isDev } from '../../common/utils';
 
 export async function fetchUserStores() {
-  return isDev ? generateMockStoreSummaries() : httpClient.get<StoreSummary[]>('/stores/my');
+  return isDev ? generateMockStoreSummaries() : httpClient.get<StoreSummary[]>('/stores');
 }
 
 export async function fetchStoreDetails(storeId: string) {
@@ -52,12 +52,6 @@ export async function submitStoreWorkingHours(storeId: string, data: CreateStore
     : httpClient.patch<StoreDetail>(`/stores/${storeId}/working_hours`, data);
 }
 
-export async function submitStoreUpdate(storeId: string, data: UpdateStoreDto) {
-  return isDev
-    ? generateMockStoreDetail()
-    : httpClient.patch<StoreDetail>(`/stores/${storeId}`, data);
-}
-
 export async function submitStoreLogoUpload(storeId: string, data: CreateStoreLogoDto) {
   const formData = new FormData();
   if (data.logoFile) {
@@ -69,4 +63,10 @@ export async function submitStoreLogoUpload(storeId: string, data: CreateStoreLo
           headers: { 'Content-Type': 'multipart/form-data' },
         });
   } else throw new Error('No file provided');
+}
+
+export async function submitStoreUpdate(storeId: string, data: UpdateStoreDto) {
+  return isDev
+    ? generateMockStoreDetail()
+    : httpClient.patch<StoreDetail>(`/stores/${storeId}/update`, data);
 }

@@ -19,7 +19,7 @@ import {
 export async function createReview(productId: number, data: CreateReviewDto) {
   return isDev
     ? generateMockReviewDetail()
-    : httpClient.post<ReviewDetail>(`/reviews/product/${productId}`, data);
+    : httpClient.post<ReviewDetail>(`/reviews/product/${productId}/create`, data);
 }
 
 export async function getProductReviews(productId: number) {
@@ -45,5 +45,5 @@ export async function reportReview(reviewId: number, data: CreateReviewReportDto
 }
 
 export async function deleteReviews(id: string | number) {
-  return httpClient.delete<void>(`/reviews/${id}`);
+  return httpClient.delete<void>(`/reviews/${id}/delete`);
 }
