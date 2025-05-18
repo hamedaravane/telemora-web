@@ -15,13 +15,13 @@ import {
 export async function getStoreProducts(storeId: number) {
   return isDev
     ? generateMockProductPreviews()
-    : httpClient.get<ProductPreview[]>(`/stores/${storeId}/products`);
+    : httpClient.get<ProductPreview[]>(`/products/${storeId}`);
 }
 
 export async function getProductDetails(storeId: number, productId: number) {
   return isDev
     ? generateMockProductDetail()
-    : httpClient.get<ProductDetail>(`/stores/${storeId}/products/${productId}`);
+    : httpClient.get<ProductDetail>(`/products/store/${storeId}/${productId}`);
 }
 
 export async function uploadProductPhotos(data: File[]) {
@@ -38,15 +38,15 @@ export async function uploadProductPhotos(data: File[]) {
 export async function createProduct(storeId: number, data: CreateProductDto) {
   return isDev
     ? generateMockProductDetail()
-    : httpClient.post<ProductDetail>(`/stores/${storeId}/products`, data);
+    : httpClient.post<ProductDetail>(`/products/store/${storeId}/create`, data);
 }
 
 export async function updateProduct(storeId: number, productId: number, data: UpdateProductDto) {
   return isDev
     ? generateMockProductDetail()
-    : httpClient.patch<ProductDetail>(`/stores/${storeId}/products/${productId}`, data);
+    : httpClient.patch<ProductDetail>(`/products/store/${storeId}/${productId}/update`, data);
 }
 
 export async function deleteProduct(storeId: number, productId: number) {
-  return httpClient.delete<void>(`/stores/${storeId}/products/${productId}`);
+  return httpClient.delete<void>(`/products/store/${storeId}/${productId}/delete`);
 }
