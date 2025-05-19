@@ -35,7 +35,8 @@ export default function UserProfileCard({
   // Fallbacks for name display
   const firstName = user?.firstName || '';
   const lastName = user?.lastName || '';
-  const displayName = firstName || lastName ? `${firstName} ${lastName}`.trim() : 'User';
+  const hasName = firstName || lastName;
+  const displayName = hasName ? `${firstName} ${lastName}`.trim() : 'User';
 
   // Handle navigation with error handling
   const handleNavigation = (route: string | undefined) => {
@@ -86,7 +87,7 @@ export default function UserProfileCard({
           fullWidth
           size="sm"
           variant="flat"
-          onClick={() => handleNavigation(routes.edit)}
+          onPress={() => handleNavigation(routes.edit)}
           className="flex items-center justify-center gap-2"
         >
           <FaPen className="text-xs sm:text-sm" aria-hidden="true" />
@@ -96,7 +97,7 @@ export default function UserProfileCard({
           fullWidth
           size="sm"
           variant="flat"
-          onClick={() => handleNavigation(routes.preferences)}
+          onPress={() => handleNavigation(routes.preferences)}
           className="flex items-center justify-center gap-2"
         >
           <FaGear className="text-xs sm:text-sm" aria-hidden="true" />
