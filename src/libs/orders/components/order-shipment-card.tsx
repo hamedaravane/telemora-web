@@ -5,9 +5,8 @@ import { format } from 'date-fns';
 import { FaExternalLinkAlt, FaTruck } from 'react-icons/fa';
 
 import { OrderShipment } from '@/libs/orders/types';
-import { escapeHtml } from '@/libs/common/utils';
 
-const SHIPMENT_STATUS_STYLES: Record<string, string> = {
+const SHIPMENT_STATUS_STYLES: Record<NonNullable<OrderShipment['status']>, string> = {
   created: 'bg-gray-200 text-gray-800',
   in_transit: 'bg-blue-100 text-blue-800',
   delivered: 'bg-green-100 text-green-800',
@@ -142,4 +141,7 @@ function ShipmentDetail({ label, children }: { label: string; children: React.Re
       <dd>{children}</dd>
     </div>
   );
+}
+export function escapeHtml(str: string) {
+  return str.replace(/[&<>'"`]/g, (tag) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\'':'&#39;','"':'&quot;','`':'&#96;'}[tag]||tag));
 }
