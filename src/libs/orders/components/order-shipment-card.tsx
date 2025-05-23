@@ -21,7 +21,7 @@ export function OrderShipmentCard({ shipment, collapsed = false }: { shipment: O
     deliveryEstimate,
     shippedAt,
     carrierTrackingUrl,
-  } = shipment || {};
+  } = shipment;
 
   const statusStyle = SHIPMENT_STATUS_STYLES[status] || 'bg-gray-100 text-gray-600 border border-dashed border-gray-400';
   const statusLabel = typeof status === 'string' ? status.replace('_', ' ') : 'unknown';
